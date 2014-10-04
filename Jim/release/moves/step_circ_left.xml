@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+  <constants>
+    <!--konstanty sem-->
+  </constants>
+  <low_skills>
+    <low_skill name="step_circ_left" firstPhase="step_circ_left_Phase0" />
+		<type>walk</type>
+		<author>Gabor Nagy (A55 kickers)</author>
+		<extendedFromMove>stepleft_new</extendedFromMove>
+		<description>Stabilny a rychly krok doprava</description>
+  </low_skills>
+  <phases>
+		<phase name="step_circ_left_Phase0" next="step_circ_left_Phase1">
+			<effectors>
+				<he1 end="0" />
+				<he2 end="0" />
+				
+				<rae1 end="-120"/>
+				<lae1 end="-120"/>
+				<rae2 end="0" />
+				<lae2 end="0" />
+				<rae3 end="90" />
+				<lae3 end="-90" />
+				<rae4 end="90" />
+				<lae4 end="-90" />
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="50"/>
+				<lle3 end="50"/>			 
+				<rle4 end="-70"/>
+				<lle4 end="-70"/>
+				<rle5 end="40"/>
+				<lle5 end="40"/>
+				<rle6 end="0" />
+				<lle6 end="0" />
+			</effectors>
+			<duration>600</duration>	
+		</phase>
+		<phase name="step_circ_left_Phase1" next="step_circ_left_Phase2">
+			<effectors>
+				<rle1 end="20"/>
+				<rle2 end="-45"/>
+				<lle5 end="40"/>
+				<rle5 end="42"/>
+			</effectors>
+			<duration>300</duration>
+		</phase>
+		<phase name="step_circ_left_Phase2" isFinal="true">
+			<effectors>
+			<!-- stabilisation -->
+				<he1 end="0" />
+				<he2 end="0" />
+				
+				<rae1 end="-120"/>
+				<lae1 end="-120"/>
+				<rae2 end="0" />
+				<lae2 end="0" />
+				<rae3 end="90" />
+				<lae3 end="-90" />
+				<rae4 end="90" />
+				<lae4 end="-90" />
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="0"/>
+				<lle3 end="0"/>			 
+				<rle4 end="0"/>
+				<lle4 end="0"/>
+				<rle5 end="0"/>
+				<lle5 end="0"/>
+				<rle6 end="0" />
+				<lle6 end="0" />
+			</effectors>
+			<duration>650</duration>	<!-- 600 is relatively stabile -->
+			<finalize>step_circ_left_Phase0</finalize>
+		</phase>
+  </phases>
+</robot>

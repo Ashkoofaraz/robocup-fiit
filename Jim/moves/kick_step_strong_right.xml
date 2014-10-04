@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot xsi:noNamespaceSchemaLocation="moves.xsd">
+	<low_skills>
+		<low_skill name="kick_step_strong_right" firstPhase="kick_step_strong_right_default" />
+		<type>kick</type>
+		<author>Gabor Nagy (A55 kickers)</author>
+		<extendedFromMove>left_strong_kick2</extendedFromMove>
+		<description>Hrac zastavi, vystupi a kopne. Kop je silny a stabilny</description>
+	</low_skills>
+	
+	<phases>
+		<!--1.pause before starting a move to minimize forces-->
+		<phase name="kick_step_strong_right_default" next="kick_step_strong_right1">
+			<effectors>
+			<he2 end="0" />
+				
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="40" />
+				<lle3 end="40" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="0" />
+				<lle6 end="0" />
+			</effectors>
+			<duration>500</duration>
+		</phase>
+		<!--2.basic stance-->
+		<phase name="kick_step_strong_right1" next="kick_step_strong_right2">
+			<effectors>
+				<lle1 end="0" />
+				<rle1 end="0" />
+				<lle2 end="-7" />
+				<rle2 end="7" />
+				<lle3 end="55" />
+				<rle3 end="55" />
+				<lle4 end="-60" />
+				<rle4 end="-60" />
+				<lle5 end="30" />
+				<rle5 end="30" />
+				<lle6 end="7" />
+				<rle6 end="-7" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="90"/>
+				<lae3 end="-90"/>
+				<rae4 end="45"/>
+				<lae4 end="-45"/>
+			</effectors>
+			<duration>250</duration>
+		</phase>
+		<!--3.take up non-kicking foot-->
+		<phase name="kick_step_strong_right2"  next="kick_step_strong_right3">
+			<effectors>
+				<lle2 end="-11" />
+				<lle6 end="10" />
+				<lle3 end="75" />
+				<lle4 end="-100" />
+				<lle5 end="50" />
+			</effectors>
+			<duration>250</duration>
+		</phase>
+		<!--4.step with the non-kicking foot forward-->
+		<phase name="kick_step_strong_right3"  next="kick_step_strong_right4">
+			<effectors>
+				<rle3 end="30" />
+				<lle3 end="90" />
+				<lle4 end="-40" />
+				<rle5 end="60" />
+				<lle5 end="-15" />
+			</effectors>
+			<duration>350</duration>
+		</phase>
+		<!--5.moving weigth on the non-kicking foot-->
+		<phase name="kick_step_strong_right4"  next="kick_step_strong_right5">
+			<effectors>
+				<rle3 end="0" />
+				<lle3 end="55" />
+				<rle4 end="-30" />
+				<rle5 end="40" />
+				<lle5 end="10" />
+			</effectors>
+			<duration>400</duration>
+		</phase>
+		<!--6.lifting the kicking foot-->
+		<phase name="kick_step_strong_right5"  next="kick_step_strong_right6">
+			<effectors>
+				<rle1 end="-20" />
+				<lle1 end="-20" />
+				<rle2 end="-15" />
+				<lle2 end="-15" />
+				<rle3 end="5" />
+				<lle3 end="100" />
+				<rle4 end="-115" />
+				<lle4 end="0" />
+				<rle5 end="55" />
+				<lle5 end="-5" /><!--change by twenty throws the agent of balance-->
+				<rle6 end="15" />
+				<lle6 end="15"  />
+			</effectors>
+			<duration>600</duration>
+		</phase>
+		<!--7.kick-->
+		<phase name="kick_step_strong_right6" next="kick_step_strong_right6b">
+			<effectors>
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="-5" />
+				<lle2 end="-5" />
+				<rle3 end="75" />
+				<lle3 end="30" />
+				<rle4 end="-45" />
+				<lle4 end="0" />
+				<rle5 end="30" />
+				<lle5 end="10" /><!--change by twenty throws the agent of balance-->
+				<rle6 end="15" />
+				<lle6 end="15" />
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="kick_step_strong_right6b" next="kick_step_strong_right6c">
+			<effectors>
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<lle2 end="5" />
+				<rle2 end="5" />
+				<rle3 end="90" />
+				<lle3 end="0" />
+				<rle4 end="-22" /> <!-- -->
+				<lle4 end="-30" />
+				<rle5 end="-15" />
+				<lle5 end="50" /><!--change by twenty throws the agent of balance-->
+				<rle6 end="-5" />
+				<lle6 end="-5" />
+			</effectors>
+			<duration>130</duration>
+		</phase>
+		<phase name="kick_step_strong_right6c" isFinal="true">
+			<effectors>
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<lle2 end="15" />
+				<rle2 end="15" />
+				<rle3 end="30" />
+				<lle3 end="0" />
+				<lle4 end="-30" />
+				<rle4 end="-30" />
+				<rle5 end="-5" />
+				<lle5 end="40" /><!--change by twenty throws the agent of balance-->
+				<rle6 end="-5" />
+				<lle6 end="-5" />
+			</effectors>
+			<duration>700</duration>
+			<finalize>kick_step_strong_right7</finalize>
+		</phase>
+		<!--8.basic stance-->
+		<phase name="kick_step_strong_right7" isFinal="true">
+			<effectors>
+				<lle1 end="0" />
+				<rle1 end="0" />
+				<lle2 end="-7" />
+				<rle2 end="7" />
+				<lle3 end="55" />
+				<rle3 end="55" />
+				<lle4 end="-60" />
+				<rle4 end="-60" />
+				<lle5 end="30" />
+				<rle5 end="30" />
+				<lle6 end="7" />
+				<rle6 end="-7" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="90"/>
+				<lae3 end="-90"/>
+				<rae4 end="45"/>
+				<lae4 end="-45"/>
+			</effectors>
+			<duration>500</duration>
+			<finalize>kick_step_strong_right</finalize>
+		</phase>
+	</phases>
+</robot>

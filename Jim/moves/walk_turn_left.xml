@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+	<low_skills>
+		<low_skill name="walk_turn_left" firstPhase="walk_turn_left_1">
+			<type>walk</type>
+			<author>Gabor Nagy (A55 Kickers)</author>
+			<extendedFromMove>walk_fine_fast2_optimized3</extendedFromMove>	
+			<description>Chodza s otacanim. Je rychla a pomerne stabilna</description>
+		</low_skill>
+	</low_skills>
+	
+	<phases>
+		<phase name="walk_turn_left_1" next="walk_turn_left_2">
+			<effectors>
+				<he1 end="0" />
+				<he2 end="0" />
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="9" />
+				<lle2 end="-9" />
+				<rle3 end="25" />
+				<lle3 end="25" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="-9" />
+				<lle6 end="9" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+			</effectors>
+			<duration>620</duration>
+		</phase>
+		
+		<!-- accelerate -->
+		
+		<phase name="walk_turn_left_2" next="walk_turn_left_3">
+			<effectors>
+			<rle3 end="55" />
+			<rle4 end="-75" />
+			<rle5 end="35" />
+			<lle3 end="25" />
+			<lle4 end="-40" />
+			<lle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_turn_left_3" next="walk_turn_left_4">
+			<effectors>
+				<rle3 end="60" />
+				<rle4 end="-61" />
+				<rle5 end="18" />
+				<lle3 end="30" />
+				<lle4 end="-65" />
+				<lle5 end="50" />
+				<rae1 end="-110" />
+				<lae1 end="-70" />
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_turn_left_4" next="walk_turn_left_5">
+			<effectors>
+			<lle3 end="55" />
+			<lle4 end="-75" />
+			<lle5 end="35" />
+			<rle3 end="25" />
+			<rle4 end="-40" />
+			<rle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_turn_left_5" next="walk_turn_left_10" isFinal="true">
+			<effectors>
+			<lle3 end="60" />
+			<lle4 end="-61" />
+			<lle5 end="18" />
+			<rle3 end="30" />
+			<rle4 end="-65" />
+			<rle5 end="50" />
+			<rae1 end="-70"/>
+			<lae1 end="-110"/>
+			</effectors>
+			<duration>200</duration>
+			<finalize>straighten</finalize>
+		</phase>
+		<!-- start turning -->
+		
+		<phase name="walk_turn_left_6" next="walk_turn_left_7">
+			<effectors>
+			
+			<rle1 end="-5" />
+			<lle1 end="5" />
+			
+			<lae4 end="20"/>
+			<lae2 end="20"/>
+			
+			<rle3 end="55" />
+			<rle4 end="-75" />
+			<rle5 end="35" />
+			<lle3 end="25" />
+			<lle4 end="-40" />
+			<lle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>170</duration>
+		</phase>
+		<phase name="walk_turn_left_7" next="walk_turn_left_8">
+			<effectors>
+			
+				<rle1 end="0" />
+				<lle1 end="0" />
+			
+				<rle3 end="60" />
+				<rle4 end="-61" />
+				<rle5 end="18" />
+				<lle3 end="30" />
+				<lle4 end="-65" />
+				<lle5 end="50" />
+				<rae1 end="-110" />
+				<lae1 end="-80" />
+			</effectors>
+			<duration>170</duration>
+		</phase>
+		<phase name="walk_turn_left_8" next="walk_turn_left_9">
+			<effectors>
+			
+			<rle1 end="-7" />
+			<lle1 end="7" />
+			
+			<lle3 end="55" />
+			<lle4 end="-75" />
+			<lle5 end="35" />
+			<rle3 end="25" />
+			<rle4 end="-40" />
+			<rle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>170</duration>
+		</phase>
+		<phase name="walk_turn_left_9" next="walk_turn_left_10">
+			<effectors>
+			
+			<rle1 end="0" />
+			<lle1 end="0" />
+			
+			<lle3 end="60" />
+			<lle4 end="-61" />
+			<lle5 end="18" />
+			<rle3 end="30" />
+			<rle4 end="-65" />
+			<rle5 end="50" />
+			<rae1 end="-70"/>
+			<lae1 end="-100"/>
+			</effectors>
+			<duration>170</duration>
+		</phase>	
+
+		<!-- turning move -->
+
+		<phase name="walk_turn_left_10" next="walk_turn_left_11">
+			<effectors>
+			
+			<rle1 end="-10" />
+			<lle1 end="10" />
+			
+			<lae4 end="20"/>
+			<lae2 end="20"/>
+			
+			<rle3 end="55" />
+			<rle4 end="-75" />
+			<rle5 end="35" />
+			<lle3 end="25" />
+			<lle4 end="-40" />
+			<lle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>170</duration>
+		</phase>
+		<phase name="walk_turn_left_11" next="walk_turn_left_12">
+			<effectors>
+			
+				<rle1 end="0" />
+				<lle1 end="0" />
+			
+				<rle3 end="60" />
+				<rle4 end="-61" />
+				<rle5 end="18" />
+				<lle3 end="30" />
+				<lle4 end="-65" />
+				<lle5 end="50" />
+				<rae1 end="-110" />
+				<lae1 end="-80" />
+			</effectors>
+			<duration>170</duration>
+		</phase>
+		<phase name="walk_turn_left_12" next="walk_turn_left_13">
+			<effectors>
+			
+			<rle1 end="-10" />
+			<lle1 end="10" />
+			
+			<lle3 end="55" />
+			<lle4 end="-75" />
+			<lle5 end="35" />
+			<rle3 end="25" />
+			<rle4 end="-40" />
+			<rle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>170</duration>
+		</phase>
+		<phase name="walk_turn_left_13" next="walk_turn_left_10" isFinal="true">
+			<effectors>
+			
+			<rle1 end="0" />
+			<lle1 end="0" />
+			
+			<lle3 end="60" />
+			<lle4 end="-61" />
+			<lle5 end="18" />
+			<rle3 end="30" />
+			<rle4 end="-65" />
+			<rle5 end="50" />
+			<rae1 end="-70"/>
+			<lae1 end="-100"/>
+			</effectors>
+			<duration>170</duration>
+			<finalize>walk_turn_left_14</finalize>
+		</phase>
+
+		<!-- slow down -->
+		
+		<phase name="walk_turn_left_14" next= "walk_turn_left_15">
+			<effectors>
+				<rle3 end="55" />
+			<rle4 end="-75" />
+			<rle5 end="35" />
+			<lle3 end="25" />
+			<lle4 end="-40" />
+			<lle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_turn_left_15" next="walk_turn_left_16">
+			<effectors>
+				<rle3 end="60" />
+				<rle4 end="-61" />
+				<rle5 end="18" />
+				<lle3 end="30" />
+				<lle4 end="-65" />
+				<lle5 end="50" />
+				<rae1 end="-110" />
+				<lae1 end="-70" />
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_turn_left_16" next= "walk_turn_left_17">
+			<effectors>
+				<lle3 end="55" />
+			<lle4 end="-75" />
+			<lle5 end="35" />
+			<rle3 end="25" />
+			<rle4 end="-40" />
+			<rle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_turn_left_17" next= "walk_turn_left_18">
+			<effectors>
+			<lle3 end="60" />
+			<lle4 end="-61" />
+			<lle5 end="18" />
+			<rle3 end="30" />
+			<rle4 end="-65" />
+			<rle5 end="50" />
+			<rae1 end="-70"/>
+			<lae1 end="-110"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_turn_left_18" isFinal="true" >
+			<effectors>
+				<he1 end="0" />
+				<he2 end="0" />
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="9" />
+				<lle2 end="-9" />
+				<rle3 end="45" />
+				<lle3 end="45" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="31" />
+				<lle5 end="31" />
+				<rle6 end="-9" />
+				<lle6 end="9" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+			</effectors>
+			<duration>620</duration>
+			<finalize>walk_turn_left_1</finalize>
+		</phase>
+	</phases>
+</robot>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.example.org/moves"
+	xmlns:tns="http://www.example.org/moves" elementFormDefault="qualified">
+
+	<element name="robot">
+		<complexType>
+			<sequence>
+				<element name="constants" type="tns:constants" minOccurs="0" maxOccurs="1" />
+				<element name="low_skills" type="tns:low_skills" minOccurs="1" maxOccurs="1" />
+				<element name="phases" type="tns:phases" minOccurs="1" maxOccurs="1" />
+			</sequence>
+		</complexType>
+		
+		<key name="phaseNames">
+			<selector xpath="./phases/phase"></selector>
+			<field xpath="@name"></field>
+		</key>
+		<keyref name="lowSkillAutocomplete" refer="tns:phaseNames">
+			<selector xpath="./low_skills/low_skill"></selector>
+			<field xpath="@firstPhase"></field>
+		</keyref>
+	</element>
+	
+	<xs:simpleType name="typeType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="kick" />
+			<xs:enumeration value="walk" />
+			<xs:enumeration value="fall" />
+			<xs:enumeration value="look" />
+			<xs:enumeration value="stand_up" />
+			<xs:enumeration value="rotation" />
+			<xs:enumeration value="other" />
+		</xs:restriction>
+	</xs:simpleType>
+	
+	<complexType name="constants">
+		<sequence>
+			<element name="constant" type="tns:constant" minOccurs="1" maxOccurs="unbounded"></element>
+		</sequence>
+	</complexType>
+	
+	<complexType name="constant">
+		<attribute name="name" use="required" type="string" />
+		<attribute name="value" use="required" type="double" />
+	</complexType>
+	
+	<complexType name="low_skills">
+    	<sequence>
+    		<element name="low_skill" type="tns:low_skill" minOccurs="1" maxOccurs="unbounded"></element>
+    	</sequence>
+    </complexType>
+    
+    <complexType name="low_skill">
+	 	<attribute name="name" type="string" use="required"></attribute>
+		<attribute name="firstPhase" type="string" use="required"></attribute>
+		<sequence>
+			<element name="type" type="typeType" minOccurs="0" maxOccurs="unbounded"></element>
+			<element name="author" type="xs:string" minOccurs="0" maxOccurs="1"></element>
+			<element name="extendedFromMove" type="xs:string" minOccurs="0" maxOccurs="1"></element>
+			<element name="description" type="xs:string" minOccurs="0" maxOccurs="1"></element>
+		</sequence>
+    </complexType>
+    
+    <complexType name="phases">
+		<sequence>
+			<element name="phase" type="tns:phase" minOccurs="1" />
+		</sequence>
+    </complexType>
+    
+    <complexType name="phase">
+		<sequence>
+			<element name="effectors" type="tns:effectors" maxOccurs="1" />
+			<element name="duration" type="int" maxOccurs="1" />
+			<sequence>
+				<element name="finalize" type="string" minOccurs="0" maxOccurs="1" />
+			</sequence>
+		</sequence>
+		<attribute name="name" use="required"></attribute>
+		<attribute name="next" use="required"></attribute>
+		<attribute name="isFinal" type="boolean"></attribute>
+		<attribute name="skipIfFlag" type="string"></attribute>
+		<attribute name="setFlagTrue" type="string"></attribute>
+		<attribute name="setFlagFalse" type="string"></attribute>
+    </complexType>
+    
+    <attributeGroup name="end">
+    	<attribute name="end" type="int" use="required"></attribute>
+    </attributeGroup>
+
+    <element name="joint" abstract="true">
+    	<complexType>
+    		<attribute name="end" use="required" type="int"></attribute>
+    	</complexType>
+    </element>
+
+    <complexType name="effectors">
+    	<sequence minOccurs="0" maxOccurs="22">
+    		<element name="he1" type="tns:he1" minOccurs="0" maxOccurs="1"></element>
+			<element name="he2" type="tns:he2" minOccurs="0" maxOccurs="1"></element>
+			<element name="rle1" type="tns:rle1" minOccurs="0" maxOccurs="1"></element>
+			<element name="rle2" type="tns:rle2" minOccurs="0" maxOccurs="1"></element>
+			<element name="rle3" type="tns:rle3" minOccurs="0" maxOccurs="1"></element>
+			<element name="rle4" type="tns:rle4" minOccurs="0" maxOccurs="1"></element>
+			<element name="rle5" type="tns:rle5" minOccurs="0" maxOccurs="1"></element>
+			<element name="rle6" type="tns:rle6" minOccurs="0" maxOccurs="1"></element>
+			<element name="rae1" type="tns:rae1" minOccurs="0" maxOccurs="1"></element>
+			<element name="rae2" type="tns:rae2" minOccurs="0" maxOccurs="1"></element>
+			<element name="rae3" type="tns:rae3" minOccurs="0" maxOccurs="1"></element>
+			<element name="rae4" type="tns:rae4" minOccurs="0" maxOccurs="1"></element>
+			<element name="lle1" type="tns:lle1" minOccurs="0" maxOccurs="1"></element>
+			<element name="lle2" type="tns:lle2" minOccurs="0" maxOccurs="1"></element>
+			<element name="lle3" type="tns:lle3" minOccurs="0" maxOccurs="1"></element>
+			<element name="lle4" type="tns:lle4" minOccurs="0" maxOccurs="1"></element>
+			<element name="lle5" type="tns:lle5" minOccurs="0" maxOccurs="1"></element>
+			<element name="lle6" type="tns:lle6" minOccurs="0" maxOccurs="1"></element>
+			<element name="lae1" type="tns:lae1" minOccurs="0" maxOccurs="1"></element>
+			<element name="lae2" type="tns:lae2" minOccurs="0" maxOccurs="1"></element>
+			<element name="lae3" type="tns:lae3" minOccurs="0" maxOccurs="1"></element>
+			<element name="lae4" type="tns:lae4" minOccurs="0" maxOccurs="1"></element>
+    	</sequence>
+    </complexType>
+
+    <complexType name="joint" abstract="true"><attributeGroup ref="tns:end"></attributeGroup></complexType>
+    
+    <complexType name="he1">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="he2">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rle1">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rle2">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rle3">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rle4">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rle5">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rle6">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rae1">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rae2">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rae3">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="rae4">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lle1">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lle2">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lle3">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lle4">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lle5">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lle6">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lae1">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lae2">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lae3">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+
+	<complexType name="lae4">
+		<complexContent>
+			<extension base="tns:joint"></extension>
+		</complexContent>
+	</complexType>
+</schema>

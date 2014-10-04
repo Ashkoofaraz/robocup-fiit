@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+
+	<low_skills>
+		<low_skill name="kick_left_slow" firstPhase="kick_left_slow_default">
+			<type>kick</type>
+			<author>Andrej Sedlacek (High5)</author>
+			<extendedFromMove>kick_left</extendedFromMove>
+			<description>Player performs straight kick with left foot. Move is slower than kick_left_normal and stable. Player is no longer rotating after kick.</description>
+		</low_skill>
+	</low_skills>
+	
+	<phases>
+	<phase name="kick_left_slow_default" next="kick_left_slow_Phase0">
+		<effectors>
+				<he2 end="0" />
+				
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="40" />
+				<lle3 end="40" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="0" />
+				<lle6 end="0" />			
+		</effectors>
+		<duration>500</duration>		
+	</phase>
+	<phase name="kick_left_slow_Phase0" next="kick_left_slow_Phase1">
+		<effectors>
+			<he1 end="0" />
+			<he2 end="0" />
+			<rae2 end="0" />
+			<lae2 end="0" />
+			<rae3 end="0" />
+			<lae3 end="0" />
+			<rae4 end="0" />
+			<lae4 end="0" />
+			
+			<!-- zakladna poloha noh -->
+			<rle1 end="0" />
+			<lle1 end="0" />
+			<rle2 end="0" />
+			<lle2 end="0" />
+			<rle6 end="0" />
+			<lle6 end="0" />
+			
+			<!-- ruky dolu -->
+			<rae1 end="-70"/>
+			<lae1 end="-70"/>
+			
+			<!-- pokrcenie kolien -->			 
+			<rle4 end="-70"/>
+			<lle4 end="-70"/>
+			
+			<rle5 end="40"/>
+			<lle5 end="40"/>
+			
+			<!-- torzo -->
+			<rle3 end="40"/>
+			<lle3 end="40"/>			
+		</effectors>
+		<duration>300</duration>	<!-- min okolo 300 -->		
+	</phase>
+	<phase name="kick_left_slow_Phase1" next="kick_left_slow_Phase2">
+		<effectors>
+		<!-- ruka doprava, clenky+bedra doprava, torzo mierne vpred? -->
+			
+			<!-- ruka -->
+			<rae1 end="-90"/>
+			<rae2 end="-40"/>	
+			
+			<!-- clenky -->
+			<rle6 end="-20"/>
+			<lle6 end="-20"/>
+			
+			<!-- bedra -->
+			<rle2 end="20"/>
+			<lle2 end="20"/>
+			
+			<!-- torzo -->
+			<rle3 end="60"/>
+			<lle3 end="60"/>
+		</effectors>
+		<duration>350</duration>	<!-- min okolo 300 -->
+		
+	</phase>
+	<phase name="kick_left_slow_Phase2" next="kick_left_slow_Phase3">
+		<effectors>
+		<!-- lave bedro mierne, lave koleno+clenok velmi -->
+		
+		<!-- koleno+clenok -->
+		<lle4 end="-90"/>
+		<lle5 end="50"/>
+		
+		<!-- bedro -->
+		<lle3 end="60"/>
+			
+		</effectors>
+		<duration>300</duration>
+	</phase>
+	<phase name="kick_left_slow_Phase3" next="kick_left_slow_Phase4">
+		<effectors>
+			<!-- bedro vpred, spicku vystriet, mierne aj koleno? -->
+			
+			<!-- bedro -->
+			<lle3 end="100"/>
+			
+			<!-- koleno -->
+			<lle4 end="-75"/>
+			
+			<!-- spicka -->
+			<lle5 end="10"/>
+		</effectors>
+		<duration>400</duration>
+	</phase>
+	<phase name="kick_left_slow_Phase4" next="kick_left_slow_Phase5">
+		<effectors>
+			<rle1 end="0" />
+			<lle1 end="0" />
+			<rle2 end="20" />
+			<lle2 end="20" />
+			<rle3 end="60" />
+			<lle3 end="60" />
+			<rle4 end="-70" />
+			<lle4 end="-70" />
+			<rle5 end="40" />
+			<lle5 end="40" />
+			<rle6 end="-20" />
+			<lle6 end="-20" />
+			<rae1 end="-90"/>
+			<lae1 end="-70"/>
+			<rae2 end="-40"/>
+			<lae2 end="0"/>
+			<rae3 end="0"/>
+			<lae3 end="0"/>
+			<rae4 end="0"/>
+			<lae4 end="0"/>
+		</effectors>
+		<duration>500</duration>	<!-- este 600 je pomerne stabilne -->
+	</phase>
+	<phase name="kick_left_slow_Phase5" isFinal="true">
+		<effectors>
+				<he2 end="0" />
+				
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="40" />
+				<lle3 end="40" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="0" />
+				<lle6 end="0" />
+		</effectors>
+		<duration>700</duration>
+		<finalize>kick_left_slow_Phase6</finalize>
+	</phase>
+	<phase name="kick_left_slow_Phase6" isFinal="true">
+		<effectors>
+		
+		</effectors>
+		<duration>0</duration>
+		<finalize>kick_left_slow_Phase0</finalize>
+	</phase>
+	</phases>
+</robot>

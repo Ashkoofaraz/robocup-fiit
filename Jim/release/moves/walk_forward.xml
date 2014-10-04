@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+	<low_skills>
+		<low_skill name="walk_forward" firstPhase="walk_forward_1">
+			<type>walk</type>
+			<author>Gabor Nagy (A55 Kickers)</author>
+			<extendedFromMove>walk_fine_fast2_optimized2acc</extendedFromMove>
+			<description>Player performs straight walk. Move is very stable and fast.</description>
+		</low_skill>
+	</low_skills>
+	
+	<phases>
+		<phase name="walk_forward_1" next="walk_forward_2">
+			<effectors>
+				<he1 end="0" />
+				<he2 end="0" />
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="9" />
+				<lle2 end="-9" />
+				<rle3 end="25" />
+				<lle3 end="25" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="-9" />
+				<lle6 end="9" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+			</effectors>
+			<duration>620</duration>
+		</phase>
+		
+		<!-- accelerate -->
+		
+		<phase name="walk_forward_2" next="walk_forward_3">
+			<effectors>
+			<rle3 end="55" />
+			<rle4 end="-75" />
+			<rle5 end="35" />
+			<lle3 end="25" />
+			<lle4 end="-40" />
+			<lle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_forward_3" next="walk_forward_4">
+			<effectors>
+				<rle3 end="60" />
+				<rle4 end="-61" />
+				<rle5 end="18" />
+				<lle3 end="30" />
+				<lle4 end="-65" />
+				<lle5 end="50" />
+				<rae1 end="-110" />
+				<lae1 end="-70" />
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_forward_4" next="walk_forward_5">
+			<effectors>
+			<lle3 end="55" />
+			<lle4 end="-75" />
+			<lle5 end="35" />
+			<rle3 end="25" />
+			<rle4 end="-40" />
+			<rle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_forward_5" next="walk_forward_6" isFinal="true">
+			<effectors>
+			<lle3 end="60" />
+			<lle4 end="-61" />
+			<lle5 end="18" />
+			<rle3 end="30" />
+			<rle4 end="-65" />
+			<rle5 end="50" />
+			<rae1 end="-70"/>
+			<lae1 end="-110"/>
+			</effectors>
+			<duration>200</duration>
+			<finalize>straighten</finalize></phase>
+		<!-- normal move -->
+		
+		<phase name="walk_forward_6" next="walk_forward_7">
+			<effectors>
+			<rle3 end="55" />
+			<rle4 end="-75" />
+			<rle5 end="35" />
+			<lle3 end="25" />
+			<lle4 end="-40" />
+			<lle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>150</duration>
+		</phase>
+		<phase name="walk_forward_7" next="walk_forward_8">
+			<effectors>
+				<rle3 end="60" />
+				<rle4 end="-61" />
+				<rle5 end="18" />
+				<lle3 end="30" />
+				<lle4 end="-65" />
+				<lle5 end="50" />
+				<rae1 end="-110" />
+				<lae1 end="-70" />
+			</effectors>
+			<duration>150</duration>
+		</phase>
+		<phase name="walk_forward_8" next="walk_forward_9">
+			<effectors>
+			<lle3 end="55" />
+			<lle4 end="-75" />
+			<lle5 end="35" />
+			<rle3 end="25" />
+			<rle4 end="-40" />
+			<rle5 end="30" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>150</duration>
+		</phase>
+		<phase name="walk_forward_9" next= "walk_forward_6" isFinal="true">
+			<effectors>
+			<lle3 end="60" />
+			<lle4 end="-61" />
+			<lle5 end="18" />
+			<rle3 end="30" />
+			<rle4 end="-65" />
+			<rle5 end="50" />
+			<rae1 end="-70"/>
+			<lae1 end="-110"/>
+			</effectors>
+			<duration>150</duration>
+			<finalize>walk_forward_10</finalize>
+		</phase>
+		
+		<phase name="walk_forward_10" next= "walk_forward_11">
+			<effectors>
+			
+			<rle3 end="55" />
+			<rle4 end="-75" />
+			<rle5 end="35" />
+			<lle3 end="25" />
+			<lle4 end="-40" />
+			<lle5 end="28" />
+			<rae1 end="-90"/>
+			<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_forward_11" next="walk_forward_12">
+			<effectors>
+				<rle3 end="60" />
+				<rle4 end="-61" />
+				<rle5 end="18" />
+				<lle3 end="30" />
+				<lle4 end="-65" />
+				<lle5 end="50" />
+				<rae1 end="-110" />
+				<lae1 end="-70" />
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_forward_12" next= "walk_forward_13">
+			<effectors>
+				<lle3 end="55" />
+				<lle4 end="-75" />
+				<lle5 end="33" />
+				<rle3 end="25" />
+				<rle4 end="-40" />
+				<rle5 end="26" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk_forward_13" next= "walk_forward_14">
+		<effectors>
+			<lle3 end="60" />
+			<lle4 end="-61" />
+			<lle5 end="18" />
+			<rle3 end="30" />
+			<rle4 end="-65" />
+			<rle5 end="50" />
+			<rae1 end="-70"/>
+			<lae1 end="-110"/>
+		</effectors>
+		<duration>200</duration>
+		</phase>
+		<phase name="walk_forward_13" isFinal="true" >
+			<effectors>
+				
+				<he1 end="0" />
+				<he2 end="0" />
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="9" />
+				<lle2 end="-9" />
+				<rle3 end="45" />
+				<lle3 end="45" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="31" />
+				<lle5 end="31" />
+				<rle6 end="-9" />
+				<lle6 end="9" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+			</effectors>
+			<duration>620</duration>
+			<finalize>walk_forward_1</finalize>
+		</phase>
+	</phases>
+</robot>

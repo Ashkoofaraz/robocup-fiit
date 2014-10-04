@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+
+	<low_skills>
+		<low_skill name="turn_left_cont_6.5" firstPhase="turn_left_cont_6.5_Phase0">
+			<type>rotation</type>
+			<author>Androids</author>
+			<extendedFromMove></extendedFromMove>
+			<description>Player turns 6.5 degrees to the left. Move is relatively stable and normal speed.</description>
+		</low_skill>
+	</low_skills>
+	
+	<phases>
+		<phase name="turn_left_cont_6.5_Phase0" next="turn_left_cont_6.5_Phase1">
+			<effectors>
+				<he1 end="0" />
+				<he2 end="0" />
+				<rae2 end="0" />
+				<lae2 end="0" />
+				<rae3 end="0" />
+				<lae3 end="0" />
+				<rae4 end="0" />
+				<lae4 end="0" />
+				
+				<!-- base pose -->
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle6 end="0" />
+				<lle6 end="0" />
+				
+				<!-- hands down -->
+				<rae1 end="-50"/>
+				<lae1 end="-50"/>
+				
+				<!-- lower knees -->			 
+				<rle4 end="-70"/>
+				<lle4 end="-70"/>
+				
+				<rle5 end="40"/>
+				<lle5 end="40"/>
+				
+				<!-- torzo -->
+				<rle3 end="50"/>
+				<lle3 end="50"/>			
+			</effectors>
+			<duration>350</duration>	<!-- min around 300 -->		
+		</phase>
+		<phase name="turn_left_cont_6.5_Phase1" next="turn_left_cont_6.5_Phase2">
+			<effectors>
+			<!-- left foot ti the heel, right to tip -->
+				
+				<lle5 end="45"/> <!-- 40 -->
+				<rle5 end="35"/>
+					
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="turn_left_cont_6.5_Phase2" next="turn_left_cont_6.5_Phase3">
+			<effectors>
+				<lle2 end="7"/>
+				<lle3 end="43"/>	
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="turn_left_cont_6.5_Phase3" next="turn_left_cont_6.5_Phase1" isFinal="true">
+			<effectors>
+				<he1 end="0" />
+				<he2 end="0" />
+				<rae2 end="0" />
+				<lae2 end="0" />
+				<rae3 end="0" />
+				<lae3 end="0" />
+				<rae4 end="0" />
+				<lae4 end="0" />
+				
+				<!-- base pose -->
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle6 end="0" />
+				<lle6 end="0" />
+				
+				<!-- hands down -->
+				<rae1 end="-50"/>
+				<lae1 end="-50"/>
+				
+				<!-- lower knees -->			 
+				<rle4 end="-70"/>
+				<lle4 end="-70"/>
+				
+				<rle5 end="40"/>
+				<lle5 end="40"/>
+				
+				<!-- torzo -->
+				<rle3 end="50"/>
+				<lle3 end="50"/>
+			</effectors>
+			<duration>150</duration>
+			<finalize>turn_left_cont_6.5_Phase4</finalize>
+		</phase>
+		<phase name="turn_left_cont_6.5_Phase4" isFinal="true">
+			<effectors>
+				<he2 end="0" />
+				
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="40" />
+				<lle3 end="40" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="0" />
+				<lle6 end="0" />
+			</effectors>
+			<duration>500</duration>
+			<finalize>turn_left_cont_6.5_Phase0</finalize>
+		</phase>
+	</phases>
+</robot>

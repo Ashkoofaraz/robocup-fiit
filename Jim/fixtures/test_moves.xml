@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot xsi:noNamespaceSchemaLocation="moves.xsd">
+	<constants>
+		<constant name="in_between" value="30" />
+	</constants>
+	<low_skills>
+		<low_skill name="walk_straight" firstPhase="walk_start" />
+	</low_skills>
+	
+	<phases>
+		<phase name="walk_start"  next="walk2" setFlagTrue="inBasicPosition" skipIfFlag="inBasicPosition">
+			<effectors>
+				<rae1 end="-90" />
+				<lae1 end="-90" />
+			</effectors>
+			<duration>200</duration>
+		</phase>
+		<phase name="walk2" next="walk_final">
+			<effectors>
+				<rae1 end="in_between + 5" />
+				<lae1 end="in_between" />
+			</effectors>
+			<duration>408</duration>
+		</phase>
+		<phase name="walk_final" setFlagFalse="inBasicPosition" isFinal="true">
+			<effectors>
+				<rae1 end="0" />
+				<lae1 end="0" />
+			</effectors>
+			<duration>400</duration>
+			<finalize>stop_walking</finalize>
+		</phase>
+		<phase name="stop_walking" isFinal="true">
+			<effectors>
+				<rae1 end="0" />
+				<lae1 end="0" />
+			</effectors>
+			<duration>211</duration>
+			<finalize>walk_final</finalize>
+		</phase>
+	</phases>
+</robot>

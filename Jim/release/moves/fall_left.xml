@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+	<low_skills>
+		<low_skill name="fall_left" firstPhase="fl0">
+			<type>fall</type>
+			<author>Androids</author>
+			<extendedFromMove></extendedFromMove>
+			<description>Player falls on the left side.</description>
+		</low_skill>
+	</low_skills>
+  <phases>
+    <phase name="fl0" next="fl1">
+      <effectors>
+	<he1 end="0" />
+	<he2 end="0" />
+	<rae2 end="0" />
+	<lae2 end="0" />
+	<rae3 end="0" />
+	<lae3 end="0" />
+	<rae4 end="0" />
+	<lae4 end="0" />
+	<rle1 end="0" />
+	<lle1 end="0" />
+	<rle2 end="0" />
+	<rle3 end="0" />
+	<lle3 end="0" />
+	<rle4 end="0" />
+	<rle5 end="0" />
+	<rle6 end="0" />
+	<lle6 end="0" />
+        <lle2 end="5" />
+        <lle4 end="-10" />
+        <lle5 end="15" />
+        <rae1 end="75" />
+        <lae1 end="75" />
+      </effectors>
+      <duration>300</duration>
+    </phase>
+    <phase name="fl1" next="fl2">
+      <effectors>
+        <lae2 end="20" />
+        <rle2 end="10" />
+        <lle2 end="25" />
+      </effectors>
+      <duration>300</duration>
+    </phase>
+    <phase name="fl2" next="fl3">
+      <effectors>
+        <lle5 end="25" />
+        <lle4 end="-25" />
+        <lle2 end="15" />
+      </effectors>
+      <duration>300</duration>
+    </phase>
+    <phase name="fl3" next="fl4">
+      <effectors>
+        <lle2 end="0" />
+      </effectors>
+      <duration>300</duration>
+    </phase>
+    <phase name="fl4" next="fl5">
+      <effectors>
+        <rle5 end="-10" />
+        <lle6 end="-10" />
+      </effectors>
+      <duration>300</duration>
+    </phase>
+    <phase name="fl5" next="fl6">
+      <effectors>
+        <rle2 end="0" />
+        <lle4 end="0" />
+        <lae1 end="60" />
+        <rae1 end="60" />
+        <lae2 end="0" />
+      </effectors>
+      <duration>300</duration>
+    </phase>
+    <phase name="fl6" isFinal="true">
+      <effectors>
+        <lle5 end="-45" />
+        <rle5 end="-45" />
+      </effectors>
+      <duration>300</duration>
+      <finalize>fl6</finalize>
+    </phase>
+  </phases>
+</robot>

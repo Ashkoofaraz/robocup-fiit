@@ -1,0 +1,1 @@
+$toBeEmptied.remove 'something'

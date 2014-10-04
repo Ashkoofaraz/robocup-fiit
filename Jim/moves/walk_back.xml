@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+  <constants>
+    <!--konstanty sem-->
+  </constants>
+  <low_skills>
+    <low_skill name="walk_back" firstPhase="walk_back_default">
+		<type>walk</type>
+		<author>Gabor Nagy (A55 kickers)</author>
+		<extendedFromMove>walk_back</extendedFromMove>
+		<description>Player performs backward walk. Move is stable and fast.</description>
+	</low_skill>
+  </low_skills>
+  <phases>
+	<phase name="walk_back_default" next="walk_back_Phase0">
+      <effectors>
+				<he2 end="0" />
+				
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="40" />
+				<lle3 end="40" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="0" />
+				<lle6 end="0" />
+      </effectors>
+      <duration>500</duration>
+    </phase>
+    <phase name="walk_back_Phase0" next="walk_back_Phase1">
+      <effectors>
+	      <he1 end="0" />
+				<he2 end="0" />
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="7" />
+				<lle2 end="-7" />
+				<rle3 end="40" />
+				<lle3 end="40" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="-7" />
+				<lle6 end="7" />
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+      </effectors>
+      <duration>400</duration>
+    </phase>
+    <phase name="walk_back_Phase1" next="walk_back_Phase2">
+      <effectors>
+          <rle4 end="-80" />
+          <rle5 end="65" />
+          <rle3 end="10" />
+      </effectors>
+      <duration>400</duration>
+    </phase>
+    <phase name="walk_back_Phase2" next="walk_back_Phase3">
+      <effectors>
+            <rle4 end="-10" />
+            <lle4 end="-80" />
+            <rle5 end="10" />
+      </effectors>
+      <duration>400</duration>
+    </phase>
+    <phase name="walk_back_Phase3" next="walk_back_Phase4" >
+      <effectors>
+          <lle4 end="-80" />
+          <lle5 end="65" />
+          <lle3 end="10" />
+          <rle4 end="-60" />
+          <rle5 end="30" />
+          <rle3 end="40" />
+          
+      </effectors>
+      <duration>400</duration>
+      
+    </phase>
+    <phase name="walk_back_Phase4" next="walk_back_Phase5">
+      <effectors>
+            <lle4 end="-10" />
+            <rle4 end="-80" />
+            <lle5 end="10" />
+      </effectors>
+      <duration>400</duration>
+    </phase>
+    <phase name="walk_back_Phase5" next="walk_back_Phase2" isFinal="true">
+      <effectors>
+          <rle4 end="-80" />
+          <rle5 end="65" />
+          <rle3 end="10" />
+          <lle4 end="-60" />
+          <lle5 end="30" />
+          <lle3 end="40" />
+      </effectors>
+      <duration>400</duration>
+	  <finalize>walk_back_Phase6</finalize>
+    </phase>
+    <phase name="walk_back_Phase6" isFinal="true">
+      <effectors>
+			<he2 end="0" />
+				
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+				
+				<rle1 end="0" />
+				<lle1 end="0" />
+				<rle2 end="0" />
+				<lle2 end="0" />
+				<rle3 end="40" />
+				<lle3 end="40" />
+				<rle4 end="-60" />
+				<lle4 end="-60" />
+				<rle5 end="30" />
+				<lle5 end="30" />
+				<rle6 end="0" />
+				<lle6 end="0" />
+      </effectors>
+      <duration>500</duration>
+	  <finalize>walk_back_Phase0</finalize>
+    </phase>
+  </phases>
+</robot>
