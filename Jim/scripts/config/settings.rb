@@ -26,12 +26,12 @@ Communication.instance.server_ip = "localhost"
 Communication.instance.port = 3100
 
 #Settings.setValue("Planner", "PlanPm")
-#Settings.setValue("Planner", "PlanPmKick")
+Settings.setValue("Planner", "PlanPmKick")
 #Settings.setValue("Planner", "PlanKopnutieNaMiesto")
 #Settings.setValue("Planner", "Plan5ko")
 #Settings.setValue("Planner", "TestPlan")
 #Settings.setValue("Planner", "PlanTactic")
-Settings.setValue("Planner", "PlanTournamentKickDistance")
+#Settings.setValue("Planner", "PlanTournamentKickDistance")
 #Settings.setValue("Planner", "PlanCreateFormation")
 #Settings.setValue("Planner", "PlanZakladny")
 

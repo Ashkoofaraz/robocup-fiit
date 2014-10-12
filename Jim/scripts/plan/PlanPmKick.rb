@@ -16,7 +16,7 @@ class PlanPmKick < Plan
     @target_position_phi = @target_position.getPhi()
     
     # miesto kde ma kopnut
-    @kick_target = @mathModel.cartesian(1.8,0.0,0.0)
+    @kick_target = @mathModel.cartesian(5,0.0,0.0)
     @leg = "right"
        
     if EnvironmentModel.beamablePlayMode and not EnvironmentModel.isKickOffLeftPlayMode  
@@ -41,9 +41,9 @@ class PlanPmKick < Plan
         puts "Ball distance from mid:"
         puts @ball_distance
         
-        if (ball_pos.getY().abs > 0.3 or ball_pos.getX().abs > 0.3)    
-          return nil
-        end           	
+        #if (ball_pos.getY().abs > 0.3 or ball_pos.getX().abs > 0.3)    
+         # return nil
+        #end           	
         
         @plan << RubyKickDynamicStraightSimple.new(@kick_target, @leg)        
     end

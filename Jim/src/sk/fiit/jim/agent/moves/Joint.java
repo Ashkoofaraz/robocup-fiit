@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import sk.fiit.robocup.library.geometry.Vector3D;
+
 /**
  *  Effector.java
  *  
@@ -18,37 +20,55 @@ import java.util.Map;
  */
 @SuppressWarnings("serial")
 public enum Joint implements Serializable {
-	HE1 (-120.0, 120.0),
-	HE2 (-45.0, 45.0),
+	//range, anchor,axis
+	HE1 (-120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.Z_AXIS),
+	HE2 (-45.0, 45.0, Vector3D.cartesian(0, 0, -0.005), Vector3D.X_AXIS),
 	
-	RLE1 (-90.0, 1.0),
-	RLE2 (-45.0, 25.0),
-	RLE3 (-25.0, 100.0),
-	RLE4 (-130.0, 1.0),
-	RLE5 (-45.0, 75.0),
-	RLE6 (-25.0, 45.0),
-	RAE1 (-120.0, 120.0),
-	RAE2 (-95.0, 1.0),
-	RAE3 (-90.0, 90.0),
-	RAE4 (-120.0, 120.0),
+	RLE1 (-90.0, 1.0, Vector3D.ZERO_VECTOR, Vector3D.cartesian(-0.7071, 0, 0.7071)),
+	RLE2 (-45.0, 25.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS),
+	RLE3 (-25.0, 100.0, Vector3D.cartesian(0.0, 0.010, -0.040).negate(), Vector3D.X_AXIS),
+	RLE4 (-130.0, 1.0, Vector3D.cartesian(0, -0.010, 0.045),Vector3D.X_AXIS),
+	RLE5 (-45.0, 75.0, Vector3D.ZERO_VECTOR, Vector3D.X_AXIS),
+	RLE6 (-25.0, 45.0, Vector3D.cartesian(0, 0.030, -0.035).negate(),Vector3D.Y_AXIS),
 	
-	LLE1 (-90.0, 1.0),
-	LLE2 (-25.0, 45.0),
-	LLE3 (-25.0, 100.0),
-	LLE4 (-130.0, 1.0),
-	LLE5 (-45.0, 75.0),
-	LLE6 (-45.0, 25.0),
-	LAE1 (-120.0, 120.0),
-	LAE2 (-1.0, 95.0),
-	LAE3 (-90.0, 90.0),
-	LAE4 (-120.0, 120.0);
+	RAE1 (-120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.X_AXIS),
+	RAE2 (-95.0, 1.0, Vector3D.cartesian(0.01, 0.02, 0).negate(), Vector3D.Z_AXIS),
+	RAE3(-120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS),
+	RAE4(-1.0, 90.0, Vector3D.cartesian(0, 0.05, 0).negate(), Vector3D.Z_AXIS),
+
+	
+	LLE1 (-90.0, 1.0, Vector3D.ZERO_VECTOR,Vector3D.cartesian(-0.7071, 0, -0.7071)),
+	LLE2 (-25.0, 45.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS),
+	LLE3 (-25.0, 100.0, Vector3D.cartesian(0.0, 0.010, -0.040).negate(), Vector3D.X_AXIS),
+	LLE4 (-130.0, 1.0, Vector3D.cartesian(0, -0.010, 0.045),Vector3D.X_AXIS),
+	LLE5 (-45.0, 75.0, Vector3D.ZERO_VECTOR, Vector3D.X_AXIS),
+	LLE6 (-45.0, 25.0, Vector3D.cartesian(0, 0.030, -0.035).negate(),Vector3D.Y_AXIS),
+	
+	LAE1 (-120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.X_AXIS),
+	LAE2 (-1.0, 95.0, Vector3D.cartesian(-0.01, 0.02, 0).negate(), Vector3D.Z_AXIS),
+	LAE3(-120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS),
+	LAE4(-90.0, 1.0, Vector3D.cartesian(0, 0.05, 0).negate(), Vector3D.Z_AXIS);
+
+	
+	
 	
 	private double lowerLimit;
 	private double upperLimit;
+	private Vector3D anchor;
+	private Vector3D axis;
 	
-	private Joint(double low, double up){
-		this.lowerLimit = low;
-		this.upperLimit = up;
+	private Joint(double lowerLimit, double upperLimit, Vector3D anchor, Vector3D axis){
+		this.lowerLimit = lowerLimit;
+		this.upperLimit = upperLimit;
+		this.anchor = anchor;
+		this.axis = axis;
+	}
+	public final double getLow(){
+		return lowerLimit;
+	}
+	
+	public final double getUp(){
+		return upperLimit;
 	}
 	
 	private static Map<String, Joint> serverNotation = new HashMap<String, Joint>(){{
@@ -89,6 +109,19 @@ public enum Joint implements Serializable {
 	public static Joint fromServerNotation(String jointId){
 		return serverNotation.get(jointId.toLowerCase());
 	}
+	/**
+	 * returns key for specific joint
+	 * @param value
+	 * @return
+	 */
+	public static Joint getKey(String value){
+		for(String key: serverNotation.keySet()){
+			if(serverNotation.get(key).toString().equals(value)){
+				return serverNotation.get(key);
+			}
+		}
+		return null;
+	}
 	
 	/**
 	 * Returns lower limit of Joint angle if specified angle parameter is 
@@ -103,4 +136,12 @@ public enum Joint implements Serializable {
 		if (angleInXml > upperLimit) return upperLimit;
 		return angleInXml;
 	}
+	
+	public Vector3D getAnchor(){
+		return this.anchor;
+	}
+	public Vector3D getAxis(){
+		return this.axis;
+	}
+	
 }
