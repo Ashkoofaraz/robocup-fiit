@@ -11,4 +11,14 @@ public class HearReceptor {
 	public double time;
 	public double destinationRelativeAngle;
 	public String message;
+	
+	@Override
+	public String toString()
+	{
+	    return "Hear receptor"
+	            + "\n is mesage for me " + isMessageForMe
+	            + "\n destinationRelativeAngle " + destinationRelativeAngle
+	    + "\n time " + time
+	    + "\n is mesage " + message;
+	}
 }
