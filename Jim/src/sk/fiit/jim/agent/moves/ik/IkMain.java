@@ -4,10 +4,7 @@ public class IkMain
 {
     public static void main(String[] args)
     {
-        NaoKinematics nkin = new NaoKinematics();
-        
-        
-        
-        nkin.getForwardEffector();
+        HeadIk he = new HeadIk();
+        System.out.println(Math.toDegrees(he.getTheta2(53.9, 10.0, 67.9)));
     }
 }
