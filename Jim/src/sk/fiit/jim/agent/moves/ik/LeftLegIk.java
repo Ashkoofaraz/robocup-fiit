@@ -3,27 +3,27 @@ package sk.fiit.jim.agent.moves.ik;
 import static java.lang.Math.*;
 import sk.fiit.robocup.library.geometry.Point3D;
 
-public class HeadIk
+public class LeftLegIk
 {
-    // milimeters
-    private static final double CAMERA_X_TOP = 53.9;
-    private static final double CAMERA_X_BOTTOM = 48.8;
-    private static final double CAMERA_Z_TOP = 67.9;
-    private static final double CAMERA_Z_BOTTOM = 23.8;
-    
-    private double theta1;
-    
-    private double theta2;
-    
-    private double l1 = CAMERA_X_TOP;  // CameraX
-    
-    private double l2 = CAMERA_Z_TOP; // CameraZ
-    
-    private double l3 = Constants.NECK_OFFSET_Z; // NechOfffsetZ
-    
     private double[][] T = new double[4][4];
     
-    public HeadIk(Point3D end, Angle angle)
+    private double theta1;
+
+    private double theta2;
+
+    private double theta3;
+
+    private double theta4;
+    
+    private double theta5;
+    
+    private double theta6;
+
+    private double l1; //TODO
+
+    private double l2; // TODO
+    
+    public LeftLegIk(Point3D end, Angle angle)
     {
         double ax = angle.getAx();
         double ay = angle.getAy();
@@ -48,26 +48,22 @@ public class HeadIk
         T[3][2] = 0;
         T[3][3] = 1;
     }
-    public double getTheta2()
+    
+    public double getTheta4()
     {
-        theta2 = asin((-1*T[3][3] + l3)/(sqrt(l1*l1 + l2*l2))) - atan(l1/l2) + PI/2; 
-        return theta2;
+        double T14_ = 0.0; // TODO
+        double T24_ = 0.0; // TODO
+        double T34_ = 0.0; // TODO
+        double d = sqrt((-T14_)*(-T14_) + (-T24_ ) * (-T24_) + (-T34_)*(-T34_));
+        double nominator = (l1 * l1) + (l2 * l2) - d*d;
+        double denominator = 2*l1*l2;
+        //+-
+        theta4 = (PI - acos(nominator/denominator));
+        return theta4;
     }
     
-    public double getTheta2_2()
+    public double getTheta5()
     {
-        theta2 = getTheta2();
-        theta2 = PI - theta2;
-        return theta2;
+        return theta5;
     }
-    
-    public double getTheta1()
-    {
-        
-        double denominator = l2 * cos(theta2 - PI/2) - l1 * sin(theta2 - PI/2) ;
-        theta1 = acos(T[0][3] / denominator);
-        // +-theta1
-        return theta1;
-    }
-    
 }

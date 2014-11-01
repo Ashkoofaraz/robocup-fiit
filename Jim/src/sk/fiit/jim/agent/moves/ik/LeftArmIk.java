@@ -1,104 +1,141 @@
 package sk.fiit.jim.agent.moves.ik;
 
+import sk.fiit.robocup.library.geometry.Point3D;
+
+import static java.lang.Math.*;
+import static sk.fiit.jim.agent.moves.ik.Constants.*;
+
 public class LeftArmIk
 {
-    // milimeters
-    private static final double NECK_OFFSET_Z = 126.50;
-    private static final double  SHOULDER_OFFSET_Y = 98.00;
-    private static final double ELBOW_OFFSET_Y =15.00;
-    private static final double UPPER_ARM_LENGTH =105.00;
-    private static final double LOWER_ARM_LENGTH =55.95;
-    private static final double SHOULDER_OFFSET_Z= 100.00;
-    private static final double HAND_OFFSET_X =57.75;
-    private static final double HIP_OFFSET_X= 85.00;
-    private static final double HIP_OFFSET_Y =50.00;
-    private static final double THIGH_LENGHT= 100.00;
-    private static final double TIBIA_LENGHT =102.90;
-    private static final double FOOT_HEIGHT =45.19;
-    private static final double HAND_OFFSET_Z= 12.31;
-    
     private double theta1;
-    
+
     private double theta2;
-    
+
     private double theta3;
-    
+
     private double theta4;
-    
-    private double l1;  // ShoulderOffsetY + ElbowOffsetY
-    
-    private double l2; // ShoulderOffsetZ
-    
-    private double l3; // UpperArmLength
-    
-    private double l4; // HandOffsetX + LowerArmLength.
-    
+
+    // mal by som si dat pozor na osi a stranu?
+    private double l1 = SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y; // ShoulderOffsetY + ElbowOffsetY
+
+    private double l2 = SHOULDER_OFFSET_Z; // ShoulderOffsetZ
+
+    private double l3 = UPPER_ARM_LENGTH; // UpperArmLength
+
+    private double l4 = HAND_OFFSET_X + LOWER_ARM_LENGTH; // HandOffsetX + LowerArmLength.
+
     // leftShoulderPitch (sx, sy, sz) = (0, l1, l2)
-    
-    private double sx;
-    
-    private double sy;
-    
-    private double sz;
-    
-    // radians
-    public double getTheta4(double px, double py, double pz)
+
+    // treba si dat pozor, ktora os, prava alebo lava?
+    private double sx = 0;
+
+    private double sy = l1;
+
+    private double sz = l2;
+
+    private double[][] T = new double[4][4];
+
+    private static double[][] A4End;
+    static
     {
-        // T24 == py
-        double d = Math.sqrt((sx - px)*(sx - px) + (sy - py)*(sy - py) + (sz - pz)*(sz - pz));
-        double nominator = l3 * l3 + l4*l4 - d*d;
-        double denominator = 2*l3*l4;
-        theta4 = -1 * (Math.PI - Math.acos(nominator / denominator));
+        A4End = new double[4][4];
+        A4End[0][0] = 1;
+        A4End[0][1] = 0;
+        A4End[0][2] = 0;
+        A4End[0][3] = HAND_OFFSET_X + LOWER_ARM_LENGTH;
+        A4End[1][0] = 0;
+        A4End[1][1] = 1;
+        A4End[1][2] = 0;
+        A4End[1][3] = 0;
+        A4End[2][0] = 0;
+        A4End[2][1] = 0;
+        A4End[2][2] = 1;
+        A4End[2][3] = 0;
+        A4End[3][0] = 0;
+        A4End[3][1] = 0;
+        A4End[3][2] = 0;
+        A4End[3][3] = 1;
+    }
+    public LeftArmIk(Point3D endpoint, Angle angle)
+    {
+        double ax = angle.getAx();
+        double ay = angle.getAy();
+        double az = angle.getAz();
+        double px = endpoint.x;
+        double py = endpoint.y;
+        double pz = endpoint.z;
+        T[0][0] = cos(ax) * cos(az);
+        T[0][1] = -1 * cos(ax) * sin(az) + sin(ax) * sin(ay) * cos(az);
+        T[0][2] = sin(ax) * sin(az) + cos(ax) * sin(ay) * cos(az);
+        T[0][3] = px;
+        T[1][0] = cos(ay) * sin(az);
+        T[1][1] = cos(ax) * cos(az) + sin(ax) * sin(ay) * sin(az);
+        T[1][2] = -1 * sin(ax) * cos(az) + cos(ax) * sin(ay) * sin(az);
+        T[1][3] = py;
+        T[2][0] = -1 * sin(ay);
+        T[2][1] = sin(ax) * cos(az);
+        T[2][2] = cos(ax) * cos(ay);
+        T[2][3] = pz;
+        T[3][0] = 0;
+        T[3][1] = 0;
+        T[3][2] = 0;
+        T[3][3] = 1;
+    }
+
+    // radians
+    public double getTheta4()
+    {
+        double d = sqrt((sx - T[0][3]) * (sx - T[0][3]) + (sy - T[1][3]) * (sy - T[1][3]) + (sz - T[2][3]) * (sz - T[2][3]));
+        double nominator = l3 * l3 + l4 * l4 - d * d;
+        double denominator = 2 * l3 * l4;
+        theta4 = -1 * (PI - acos(nominator / denominator));
         return theta4;
     }
-    
-    public double getTheta2(double px, double py, double pz)
+
+    public double getTheta2()
     {
-        double T22 = 0.0; // TODO
-        double nominator = py - l1 - ((l4 - Math.sin(theta4 * T22))/(Math.cos(theta4)));
-        double denominator = l3 + l4 * Math.cos(theta4)+ l4*(Math.sin(theta4) * Math.sin(theta4)) / Math.cos(theta4);
+        double nominator = T[1][3] - l1 - ((l4 - sin(theta4 * T[1][1])) / (cos(theta4)));
+        double denominator = l3 + l4 * cos(theta4) + l4
+                * (sin(theta4) * sin(theta4)) / cos(theta4);
         // v diplomovke je +- cela operacia
-        theta2 = Math.acos(nominator/denominator) + Math.PI/2;
+        theta2 = acos(nominator / denominator) + PI / 2;
         return theta2;
     }
-    
-    public double getTheta3_1(double px, double py, double pz)
+
+    public double getTheta3_1()
     {
-        double T23 = 0.0; // TODO
-        theta3 = -1 * Math.asin(T23 /(Math.sin(theta2 - Math.PI/2)));
+        theta3 = -1 * asin(T[1][2] / (sin(theta2 - PI / 2)));
         return theta3;
     }
-    
-    public double getTheta3_2(double px, double py, double pz)
+
+    public double getTheta3_2()
     {
-        theta3 = -1 * (Math.PI - getTheta3_1(px, py, pz));
+        theta3 = -1 * (PI - getTheta3_1());
         return theta3;
     }
-    
-    public double getTheta1(double px, double py, double pz)
+
+    public double getTheta1()
     {
-        if(Math.abs(theta3) != Math.PI / 2)
+        if(abs(theta3) != PI / 2)
         {
-            double T33 = 0.0; // TODO
-            double T13 = 0.0; // TODO
-            double nominator = T33 + ((T13 * Math.sin(-1 * theta3) * Math.cos(theta3 - Math.PI/2))/(Math.cos(-1 * theta3)));
-            double denominator = Math.cos(-1 * theta3) + (Math.cos(theta2 - Math.PI/2) * Math.cos(theta2 - Math.PI/2) * Math.sin(-1 * theta3) * Math.sin(-1 * theta3))/(Math.cos(-1 * theta3));
+            double nominator = T[2][2] + ((T[0][2] * sin(-1 * theta3) * cos(theta3 - PI / 2)) / (cos(-1 * theta3)));
+            double denominator = cos(-1 * theta3) + (cos(theta2 - PI / 2) * cos(theta2 - PI / 2) * sin(-1 * theta3) * sin(-1 * theta3)) / (cos(-1 * theta3));
             // +- theta1
-            theta1 = Math.acos(nominator/denominator);
+            theta1 = acos(nominator / denominator);
         }
-        else if((Math.abs(theta3) == Math.PI / 2) && theta2 != 0.0)
+        else if((abs(theta3) == PI / 2) && theta2 != 0.0)
         {
-            double T13 = 0.0; // TODO
             // +- theta1
-            theta1 = Math.acos((T13)/(Math.cos(theta2 - Math.PI/2)*Math.sin(-1*theta3)));
+            theta1 = acos((T[0][3]) / (cos(theta2 - PI / 2) * sin(-1 * theta3)));
         }
-        else if((Math.abs(theta3) == Math.PI / 2) && theta2 == 0.0)
+        else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
-            double T14_ = 0.0; // TODO
+            double[][] T_ = Constants.inverseMatrix(A4End);
+            double T14_ = T_[0][3]; // TODO
             // +- theta1
-            theta1 = Math.acos(T14_ / l3);
+            theta1 = acos(T14_ / l3);
         }
         return theta1;
     }
-    
+
 }
