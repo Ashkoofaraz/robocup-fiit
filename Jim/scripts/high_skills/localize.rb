@@ -15,6 +15,7 @@ class Localize < RubyHighSkill
   
   @leftLook = false;
   @rightLook = false;
+  @downLook = false
   
   def initialize validity_proc
       super()
@@ -24,6 +25,7 @@ class Localize < RubyHighSkill
       
       @leftLook = false;
       @rightLook = false;
+	  @downLook = false
   end
   
   def pickLowSkill
@@ -35,18 +37,22 @@ class Localize < RubyHighSkill
           when EnvironmentModel.beamablePlayMode :
             puts "beam" 
             return nil
-          when @agentModel.fallen? :
+          when @agentModel.falled :
             puts "fall" 
             return nil
       
-          when !@leftLook :
+         when !@leftLook :
             puts "left look"
             @leftLook = true
             return get_skill("head_left_120")
-          when !@rightLook :
+		when !@rightLook :
             puts "right look"
             @rightLook = true
-            return get_skill("head_right_120")
+            return get_skill("head_right_129´0")
+		  when !@downLook :
+            puts "down look"
+            @downLook = true
+            return get_skill("head_down_pp")
               
                  
          when (ballInRange? @@left and (ballInRange? @@front1 or ballInRange? @@front2)) :
@@ -68,7 +74,7 @@ class Localize < RubyHighSkill
  
   
   def ballInRange? range
-    range.include? (Math.toDegrees(@ball.phi))
+    range.include?(Math.toDegrees(@ball.phi))
   end  
   
   def checkProgress

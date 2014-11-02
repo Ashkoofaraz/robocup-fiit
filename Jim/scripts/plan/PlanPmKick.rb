@@ -29,7 +29,16 @@ class PlanPmKick < Plan
         else
           @plan << Beam.new(Java::sk.fiit.robocup.library.geometry.Vector3D.cartesian(-0.2, -0.05, 0.4))
         end
-        @beamed = true      
+        @beamed = true  
+	elsif (me.on_ground? or me.is_lying_on_back? or me.is_lying_on_belly?)
+    	@agentInfo.loguj('GetUp');
+     	@plan << GetUp.new(Proc.new{me.on_ground?})		
+	elsif (not see_ball?) 
+   		@agentInfo.loguj('Localize');
+    	@plan << Localize.new(Proc.new{(not see_ball?)})
+	elsif (is_ball_mine? and straight? and turned_to_goal?)
+      @agentInfo.loguj('Kick');
+    	@plan << Kick.new(@kick_target)
     else
         @agentInfo.loguj('Kick')
         ball_pos = @worldModel.getBall().getPosition             
@@ -41,11 +50,30 @@ class PlanPmKick < Plan
         puts "Ball distance from mid:"
         puts @ball_distance
         
+		#puts "where is ball: " + @agentInfo.getWhereIsBall()
+		#puts "nearBall: #{@agentInfo.getNearBall()}"
+		#puts "is in range: #{@agentInfo.getIsInRange()}"
+		##puts "Goal absolute x: " + @agentInfo.getGoalAbsolutePosition(Java::sk.fiit.jim.agent.Side.LEFT).getX
+		##puts "Goal absolute Y: " + @agentInfo.getGoalAbsolutePosition(Java::sk.fiit.jim.agent.Side.LEFT).getY
+		#puts "our goal range: #{@agentInfo.getOurGoalRange()}"
+		#puts "enemy goal range: #{@agentInfo.getEnemyGoalRange()}"
+		#puts "state: "  +@agentInfo.getState()
+		#puts "kick target x: #{@agentInfo.kickTarget().getX}" 
+		#puts "kick target y: #{@agentInfo.kickTarget().getY}" 
+		#puts "last ball pos to agent: #{@agentInfo.lastBallPositiontoAgent() }"		# 0==left
+		puts "joint angles: #{Java::sk.fiit.jim.agent.models.AgentModel.getInstance().getJointAngles}"
+		puts "parsed data: #{Java::sk.fiit.jim.agent.models.AgentModel.getInstance().getLastDataReceived}"
+		puts "body abs positions: #{Java::sk.fiit.jim.agent.models.AgentModel.getInstance().getBodyPartAbsPositions}"
+		puts "body rel positions: #{Java::sk.fiit.jim.agent.models.AgentModel.getInstance().getBodyPartRelPositions}"
+				
+			
         #if (ball_pos.getY().abs > 0.3 or ball_pos.getX().abs > 0.3)    
          # return nil
         #end           	
         
-        @plan << RubyKickDynamicStraightSimple.new(@kick_target, @leg)        
+        #@plan << RubyKickDynamicStraightSimple.new(@kick_target, @leg)   
+		@plan << Testt.new		
+	
     end
   end
 end
