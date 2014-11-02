@@ -828,4 +828,14 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 		newModel.setPosition(newModel.position.add(avgPosChange));
 		return newModel;
 	}
+	
+	public Map<BodyPart, Vector3D> getBodyPartAbsPositions()
+    {
+        return bodyPartAbsPositions;
+    }
+	
+	public Map<BodyPart, Vector3D> getBodyPartRelPositions()
+    {
+        return bodyPartRelPositions;
+    }
 }
