@@ -3,7 +3,7 @@ package sk.fiit.jim.agent.moves.ik;
 import sk.fiit.robocup.library.geometry.Point3D;
 
 import static java.lang.Math.*;
-import static sk.fiit.jim.agent.moves.ik.Constants.*;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.*;
 
 public class LeftArmIk
 {
@@ -97,8 +97,16 @@ public class LeftArmIk
         double nominator = T[1][3] - l1 - ((l4 - sin(theta4 * T[1][1])) / (cos(theta4)));
         double denominator = l3 + l4 * cos(theta4) + l4
                 * (sin(theta4) * sin(theta4)) / cos(theta4);
-        // v diplomovke je +- cela operacia
         theta2 = acos(nominator / denominator) + PI / 2;
+        return theta2;
+    }
+    
+    public double getTheta2_b()
+    {
+        double nominator = T[1][3] - l1 - ((l4 - sin(theta4 * T[1][1])) / (cos(theta4)));
+        double denominator = l3 + l4 * cos(theta4) + l4
+                * (sin(theta4) * sin(theta4)) / cos(theta4);
+        theta2 = -1 * acos(nominator / denominator) + PI / 2;
         return theta2;
     }
 
