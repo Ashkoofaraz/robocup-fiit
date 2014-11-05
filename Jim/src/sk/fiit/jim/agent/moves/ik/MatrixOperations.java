@@ -196,5 +196,18 @@ public final class MatrixOperations
             System.out.println();
         }
     }
-
+    
+    public static double[][] invert(double[][] A)
+    {
+        // TODO check dimensions
+        double[][] result = new double[DEFAULT_N][DEFAULT_N];
+        for (int i = 0; i < DEFAULT_N; i++)
+        {
+            for (int j = 0; j < DEFAULT_N; j++)
+            {
+                result[j][i] = A[i][j];
+            }
+        }
+        return result;
+    }
 }
