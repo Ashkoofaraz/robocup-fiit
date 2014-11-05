@@ -136,7 +136,7 @@ public final class MatrixOperations
             {
                 for (int k = 0; k < DEFAULT_N; k++)
                 {
-                    result[i][j] += A[i][k] * A[k][j];
+                    result[i][j] += A[i][k] * B[k][j];
                 }
             }
         }
