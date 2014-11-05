@@ -66,6 +66,7 @@ public final class MatrixOperations
         result[2][1] = cos(theta) * sin(alpha);
         result[2][2] = cos(alpha);
         result[2][3] = cos(alpha) * d;
+        result[3][3] = 1;
         return result;
     }
     
