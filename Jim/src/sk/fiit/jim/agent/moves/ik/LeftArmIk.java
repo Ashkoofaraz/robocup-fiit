@@ -81,6 +81,11 @@ public class LeftArmIk
         T[3][2] = 0;
         T[3][3] = 1;
     }
+    
+    public LeftArmIk(double[][] target)
+    {
+        T = target;
+    }
 
     // radians
     public double getTheta4()
@@ -94,7 +99,7 @@ public class LeftArmIk
 
     public double getTheta2()
     {
-        double nominator = T[1][3] - l1 - ((l4 - sin(theta4 * T[1][1])) / (cos(theta4)));
+        double nominator = T[1][3] - l1 - ((l4 * sin(theta4) * T[1][1]) / (cos(theta4)));
         double denominator = l3 + l4 * cos(theta4) + l4
                 * (sin(theta4) * sin(theta4)) / cos(theta4);
         theta2 = acos(nominator / denominator) + PI / 2;
@@ -103,7 +108,7 @@ public class LeftArmIk
     
     public double getTheta2_b()
     {
-        double nominator = T[1][3] - l1 - ((l4 - sin(theta4 * T[1][1])) / (cos(theta4)));
+        double nominator = T[1][3] - l1 - ((l4 * sin(theta4) * T[1][1]) / (cos(theta4)));
         double denominator = l3 + l4 * cos(theta4) + l4
                 * (sin(theta4) * sin(theta4)) / cos(theta4);
         theta2 = -1 * acos(nominator / denominator) + PI / 2;
