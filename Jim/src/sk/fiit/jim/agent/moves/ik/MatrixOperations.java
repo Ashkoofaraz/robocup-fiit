@@ -92,7 +92,7 @@ public final class MatrixOperations
         double[][] result = new double[n][n];
         for (int i = 0; i < n; i++)
         {
-            result[i][i] = 0;
+            result[i][i] = 1;
         }
         return result;
     }
