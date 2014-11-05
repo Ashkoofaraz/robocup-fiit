@@ -133,19 +133,19 @@ public class LeftArmIk
         {
             double nominator = T[2][2] + ((T[0][2] * sin(-1 * theta3) * cos(theta3 - PI / 2)) / (cos(-1 * theta3)));
             double denominator = cos(-1 * theta3) + (cos(theta2 - PI / 2) * cos(theta2 - PI / 2) * sin(-1 * theta3) * sin(-1 * theta3)) / (cos(-1 * theta3));
-            // +- theta1
+            // TODO +- theta1
             theta1 = acos(nominator / denominator);
         }
         else if((abs(theta3) == PI / 2) && theta2 != 0.0)
         {
-            // +- theta1
+            // TODO +- theta1
             theta1 = acos((T[0][3]) / (cos(theta2 - PI / 2) * sin(-1 * theta3)));
         }
         else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
             double[][] T_ = Constants.inverseMatrix(A4End);
             double T14_ = T_[0][3]; // TODO
-            // +- theta1
+            // TODO +- theta1
             theta1 = acos(T14_ / l3);
         }
         return theta1;
