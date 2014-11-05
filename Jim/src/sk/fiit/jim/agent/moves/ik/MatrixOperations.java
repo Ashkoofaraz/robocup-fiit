@@ -183,5 +183,17 @@ public final class MatrixOperations
         }
         return result;
     }
+    
+    public static void print(double[][] A)
+    {
+        for(int i = 0; i < A.length; i++)
+        {
+            for(int j = 0; j < A[i].length; j++)
+            {
+                System.out.printf(" %.2f", A[i][j]);
+            }
+            System.out.println();
+        }
+    }
 
 }
