@@ -6,7 +6,7 @@ import sk.fiit.robocup.library.geometry.Point3D;
 
 public class IkMain
 {
-    private static final Point3D DEF_LEFT_ARM = new Point3D(195, 98, 75);
+    private static final Point3D DEF_LEFT_ARM = new Point3D(195, 98, 75); // predpazena
     
     private static final Point3D DEF_LEFT_ARM_TORSO = new Point3D(190, 100, 75);
     
@@ -30,6 +30,11 @@ public class IkMain
         System.out.println("theta1: " + Math.toDegrees(la.getTheta1()) +"°");
         System.out.println("theta2_b: " + la.getTheta2_b());
         System.out.println("theta2_b: " + Math.toDegrees(la.getTheta2_b()) +"°");
+        
+        long time = System.nanoTime();
+        System.out.println(la.getResult());
+        long diff = System.nanoTime() - time;
+        System.out.println(diff / 1000000000.0);
         
         double[][] Abase = MatrixOperations.createTranslation(0, SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
         double[][] T01 = MatrixOperations.createDHTransformation(0, - PI/2, 0, 0); // a, alpha, d, theta
