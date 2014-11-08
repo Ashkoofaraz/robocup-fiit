@@ -40,28 +40,6 @@ public class LeftArmIk
 
     private double[][] T = new double[4][4];
 
-    private static double[][] A4End;
-    static
-    {
-        A4End = new double[4][4];
-        A4End[0][0] = 1;
-        A4End[0][1] = 0;
-        A4End[0][2] = 0;
-        A4End[0][3] = HAND_OFFSET_X + LOWER_ARM_LENGTH;
-        A4End[1][0] = 0;
-        A4End[1][1] = 1;
-        A4End[1][2] = 0;
-        A4End[1][3] = 0;
-        A4End[2][0] = 0;
-        A4End[2][1] = 0;
-        A4End[2][2] = 1;
-        A4End[2][3] = 0;
-        A4End[3][0] = 0;
-        A4End[3][1] = 0;
-        A4End[3][2] = 0;
-        A4End[3][3] = 1;
-    }
-
     public LeftArmIk(Point3D endpoint, Angle angle)
     {
         double ax = angle.getAx();
@@ -94,7 +72,7 @@ public class LeftArmIk
     }
 
     // radians
-    public double getTheta4()
+    double getTheta4()
     {
         // TODO optimalizuj odstran mocninu a odmocninu
         double d = sqrt((sx - T[0][3]) * (sx - T[0][3]) + (sy - T[1][3])
@@ -105,40 +83,36 @@ public class LeftArmIk
         return theta4;
     }
 
-    public double getTheta2()
+    double getTheta2()
     {
         double nominator = T[1][3] - l1
                 - ((l4 * sin(theta4) * T[1][1]) / (cos(theta4)));
         double denominator = l3 + l4 * cos(theta4) + l4
                 * (sin(theta4) * sin(theta4)) / cos(theta4);
-        theta2 = acos(nominator / denominator) + PI / 2;
-        return theta2;
+        theta2 = acos(nominator / denominator);
+        // +  PI / 2 in result
+        return theta2 ;
     }
 
-    // TODO zjednodus vypocitet cez LeftArmIk#getTheta2();
-    public double getTheta2_b()
+    double getTheta2_b()
     {
-        double nominator = T[1][3] - l1
-                - ((l4 * sin(theta4) * T[1][1]) / (cos(theta4)));
-        double denominator = l3 + l4 * cos(theta4) + l4
-                * (sin(theta4) * sin(theta4)) / cos(theta4);
-        theta2 = -1 * acos(nominator / denominator) + PI / 2;
+        theta2 = -1 * theta2;
         return theta2;
     }
 
-    public double getTheta3_1()
+    double getTheta3_1()
     {
         theta3 = -1 * asin(T[1][2] / (sin(theta2 - PI / 2)));
         return theta3;
     }
 
-    public double getTheta3_2()
+    double getTheta3_2()
     {
-        theta3 = -1 *  getTheta3_1() - PI;
+        theta3 = -1 *  theta3 - PI;
         return theta3;
     }
 
-    public double getTheta1()
+    double getTheta1()
     {
         if(abs(theta3) != PI / 2)
         {
@@ -159,23 +133,65 @@ public class LeftArmIk
         }
         else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
-            // FIXME toto nie je dobre, nie je to invernza A4end ale
+//            double[][] T_ = Constants.inverseMatrix(A4End);
+//            double T14_ = T_[0][3];
             // T*(A4end^-1)
-            double[][] T_ = Constants.inverseMatrix(A4End);
-            double T14_ = T_[0][3]; // TODO
+            double[][] A4End = MatrixOperations.createTranslation(HAND_OFFSET_X + LOWER_ARM_LENGTH, 0, 0);
+            double[][] T_ = MatrixOperations.mult(T, MatrixOperations.invert(A4End));
             // TODO +- theta1
-            theta1 = acos(T14_ / l3);
+            theta1 = acos(T_[1][3] / l3);
         }
         return theta1;
     }
 
-    Map<Joint, Integer> getResult()
+    public Map<Joint, Double> getResult()
     {
-        Map<Joint, Integer> result = new HashMap<Joint, Integer>();
+        Map<Joint, Double> result = new HashMap<Joint, Double>();
         theta4 = toDegrees(getTheta4());
         if(validateJointRange(Joint.LAE4, theta4))
         {
-            result.put(Joint.LAE4, (int) round(theta4));
+            result.put(Joint.LAE4, theta4);
+            theta2 = toDegrees(getTheta2() + PI / 2);
+            if(validateJointRange(Joint.LAE2, theta2))
+            {
+                result.put(Joint.LAE2, theta2);
+            }
+            else 
+            {
+                theta2 = toRadians(theta2 - 90);
+                theta2 = toDegrees(getTheta2_b() +  PI / 2);
+                if(validateJointRange(Joint.LAE2, theta2));
+                {
+                    result.put(Joint.LAE2, theta2);
+                }
+            }
+            
+            theta3 = toDegrees(getTheta3_1());
+            if(validateJointRange(Joint.LAE3, theta3))
+            {
+                result.put(Joint.LAE3, theta3);
+            }
+            else 
+            {
+                theta3 = toDegrees(getTheta3_2());
+                if(validateJointRange(Joint.LAE3, theta3));
+                {
+                    result.put(Joint.LAE3, theta3);
+                }
+            }
+            theta1 = (getTheta1());
+            if(validateJointRange(Joint.LAE1, theta1))
+            {
+                result.put(Joint.LAE1, theta1);
+            }
+            else
+            {
+                theta1 = -theta1;
+                if(validateJointRange(Joint.LAE1, theta1))
+                {
+                    result.put(Joint.LAE1, theta1);
+                }
+            }
         }
         return result;
     }
