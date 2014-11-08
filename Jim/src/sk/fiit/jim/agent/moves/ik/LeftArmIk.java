@@ -134,7 +134,7 @@ public class LeftArmIk
 
     public double getTheta3_2()
     {
-        theta3 = -1 * (PI - getTheta3_1());
+        theta3 = -1 *  getTheta3_1() - PI;
         return theta3;
     }
 
