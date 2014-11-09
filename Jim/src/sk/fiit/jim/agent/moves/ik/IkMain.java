@@ -29,8 +29,12 @@ public class IkMain
         System.out.println(ra.getResult());
         
         Point3D endLeftLeg = DEF_LEFT_LEG;
-        LeftLegIk le = new LeftLegIk(endLeftLeg, angle);
-        System.out.println(le.getResult());
+        LeftLegIk ll = new LeftLegIk(endLeftLeg, angle);
+        System.out.println(ll.getResult());
+        
+        Point3D endRightLeg = DEF_RIGHT_LEG;
+        RightLegIk rl = new RightLegIk(endRightLeg, angle);
+        System.out.println(rl.getResult());
        
         // left arm forward
         double[][] AbaseLeftArm = MatrixOperations.createTranslation(0, SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
@@ -125,5 +129,7 @@ public class IkMain
         System.out.println("Right leg");
         MatrixOperations.print(TRightLeg);
         System.out.println(new ForwardKinematicResult(TRightLeg));
+        
+        MatrixOperations.print(MatrixOperations.inverse(TRightLeg));
     }
 }

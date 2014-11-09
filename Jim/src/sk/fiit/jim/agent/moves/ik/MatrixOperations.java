@@ -197,7 +197,7 @@ public final class MatrixOperations
         }
     }
     
-    public static double[][] invert(double[][] A)
+    public static double[][] inverse(double[][] A)
     {
         return multScalar(transpose(cofactor(A)), 1/determinant(A));
     }

@@ -13,4 +13,9 @@ final class Utils
         return Double.NaN != angle && angle >= joint.getLow()
                 && angle <= joint.getUp();
     }
+    
+    static double trim(double val)
+    {
+        return val < 0.01 ? 0 : val < -0.1 ? 0 : val;
+    }
 }

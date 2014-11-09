@@ -137,7 +137,7 @@ public class LeftArmIk
 //            double T14_ = T_[0][3];
             // T*(A4end^-1)
             double[][] A4End = MatrixOperations.createTranslation(HAND_OFFSET_X + LOWER_ARM_LENGTH, 0, 0);
-            double[][] T_ = MatrixOperations.mult(T, MatrixOperations.invert(A4End));
+            double[][] T_ = MatrixOperations.mult(T, MatrixOperations.inverse(A4End));
             // TODO +- theta1
             theta1 = acos(T_[1][3] / l3);
         }

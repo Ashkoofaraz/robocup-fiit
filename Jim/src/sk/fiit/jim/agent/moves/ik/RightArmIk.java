@@ -69,13 +69,13 @@ public class RightArmIk
         T[3][2] = 0;
         T[3][3] = 1;
         
-        T_ = MatrixOperations.mult(T, MatrixOperations.invert(MatrixOperations.createRotationZ(-PI)));
+        T_ = MatrixOperations.mult(T, MatrixOperations.inverse(MatrixOperations.createRotationZ(-PI)));
     }
 
     public RightArmIk(double[][] target)
     {
         T = target;
-        T_ = MatrixOperations.mult(T, MatrixOperations.invert(MatrixOperations.createRotationZ(-PI)));
+        T_ = MatrixOperations.mult(T, MatrixOperations.inverse(MatrixOperations.createRotationZ(-PI)));
     }
     
     // radians
@@ -139,7 +139,7 @@ public class RightArmIk
         else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
             double[][] A4End = MatrixOperations.createTranslation(-HAND_OFFSET_X - LOWER_ARM_LENGTH, 0, 0);
-            double[][] T__ = MatrixOperations.mult(T, MatrixOperations.invert(A4End));
+            double[][] T__ = MatrixOperations.mult(T, MatrixOperations.inverse(A4End));
             // TODO +- theta1
             theta1 = acos(T__[1][3] / l3);
         }

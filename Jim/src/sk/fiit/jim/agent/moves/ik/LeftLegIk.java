@@ -63,33 +63,67 @@ public class LeftLegIk
         T[3][2] = 0;
         T[3][3] = 1;
         
-        double[][] temp = MatrixOperations.mult(T, MatrixOperations.invert(MatrixOperations.createTranslation(0, 0, -FOOT_HEIGHT)));
-        temp = MatrixOperations.mult(MatrixOperations.invert(MatrixOperations.createTranslation(0, HIP_OFFSET_Y, -HIP_OFFSET_Z)), temp);
-        temp = MatrixOperations.invert(temp);
+        double[][] AbaseLeftLeg = MatrixOperations.createTranslation(0, HIP_OFFSET_Y, -HIP_OFFSET_Z);
+        double[][] invAbaseLeftLeg = MatrixOperations.inverse(AbaseLeftLeg);
+        double[][] temp = MatrixOperations.mult(invAbaseLeftLeg, T);
+        double[][] AendLeftLeg = MatrixOperations.createTranslation(0, 0, -FOOT_HEIGHT);
+        double[][] invAendLeftLeg = MatrixOperations.inverse(AendLeftLeg);
+        temp = MatrixOperations.mult(temp, invAendLeftLeg);
         T_ = MatrixOperations.mult(MatrixOperations.createRotationX(PI / 4), temp);
-        T_ = MatrixOperations.invert(T_);
+        T_ = MatrixOperations.inverse(T_);
         
         // TODO posun vyssie a usetris vypocet
-        double[][] left = MatrixOperations.invert(T_);
+        double[][] left = MatrixOperations.inverse(T_);
         double[][] T56LeftLeg = MatrixOperations.createDHTransformation(0, -PI/2, 0, 0);
         double[][] RzLeftLeg = MatrixOperations.createRotationZ(PI);
         double[][] RyLeftLeg = MatrixOperations.createRotationY(-PI/2);
         double[][] right = MatrixOperations.mult(T56LeftLeg, RzLeftLeg);
         right = MatrixOperations.mult(right, RyLeftLeg);
-        right = MatrixOperations.invert(right);
+        right = MatrixOperations.inverse(right);
         T__ = MatrixOperations.mult(left, right);
-        T__ = MatrixOperations.invert(T__);
+        T__ = MatrixOperations.inverse(T__);
         
         double[][] T34LeftLeg = MatrixOperations.createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
         double[][] T45LeftLeg = MatrixOperations.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
         double[][] TTemp = MatrixOperations.mult(T34LeftLeg, T45LeftLeg);
-        TTemp = MatrixOperations.invert(TTemp);
-        T___ = MatrixOperations.mult(MatrixOperations.invert(T__), TTemp);
+        TTemp = MatrixOperations.inverse(TTemp);
+        T___ = MatrixOperations.mult(MatrixOperations.inverse(T__), TTemp);
+    }
+    
+    LeftLegIk(double[][] target)
+    {
+        T = target;
+        
+        double[][] AbaseLeftLeg = MatrixOperations.createTranslation(0, HIP_OFFSET_Y, -HIP_OFFSET_Z);
+        double[][] invAbaseLeftLeg = MatrixOperations.inverse(AbaseLeftLeg);
+        double[][] temp = MatrixOperations.mult(invAbaseLeftLeg, T);
+        double[][] AendLeftLeg = MatrixOperations.createTranslation(0, 0, -FOOT_HEIGHT);
+        double[][] invAendLeftLeg = MatrixOperations.inverse(AendLeftLeg);
+        temp = MatrixOperations.mult(temp, invAendLeftLeg);
+        T_ = MatrixOperations.mult(MatrixOperations.createRotationX(PI / 4), temp);
+        T_ = MatrixOperations.inverse(T_);
+        
+        // TODO posun vyssie a usetris vypocet
+        double[][] left = MatrixOperations.inverse(T_);
+        double[][] T56LeftLeg = MatrixOperations.createDHTransformation(0, -PI/2, 0, 0);
+        double[][] RzLeftLeg = MatrixOperations.createRotationZ(PI);
+        double[][] RyLeftLeg = MatrixOperations.createRotationY(-PI/2);
+        double[][] right = MatrixOperations.mult(T56LeftLeg, RzLeftLeg);
+        right = MatrixOperations.mult(right, RyLeftLeg);
+        right = MatrixOperations.inverse(right);
+        T__ = MatrixOperations.mult(left, right);
+        T__ = MatrixOperations.inverse(T__);
+        
+        double[][] T34LeftLeg = MatrixOperations.createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
+        double[][] T45LeftLeg = MatrixOperations.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
+        double[][] TTemp = MatrixOperations.mult(T34LeftLeg, T45LeftLeg);
+        TTemp = MatrixOperations.inverse(TTemp);
+        T___ = MatrixOperations.mult(MatrixOperations.inverse(T__), TTemp);
     }
     
     double getTheta4()
     {
-        double d = sqrt(T_[0][3] * T_[0][3] + T_[1][3] * T_[1][3] + T_[2][3] * T_[2][3]);
+        double d = sqrt((0-T_[0][3]) * (0-T_[0][3]) + (0-T_[1][3]) * (0-T_[1][3]) + (0-T_[2][3]) * (0-T_[2][3]));
         double nominator = l1*l1 + l2*l2 - d*d;
         double denom = 2*l1*l2;
         theta4 = PI - acos(nominator/denom);
@@ -119,7 +153,7 @@ public class LeftLegIk
         }
         else
         {
-            theta6 = 0;
+            theta6 = 0; // undefined
         }
         return theta6;
     }
@@ -155,74 +189,74 @@ public class LeftLegIk
     public Map<Joint, Double> getResult()
     {
         Map<Joint, Double> result = new HashMap<Joint, Double>();
-        theta4 = toDegrees(getTheta4());
-        if(Utils.validateJointRange(Joint.LLE4, theta4))
+        double theta4Deg = toDegrees(getTheta4());
+        if(Utils.validateJointRange(Joint.LLE4, theta4Deg))
         {
-            result.put(Joint.LLE4, theta4);
+            result.put(Joint.LLE4, theta4Deg);
         }
-        else if(Utils.validateJointRange(Joint.LLE4, -theta4))
+        else if(Utils.validateJointRange(Joint.LLE4, -theta4Deg))
         {
-            theta4 = -theta4;
-            result.put(Joint.LLE4, theta4);
+            theta4Deg = -theta4Deg;
+            result.put(Joint.LLE4, toDegrees(-theta4Deg));
         }
-        theta5 = toDegrees(getTheta5());
-        if(Utils.validateJointRange(Joint.LLE5, theta5))
+        double theta5Deg = toDegrees(getTheta5());
+        if(Utils.validateJointRange(Joint.LLE5, theta5Deg))
         {
-            result.put(Joint.LLE5, theta5);
+            result.put(Joint.LLE5, theta5Deg);
         }
         else
         {
-            theta5 = 180 - theta5;
-            if(Utils.validateJointRange(Joint.LLE5, theta5))
+            theta5Deg = 180 - theta5Deg;
+            if(Utils.validateJointRange(Joint.LLE5, theta5Deg))
             {
-                result.put(Joint.LLE5, theta5);
+                result.put(Joint.LLE5, theta5Deg);
             }
         }
-        theta6 = toDegrees(getTheta6());
-        if(Utils.validateJointRange(Joint.LLE6, theta6))
+        double theta6Deg = toDegrees(getTheta6());
+        if(Utils.validateJointRange(Joint.LLE6, theta6Deg))
         {
-            result.put(Joint.LLE6, theta6);
+            result.put(Joint.LLE6, theta6Deg);
         }
         
-        theta2 = toDegrees(getTheta2()) - 45;
-        if(Utils.validateJointRange(Joint.LLE2, theta2))
+        double theta2Deg = toDegrees(getTheta2()) - 45;
+        if(Utils.validateJointRange(Joint.LLE2, theta2Deg))
         {
-            result.put(Joint.LLE2, theta2);
+            result.put(Joint.LLE2, theta2Deg);
         }
         else 
         {
-            theta2 = -toDegrees(getTheta2()) - 45;
-            if(Utils.validateJointRange(Joint.LLE2, theta2))
+            theta2Deg = -toDegrees(getTheta2()) - 45;
+            if(Utils.validateJointRange(Joint.LLE2, theta2Deg))
             {
-                result.put(Joint.LLE2, theta2);
+                result.put(Joint.LLE2, theta2Deg);
             }
         }
         
-        theta3 = toDegrees(getTheta3());
-        if(Utils.validateJointRange(Joint.LLE3, theta3))
+        double theta3Deg = toDegrees(getTheta3());
+        if(Utils.validateJointRange(Joint.LLE3, theta3Deg))
         {
-            result.put(Joint.LLE3, theta3);
+            result.put(Joint.LLE3, theta3Deg);
         }
         else 
         {
-            theta3 = 180 - theta3;
-            if(Utils.validateJointRange(Joint.LLE3, theta3))
+            theta3Deg = 180 - theta3Deg;
+            if(Utils.validateJointRange(Joint.LLE3, theta3Deg))
             {
-                result.put(Joint.LLE3, theta3);
+                result.put(Joint.LLE3, theta3Deg);
             }
         }
         
-        theta1 = toDegrees(getTheta1()) + 90;
-        if(Utils.validateJointRange(Joint.LLE1, theta1))
+        double theta1Deg = toDegrees(getTheta1()) + 90;
+        if(Utils.validateJointRange(Joint.LLE1, theta1Deg))
         {
-            result.put(Joint.LLE1, theta1);
+            result.put(Joint.LLE1, theta1Deg);
         }
         else 
         {
-            theta1 = -toDegrees(getTheta1()) + 90;
-            if(Utils.validateJointRange(Joint.LLE1, theta1))
+            theta1Deg = -toDegrees(getTheta1()) + 90;
+            if(Utils.validateJointRange(Joint.LLE1, theta1Deg))
             {
-                result.put(Joint.LLE1, theta1);
+                result.put(Joint.LLE1, theta1Deg);
             }
         }
         return result;
