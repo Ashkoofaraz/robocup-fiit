@@ -151,7 +151,7 @@ public final class MatrixOperations
         {
             for (int j = 0; j < DEFAULT_N; j++)
             {
-                result[i][j] += value;
+                result[i][j] = A[i][j] + value;
             }
         }
         return result;
@@ -179,7 +179,7 @@ public final class MatrixOperations
         {
             for (int j = 0; j < DEFAULT_N; j++)
             {
-                result[i][j] *= value;
+                result[i][j] = A[i][j] * value;
             }
         }
         return result;
@@ -198,6 +198,70 @@ public final class MatrixOperations
     }
     
     public static double[][] invert(double[][] A)
+    {
+        return multScalar(transpose(cofactor(A)), 1/determinant(A));
+    }
+    
+    public static double determinant(double[][] A)
+    {
+        // TODO zovseobecni a testuj na stvorcovu maticu
+        if(A.length == 1)
+        {
+            return A[0][0];
+        }
+        if(A.length == 2)
+        {
+            return A[0][0] * A[1][1] - A[0][1] * A[1][0];
+        }
+        
+        double result = 0;
+        for(int i = 0; i < A.length; i++)
+        {
+            result += changeSign(i) * A[0][i] * determinant(submatrix(A, 0, i));
+        }
+        return result;
+    }
+    
+    private static int changeSign(int i)
+    {
+        return i % 2 == 0 ? 1 : -1;
+    }
+    
+    private static double[][] submatrix(double[][] A, int excludingRow, int excludingColumn)
+    {
+        // TODO zovseobecni a kontroluj stvorcovu maticu
+        double[][] result = new double[A.length - 1][A.length - 1];
+        int r = -1;
+        for(int i = 0; i < A.length; i++)
+        {
+            if(i == excludingRow) continue;
+            r++;
+            int c = -1;
+            for(int j = 0; j < A.length; j++)
+            {
+                if(j == excludingColumn) continue;
+                c++;
+                result[r][c] = A[i][j];
+            }
+            
+        }
+        return result;
+    }
+    
+    private static double[][] cofactor(double[][] A)
+    {
+        double[][] result = new double[A.length][A.length];
+        for (int i = 0; i < result.length; i++)
+        {
+            for (int j = 0; j < result.length; j++)
+            {
+                result[i][j] = changeSign(i) * changeSign(j) * determinant(submatrix(A, i, j));
+            }
+        }
+        return result;
+    }
+    
+    public static double[][] transpose(double[][] A)
     {
         // TODO check dimensions
         double[][] result = new double[DEFAULT_N][DEFAULT_N];
