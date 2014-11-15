@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import sk.fiit.jim.agent.moves.*;
@@ -66,7 +67,7 @@ public abstract class DynamicSkill extends HighSkill {
 	/*
 	 * Vytvori novu fazu do ktorej je nasledne mozne pridavat nastavenia efektorov
 	 */
-	protected Phase createPhase(double duration, HashMap<Joint, Double> joints)
+	protected Phase createPhase(double duration, Map<Joint, Double> joints)
 	{
 		Phase p = new Phase();
 		p.duration = roundToNearestTwenty(duration);
@@ -96,7 +97,7 @@ public abstract class DynamicSkill extends HighSkill {
 	/*
 	 * Vrati vsetky fazy pre dany LowSkill v poradi. Potrebne pre nacitanie faz ako podkladu pre dynamicky kop.
 	 */
-	protected ArrayList<Phase> getPhasesForSkill(LowSkill baseSkill)
+	protected List<Phase> getPhasesForSkill(LowSkill baseSkill)
 	{
 		ArrayList<Phase> phases = new ArrayList<Phase>();
 		String nextPhase = baseSkill.initialPhase;

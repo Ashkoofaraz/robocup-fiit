@@ -2,6 +2,7 @@ package sk.fiit.jim.agent.skills.dynamic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import sk.fiit.jim.agent.moves.Joint;
@@ -30,7 +31,7 @@ public abstract class DynamicKickStraight extends DynamicSkill {
 	 */
 	public LowSkill createDynamicKick(String side, double distance)
 	{			
-		ArrayList<Phase> phases = getBaseSkillPhases(side);
+		List<Phase> phases = getBaseSkillPhases(side);
 	    
 		String ui = UUID.randomUUID().toString();
 
@@ -45,7 +46,7 @@ public abstract class DynamicKickStraight extends DynamicSkill {
 		return ls;
 	}
 	
-	private ArrayList<Phase> getBaseSkillPhases(String side)
+	private List<Phase> getBaseSkillPhases(String side)
 	{
 		LowSkill baseSkill = null;
 		if(side.equals("right"))
@@ -64,7 +65,7 @@ public abstract class DynamicKickStraight extends DynamicSkill {
 	 * Vytvara kop
 	 * Poradie faz je dolezite, budu na seba nadvazovat v poradi ako su pridane do zoznamu
 	 */
-	private void alterKickPhases(ArrayList<Phase> phases, String side, double distance) 
+	private void alterKickPhases(List<Phase> phases, String side, double distance) 
 	{
 		//Fazy v zakladnom kope zacinaju s default a fazou0, takze pre X-tu fazu v poradi treba hladat index X+1. Faza default je teda index 0, faza0 je index 1, ...
 		double dynamicValue = calculateDynamicValue(distance);
