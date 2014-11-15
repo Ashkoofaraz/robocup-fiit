@@ -10,7 +10,7 @@ import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.geometry.Point3D;
 
 // TODO v clanku pri thetha1 nie je abs.hodnota a v diplomovke ano
-class RightArmIk
+class RightArmIk2
 {
     private double theta1;
 
@@ -20,9 +20,9 @@ class RightArmIk
 
     private double theta4;
     
-    private double[][] T = new double[4][4];
+    private Matrix T;
     
-    private double[][] T_;
+    private Matrix T_;
     
  // mal by som si dat pozor na osi a stranu?
     private double l1 = SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y; // ShoulderOffsetY +
@@ -44,46 +44,21 @@ class RightArmIk
 
     private double sz = l2;
     
-    public RightArmIk(Point3D endpoint, Angle angle)
+    public RightArmIk2(Point3D endpoint, Angle angle)
     {
-        double ax = angle.getAx();
-        double ay = angle.getAy();
-        double az = angle.getAz();
-        double px = endpoint.x;
-        double py = endpoint.y;
-        double pz = endpoint.z;
-        T[0][0] = cos(ax) * cos(az);
-        T[0][1] = -1 * cos(ax) * sin(az) + sin(ax) * sin(ay) * cos(az);
-        T[0][2] = sin(ax) * sin(az) + cos(ax) * sin(ay) * cos(az);
-        T[0][3] = px;
-        T[1][0] = cos(ay) * sin(az);
-        T[1][1] = cos(ax) * cos(az) + sin(ax) * sin(ay) * sin(az);
-        T[1][2] = -1 * sin(ax) * cos(az) + cos(ax) * sin(ay) * sin(az);
-        T[1][3] = py;
-        T[2][0] = -1 * sin(ay);
-        T[2][1] = sin(ax) * cos(az);
-        T[2][2] = cos(ax) * cos(ay);
-        T[2][3] = pz;
-        T[3][0] = 0;
-        T[3][1] = 0;
-        T[3][2] = 0;
-        T[3][3] = 1;
-        
-        T_ = MatrixOperations.mult(T, MatrixOperations.inverse(MatrixOperations.createRotationZ(-PI)));
+        T = Matrix.createKinematic(endpoint, angle);
+        T_ = T.mult(Matrix.ROTATION_Z_PI_MINUS.inverse());
     }
 
-    public RightArmIk(double[][] target)
-    {
-        T = target;
-        T_ = MatrixOperations.mult(T, MatrixOperations.inverse(MatrixOperations.createRotationZ(-PI)));
-    }
-    
     // radians
     double getTheta4()
     {
+        double T_03 = T_.getValueAt(0, 3);
+        double T_13 = T_.getValueAt(1, 3);
+        double T_23 = T_.getValueAt(2, 3);
         // TODO optimalizuj odstran mocninu a odmocninu
-        double d = sqrt((sx - T_[0][3]) * (sx - T_[0][3]) + (sy - T_[1][3])
-                * (sy - T_[1][3]) + (sz - T_[2][3]) * (sz - T_[2][3]));
+        double d = sqrt((sx - T_03) * (sx - T_03) + (sy - T_13)
+                * (sy - T_23) + (sz - T_23) * (sz - T_23));
         double nominator = l3 * l3 + l4 * l4 - d * d;
         double denominator = 2 * l3 * l4;
         theta4 = PI - acos(nominator / denominator);
@@ -92,8 +67,10 @@ class RightArmIk
     
     double getTheta2()
     {
-        double nominator = -T_[1][3] - l1
-                - ((l4 * sin(theta4) * T_[1][1]) / (cos(theta4)));
+        double T_13 = T_.getValueAt(1, 3);
+        double T_11 = T_.getValueAt(1, 1);
+        double nominator = -T_13 - l1
+                - ((l4 * sin(theta4) * T_11) / (cos(theta4)));
         double denominator = l3 + l4 * cos(theta4) + l4
                 * (sin(theta4) * sin(theta4)) / cos(theta4);
         theta2 = acos(nominator / denominator);
@@ -109,7 +86,8 @@ class RightArmIk
     
     double getTheta3_1()
     {
-        theta3 = asin(T_[1][2] / (sin(theta2 + PI / 2)));
+        double T_12 = T_.getValueAt(1, 2);
+        theta3 = asin(T_12 / (sin(theta2 + PI / 2)));
         return theta3;
     }
     
@@ -121,10 +99,13 @@ class RightArmIk
     
     double getTheta1()
     {
+        double T_22 = T_.getValueAt(2,2);
+        double T_02 = T_.getValueAt(0,2);
+        double T_03 = T_.getValueAt(0,3);
         if(theta3 != PI / 2)
         {
-            double nominator = T_[2][2]
-                    + ((T_[0][2] * sin(theta3) * cos(theta3 + PI / 2)) / (cos(theta3)));
+            double nominator = T_22
+                    + ((T_02 * sin(theta3) * cos(theta3 + PI / 2)) / (cos(theta3)));
             double denominator = cos(theta3)
                     + (cos(theta2 + PI / 2) * cos(theta2 + PI / 2)
                             * sin(theta3) * sin(theta3)) / (cos(theta3));
@@ -134,14 +115,13 @@ class RightArmIk
         else if((abs(theta3) == PI / 2) && theta2 != 0.0)
         {
             // TODO +- theta1
-            theta1 = acos((T_[0][3]) / (cos(theta2 + PI / 2) * sin(theta3)));
+            theta1 = acos((T_03) / (cos(theta2 + PI / 2) * sin(theta3)));
         }
         else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
-            double[][] A4End = MatrixOperations.createTranslation(-HAND_OFFSET_X - LOWER_ARM_LENGTH, 0, 0);
-            double[][] T__ = MatrixOperations.mult(T, MatrixOperations.inverse(A4End));
+            Matrix T__ = T.mult(Matrix.invAendRightArm);
             // TODO +- theta1
-            theta1 = acos(T__[1][3] / l3);
+            theta1 = acos(T__.getValueAt(1, 3) / l3);
         }
         return theta1;
     }

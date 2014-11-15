@@ -18,118 +18,102 @@ public class IkMain
     
     public static void main(String[] args)
     {
+        
         Angle angle = new Angle(0, 0, 0);
         //Point3D end = new Point3D(0, 0, 0);
+        Kinematics kinematics = new Kinematics();
+        
+        long preRunTime = System.nanoTime();
+        kinematics.getInverseLeftArm(DEF_LEFT_ARM, angle);
+        kinematics.getInverseRightArm(DEF_RIGHT_ARM, angle);
+        kinematics.getInverseLeftLeg(DEF_LEFT_LEG, angle);
+        kinematics.getInverseRightLeg(DEF_RIGHT_LEG, angle);
+        long preRunDiff = System.nanoTime() - preRunTime;
+        System.err.println(preRunDiff / 1000000000.0);
+        
+        long preRunTime2 = System.nanoTime();
+        kinematics.getInverseLeftArm2(DEF_LEFT_ARM, angle);
+        kinematics.getInverseRightArm2(DEF_RIGHT_ARM, angle);
+        kinematics.getInverseLeftLeg2(DEF_LEFT_LEG, angle);
+        kinematics.getInverseRightLeg2(DEF_RIGHT_LEG, angle);
+        long preRunDiff2 = System.nanoTime() - preRunTime2;
+        System.err.println(preRunDiff2 / 1000000000.0);
+        
+        long time = System.nanoTime();
         Point3D endLeftArm = DEF_LEFT_ARM;
-        LeftArmIk la = new LeftArmIk(endLeftArm, angle);
-        System.out.println(la.getResult());
+        System.out.println(kinematics.getInverseLeftArm(endLeftArm, angle));
         
         Point3D endRightArm = DEF_RIGHT_ARM;
-        RightArmIk ra = new RightArmIk(endRightArm, angle);
-        System.out.println(ra.getResult());
+        System.out.println(kinematics.getInverseRightArm(endRightArm, angle));
         
         Point3D endLeftLeg = DEF_LEFT_LEG;
-        LeftLegIk ll = new LeftLegIk(endLeftLeg, angle);
-        System.out.println(ll.getResult());
+        System.out.println(kinematics.getInverseLeftLeg(endLeftLeg, angle));
         
         Point3D endRightLeg = DEF_RIGHT_LEG;
-        RightLegIk rl = new RightLegIk(endRightLeg, angle);
-        System.out.println(rl.getResult());
+        System.out.println(kinematics.getInverseRightLeg(endRightLeg, angle));
        
+        long diff = System.nanoTime() - time;
+        System.err.println(diff / 1000000000.0);
+        
+        // left arm diff
+        long timeLeftArm1 = System.nanoTime();
+        System.out.println(new LeftArmIk(endLeftArm, angle).getResult());
+        long diffLeftArm1 = System.nanoTime() - timeLeftArm1;
+        System.err.println("leftArmIK " +diffLeftArm1 / 1000000000.0);
+        
+        long timeLeftArm2 = System.nanoTime();
+        System.out.println(new LeftArmIk2(endLeftArm, angle).getResult());
+        long diffLeftArm2 = System.nanoTime() - timeLeftArm2;
+        System.err.println("leftArmIK2 " +diffLeftArm2 / 1000000000.0);
+        
+        // right arm diff
+        long timeRightArm1 = System.nanoTime();
+        System.out.println(new RightArmIk(endRightArm, angle).getResult());
+        long diffRightArm1 = System.nanoTime() - timeRightArm1;
+        System.err.println("rightArmIK " +diffRightArm1 / 1000000000.0);
+        
+        long timeRightArm2 = System.nanoTime();
+        System.out.println(new RightArmIk2(endRightArm, angle).getResult());
+        long diffRightArm2 = System.nanoTime() - timeRightArm2;
+        System.err.println("rightArmIK2 " +diffRightArm2 / 1000000000.0);
+        
+        // left leg diff
+        long timeLeftLeg1 = System.nanoTime();
+        System.out.println(new LeftLegIk(endLeftLeg, angle).getResult());
+        long diffLeftLeg1 = System.nanoTime() - timeLeftLeg1;
+        System.err.println("leftLegIK " +diffLeftLeg1 / 1000000000.0);
+        
+        long timeLeftLeg2 = System.nanoTime();
+        System.out.println(new LeftLegIk2(endLeftLeg, angle).getResult());
+        long diffLeftLeg2 = System.nanoTime() - timeLeftLeg2;
+        System.err.println("leftLegIK2 " +diffLeftLeg2 / 1000000000.0);
+        
+        // right leg diff
+        long timeRightLeg1 = System.nanoTime();
+        System.out.println(new RightLegIk(endRightLeg, angle).getResult());
+        long diffRightLeg1 = System.nanoTime() - timeRightLeg1;
+        System.err.println("rightLegIK " +diffRightLeg1 / 1000000000.0);
+        
+        long timeRightLeg2 = System.nanoTime();
+        System.out.println(new RightLegIk2(endRightLeg, angle).getResult());
+        long diffRightLeg2 = System.nanoTime() - timeRightLeg2;
+        System.err.println("rightLegIK2 " +diffRightLeg2 / 1000000000.0);
+        
         // left arm forward
-        double[][] AbaseLeftArm = MatrixOperations.createTranslation(0, SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
-        double[][] T01LeftArm = MatrixOperations.createDHTransformation(0, - PI/2, 0, 0); // a, alpha, d, theta
-        double[][] T12LeftArm = MatrixOperations.createDHTransformation(0, PI/2, 0, - PI/2);
-        double[][] T23LeftArm = MatrixOperations.createDHTransformation(0, - PI/2, UPPER_ARM_LENGTH, 0);
-        double[][] T34LeftArm = MatrixOperations.createDHTransformation(0, PI/2, 0, 0);
-        double[][] RzLeftArm = MatrixOperations.createRotationZ(PI/2);
-        double[][] AendLeftArm = MatrixOperations.createTranslation(HAND_OFFSET_X + LOWER_ARM_LENGTH, 0, 0);
-        
-        double[][] TLeftArm = MatrixOperations.mult(AbaseLeftArm, T01LeftArm);
-        TLeftArm = MatrixOperations.mult(TLeftArm, T12LeftArm);
-        TLeftArm = MatrixOperations.mult(TLeftArm, T23LeftArm);
-        TLeftArm = MatrixOperations.mult(TLeftArm, T34LeftArm);
-        TLeftArm = MatrixOperations.mult(TLeftArm, RzLeftArm);
-        TLeftArm = MatrixOperations.mult(TLeftArm, AendLeftArm);
-        
         System.out.println("left arm");
-        MatrixOperations.print(TLeftArm);
-        System.out.println(new ForwardKinematicResult(TLeftArm));
+        System.out.println(new Kinematics().getForwardLeftHand(0, 0, 0, 0));
         
         // Right arm forward
-        double[][] AbaseRightArm = MatrixOperations.createTranslation(0, -SHOULDER_OFFSET_Y - ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
-        double[][] T01RightArm = MatrixOperations.createDHTransformation(0, - PI/2, 0, 0); // a, alpha, d, theta
-        double[][] T12RightArm = MatrixOperations.createDHTransformation(0, PI/2, 0, PI/2);
-        double[][] T23RightArm = MatrixOperations.createDHTransformation(0, - PI/2, -UPPER_ARM_LENGTH, 0);
-        double[][] T34RightArm = MatrixOperations.createDHTransformation(0, PI/2, 0, 0);
-        double[][] RzRightArm = MatrixOperations.createRotationZ(PI/2);
-        double[][] AendRightArm = MatrixOperations.createTranslation(-HAND_OFFSET_X - LOWER_ARM_LENGTH, 0, 0);
-        double[][] RzRightArm2 = MatrixOperations.createRotationZ(-PI);
-        
-        double[][] TRightArm = MatrixOperations.mult(AbaseRightArm, T01RightArm);
-        TRightArm = MatrixOperations.mult(TRightArm, T12RightArm);
-        TRightArm = MatrixOperations.mult(TRightArm, T23RightArm);
-        TRightArm = MatrixOperations.mult(TRightArm, T34RightArm);
-        TRightArm = MatrixOperations.mult(TRightArm, RzRightArm);
-        TRightArm = MatrixOperations.mult(TRightArm, AendRightArm);
-        TRightArm = MatrixOperations.mult(TRightArm, RzRightArm2);
-        
         System.out.println("Right arm");
-        MatrixOperations.print(TRightArm);
-        System.out.println(new ForwardKinematicResult(TRightArm));
+        System.out.println(new Kinematics().getForwardRightHand(0, 0, 0, 0));
         
         // left leg forward
-        double[][] AbaseLeftLeg = MatrixOperations.createTranslation(0, HIP_OFFSET_Y, -HIP_OFFSET_Z);
-        double[][] T01LeftLeg = MatrixOperations.createDHTransformation(0, - 3*PI/4, 0, -PI/2); // a, alpha, d, theta
-        double[][] T12LeftLeg = MatrixOperations.createDHTransformation(0, -PI/2, 0, PI/4);
-        double[][] T23LeftLeg = MatrixOperations.createDHTransformation(0, PI/2, 0, 0);
-        double[][] T34LeftLeg = MatrixOperations.createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
-        double[][] T45LeftLeg = MatrixOperations.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
-        double[][] T56LeftLeg = MatrixOperations.createDHTransformation(0, -PI/2, 0, 0);
-        double[][] RzLeftLeg = MatrixOperations.createRotationZ(PI);
-        double[][] RyLeftLeg = MatrixOperations.createRotationY(-PI/2);
-        double[][] AendLeftLeg = MatrixOperations.createTranslation(0, 0, -FOOT_HEIGHT);
-        
-        double[][] TLeftLeg = MatrixOperations.mult(AbaseLeftLeg, T01LeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, T12LeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, T23LeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, T34LeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, T45LeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, T56LeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, RzLeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, RyLeftLeg);
-        TLeftLeg = MatrixOperations.mult(TLeftLeg, AendLeftLeg);
-        
-        System.out.println("left leg");
-        MatrixOperations.print(TLeftLeg);
-        System.out.println(new ForwardKinematicResult(TLeftLeg));
+        System.out.println("Left leg");
+        System.out.println(new Kinematics().getForwardLeftLeg(0, 0, 0, 0, 0, 0));
         
         // Right leg forward
-        double[][] AbaseRightLeg = MatrixOperations.createTranslation(0, -HIP_OFFSET_Y, -HIP_OFFSET_Z);
-        double[][] T01RightLeg = MatrixOperations.createDHTransformation(0, - PI/4, 0, -PI/2); // a, alpha, d, theta
-        double[][] T12RightLeg = MatrixOperations.createDHTransformation(0, -PI/2, 0, -PI/4);
-        double[][] T23RightLeg = MatrixOperations.createDHTransformation(0, PI/2, 0, 0);
-        double[][] T34RightLeg = MatrixOperations.createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
-        double[][] T45RightLeg = MatrixOperations.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
-        double[][] T56RightLeg = MatrixOperations.createDHTransformation(0, -PI/2, 0, 0);
-        double[][] RzRightLeg = MatrixOperations.createRotationZ(PI);
-        double[][] RyRightLeg = MatrixOperations.createRotationY(-PI/2);
-        double[][] AendRightLeg = MatrixOperations.createTranslation(0, 0, -FOOT_HEIGHT);
-        
-        double[][] TRightLeg = MatrixOperations.mult(AbaseRightLeg, T01RightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, T12RightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, T23RightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, T34RightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, T45RightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, T56RightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, RzRightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, RyRightLeg);
-        TRightLeg = MatrixOperations.mult(TRightLeg, AendRightLeg);
-        
         System.out.println("Right leg");
-        MatrixOperations.print(TRightLeg);
-        System.out.println(new ForwardKinematicResult(TRightLeg));
+        System.out.println(new Kinematics().getForwardRightLeg(0, 0, 0, 0, 0, 0));
         
-        MatrixOperations.print(MatrixOperations.inverse(TRightLeg));
     }
 }

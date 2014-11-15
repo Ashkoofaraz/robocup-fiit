@@ -1,7 +1,18 @@
 package sk.fiit.jim.agent.moves.ik;
 
-import static java.lang.Math.*;
-import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.acos;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toDegrees;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.FOOT_HEIGHT;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.HIP_OFFSET_Y;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.HIP_OFFSET_Z;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.THIGH_LENGHT;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.TIBIA_LENGHT;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,7 +20,7 @@ import java.util.Map;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.geometry.Point3D;
 
-public class LeftLegIk
+class LeftLegIk
 {
     private double theta1;
 
@@ -26,12 +37,6 @@ public class LeftLegIk
     private double l1 = THIGH_LENGHT; 
 
     private double l2 = TIBIA_LENGHT;
-    
-    private double sx = 0;
-    
-    private double sy = 0;
-    
-    private double sz = 0; 
     
     private double[][] T = new double[4][4];
     private double[][] T_ = new double[4][4];

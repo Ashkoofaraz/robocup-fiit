@@ -3,7 +3,7 @@ package sk.fiit.jim.agent.moves.ik;
 import static java.lang.Math.*;
 import sk.fiit.robocup.library.geometry.Point3D;
 
-public class HeadIk
+class HeadIk
 {
     // milimeters
     private static final double CAMERA_X_TOP = 53.9;
@@ -19,7 +19,7 @@ public class HeadIk
     
     private double l2 = CAMERA_Z_TOP; // CameraZ
     
-    private double l3 = Constants.NECK_OFFSET_Z; // NechOfffsetZ
+    private double l3 = SimsparkConstants.NECK_OFFSET_Z; // NechOfffsetZ
     
     private double[][] T = new double[4][4];
     

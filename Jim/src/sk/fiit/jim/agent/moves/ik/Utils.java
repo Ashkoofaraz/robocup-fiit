@@ -10,7 +10,7 @@ final class Utils
     
     static boolean validateJointRange(Joint joint, double angle)
     {
-        return Double.NaN != angle && angle >= joint.getLow()
+        return !Double.isNaN(angle) && angle >= joint.getLow()
                 && angle <= joint.getUp();
     }
     
