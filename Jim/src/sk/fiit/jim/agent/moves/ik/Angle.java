@@ -1,6 +1,6 @@
 package sk.fiit.jim.agent.moves.ik;
 
-class Angle
+public class Angle
 {
     private final double ax;
 
