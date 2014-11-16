@@ -6,7 +6,7 @@ include_class Java::sk.fiit.jim.Settings
 
 EnvironmentModel.version = EnvironmentModel::Version::VERSION_0_6_5
 
-AgentInfo::team = "PM"
+AgentInfo::team = "Pidanic"
 AgentInfo::playerId = 1
 
 Settings.setValue("TestFramework_monitor_enable", false)
