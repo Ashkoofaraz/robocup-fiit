@@ -179,7 +179,7 @@ class LeftArmIk
                     result.put(Joint.LAE3, theta3);
                 }
             }
-            theta1 = (getTheta1());
+            theta1 = toDegrees(getTheta1());
             if(Utils.validateJointRange(Joint.LAE1, theta1))
             {
                 result.put(Joint.LAE1, theta1);

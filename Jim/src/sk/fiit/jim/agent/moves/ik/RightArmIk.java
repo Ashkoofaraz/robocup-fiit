@@ -181,7 +181,7 @@ class RightArmIk
                     result.put(Joint.RAE3, theta3);
                 }
             }
-            theta1 = (getTheta1());
+            theta1 = toDegrees(getTheta1());
             if(Utils.validateJointRange(Joint.RAE1, theta1))
             {
                 result.put(Joint.RAE1, theta1);
