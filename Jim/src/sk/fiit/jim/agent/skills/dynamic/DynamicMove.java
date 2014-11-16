@@ -8,7 +8,7 @@ import java.util.UUID;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.Phase;
-import sk.fiit.jim.agent.moves.ik.Angle;
+import sk.fiit.jim.agent.moves.ik.Orientation;
 import sk.fiit.jim.agent.moves.ik.Kinematics;
 import sk.fiit.jim.agent.skills.DynamicSkill;
 import sk.fiit.robocup.library.geometry.Point3D;
@@ -25,7 +25,7 @@ public abstract class DynamicMove extends DynamicSkill
     {
         Kinematics kin = Kinematics.getInstance();
         Point3D end1 = new Point3D(195, 98, 75);
-        Angle angle = new Angle(0, 0, 0);
+        Orientation angle = Orientation.fromDegrees(0, 0, 0);
         Map<Joint, Double> result1 = kin.getInverseLeftArm(end1, angle);
         System.out.println("Kinematics result " + result1);
         

@@ -32,7 +32,7 @@ class LeftLegIk2
     private Matrix T__;
     private Matrix T___;
     
-    public LeftLegIk2(Point3D end, Angle angle)
+    public LeftLegIk2(Point3D end, Orientation angle)
     {
         T = Matrix.createKinematic(end, angle);
         

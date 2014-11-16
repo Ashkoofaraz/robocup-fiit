@@ -19,7 +19,7 @@ public class IkMain
     public static void main(String[] args)
     {
         
-        Angle angle = new Angle(0, 0, 0);
+        Orientation angle = Orientation.fromRadians(0, 0, 0);
         //Point3D end = new Point3D(0, 0, 0);
         Kinematics kinematics = new Kinematics();
         
@@ -115,5 +115,10 @@ public class IkMain
         System.out.println("Right leg");
         System.out.println(new Kinematics().getForwardRightLeg(0, 0, 0, 0, 0, 0));
         
+     // Right arm forward
+//        System.out.println("Right arm");
+//        System.out.println(new Kinematics().getForwardRightHand(PI/2, 0, 0, 0));
+//        
+//        System.out.println(new RightArmIk(new Point3D(120, -98, 0), angle).getResult());
     }
 }

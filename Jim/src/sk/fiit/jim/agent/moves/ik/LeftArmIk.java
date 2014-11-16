@@ -40,11 +40,11 @@ class LeftArmIk
 
     private double[][] T = new double[4][4];
 
-    public LeftArmIk(Point3D endpoint, Angle angle)
+    public LeftArmIk(Point3D endpoint, Orientation angle)
     {
-        double ax = angle.getAx();
-        double ay = angle.getAy();
-        double az = angle.getAz();
+        double ax = angle.getAxRadians();
+        double ay = angle.getAyRadians();
+        double az = angle.getAzRadians();
         double px = endpoint.x;
         double py = endpoint.y;
         double pz = endpoint.z;

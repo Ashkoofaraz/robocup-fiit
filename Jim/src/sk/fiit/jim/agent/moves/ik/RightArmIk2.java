@@ -44,7 +44,7 @@ class RightArmIk2
 
     private double sz = l2;
     
-    public RightArmIk2(Point3D endpoint, Angle angle)
+    public RightArmIk2(Point3D endpoint, Orientation angle)
     {
         T = Matrix.createKinematic(endpoint, angle);
         T_ = T.mult(Matrix.ROTATION_Z_PI_MINUS.inverse());

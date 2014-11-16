@@ -49,11 +49,11 @@ class RightLegIk
     private double[][] T__ = new double[4][4];
     private double[][] T___ = new double[4][4];
     
-    public RightLegIk(Point3D end, Angle angle)
+    public RightLegIk(Point3D end, Orientation angle)
     {
-        double ax = angle.getAx();
-        double ay = angle.getAy();
-        double az = angle.getAz();
+        double ax = angle.getAxRadians();
+        double ay = angle.getAyRadians();
+        double az = angle.getAzRadians();
         double px = end.x;
         double py = end.y;
         double pz = end.z;
