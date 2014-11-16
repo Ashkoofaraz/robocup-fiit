@@ -34,7 +34,7 @@ public abstract class DynamicMove extends DynamicSkill
         System.out.println("Kinematics result " + result2);
         
         Point3D end3 = new Point3D(0, 98, -120);
-        Map<Joint, Double> result3 = kin.getInverseLeftArm(end3, angle);
+        Map<Joint, Double> result3 = kin.getInverseLeftArm(end3, Orientation.fromDegrees(45, 90, 45));
         System.out.println("Kinematics result " + result3);
         
         Point3D end4 = new Point3D(0, 98, 270);
@@ -44,18 +44,24 @@ public abstract class DynamicMove extends DynamicSkill
         Point3D end5 = new Point3D(170, 98, 100);
         Map<Joint, Double> result5 = kin.getInverseLeftArm(end5, angle);
         System.out.println("Kinematics result " + result5);
+
+        Point3D end6 = new Point3D(123.00, 203.86, -26.25);
+        Map<Joint, Double> result6 = kin.getInverseLeftArm(end6, Orientation.fromRadians(0.93, 0.42, 0.84));
+        System.out.println("Kinematics result " + result6);
         
         Phase phase1 = createPhase(300, result1);
         Phase phase2 = createPhase(300, result2);
         Phase phase3 = createPhase(300, result3);
         Phase phase4 = createPhase(300, result4);
         Phase phase5 = createPhase(300, result5);
+        Phase phase6 = createPhase(300, result6);
         List<Phase> phases = new ArrayList<Phase>();
         phases.add(phase1);
         phases.add(phase2);
         phases.add(phase3);
         phases.add(phase4);
         phases.add(phase5);
+        phases.add(phase6);
         //Phase finalPhase = new Phase();
         //phases.add(finalPhase);
         
