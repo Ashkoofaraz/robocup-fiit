@@ -2,7 +2,7 @@ package sk.fiit.jim.agent.moves.ik;
 
 import static java.lang.Math.*;
 
-public class ForwardKinematicResult
+class ForwardKinematicResult
 {
     private double px;
     

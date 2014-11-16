@@ -149,49 +149,49 @@ class RightArmIk
     public Map<Joint, Double> getResult()
     {
         Map<Joint, Double> result = new HashMap<Joint, Double>();
-        theta4 = toDegrees(getTheta4());
-        if(Utils.validateJointRange(Joint.RAE4, theta4))
+        double theta4Deg = toDegrees(getTheta4());
+        if(Utils.validateJointRange(Joint.RAE4, theta4Deg))
         {
-            result.put(Joint.RAE4, theta4);
-            theta2 = toDegrees(getTheta2() - PI / 2);
-            if(Utils.validateJointRange(Joint.RAE2, theta2))
+            result.put(Joint.RAE4, theta4Deg);
+            double theta2Deg = toDegrees(getTheta2() - PI / 2);
+            if(Utils.validateJointRange(Joint.RAE2, theta2Deg))
             {
-                result.put(Joint.RAE2, theta2);
+                result.put(Joint.RAE2, theta2Deg);
             }
             else 
             {
-                theta2 = toRadians(theta2 + 90);
-                theta2 = toDegrees(getTheta2_b() -  PI / 2);
-                if(Utils.validateJointRange(Joint.RAE2, theta2));
+                //theta2 = toRadians(theta2 + 90);
+                theta2Deg = toDegrees(getTheta2_b() -  PI / 2);
+                if(Utils.validateJointRange(Joint.RAE2, theta2Deg));
                 {
-                    result.put(Joint.RAE2, theta2);
+                    result.put(Joint.RAE2, theta2Deg);
                 }
             }
             
-            theta3 = toDegrees(getTheta3_1());
-            if(Utils.validateJointRange(Joint.RAE3, theta3))
+            double theta3Deg = toDegrees(getTheta3_1());
+            if(Utils.validateJointRange(Joint.RAE3, theta3Deg))
             {
-                result.put(Joint.RAE3, theta3);
+                result.put(Joint.RAE3, theta3Deg);
             }
             else 
             {
-                theta3 = toDegrees(getTheta3_2());
-                if(Utils.validateJointRange(Joint.RAE3, theta3));
+                theta3Deg = toDegrees(getTheta3_2());
+                if(Utils.validateJointRange(Joint.RAE3, theta3Deg));
                 {
-                    result.put(Joint.RAE3, theta3);
+                    result.put(Joint.RAE3, theta3Deg);
                 }
             }
-            theta1 = toDegrees(getTheta1());
-            if(Utils.validateJointRange(Joint.RAE1, theta1))
+            double theta1Deg = toDegrees(getTheta1());
+            if(Utils.validateJointRange(Joint.RAE1, theta1Deg))
             {
-                result.put(Joint.RAE1, theta1);
+                result.put(Joint.RAE1, theta1Deg);
             }
             else
             {
-                theta1 = -theta1;
-                if(Utils.validateJointRange(Joint.RAE1, theta1))
+                theta1Deg = -theta1Deg;
+                if(Utils.validateJointRange(Joint.RAE1, theta1Deg))
                 {
-                    result.put(Joint.RAE1, theta1);
+                    result.put(Joint.RAE1, theta1Deg);
                 }
             }
         }
