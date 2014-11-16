@@ -76,14 +76,14 @@ public final class Matrix
         this.values = new double[rows][columns];
     }
 
-    Matrix(double[][] values)
+    private Matrix(double[][] values)
     {
         this.values = values;
         this.rows = values.length;
         this.columns = values[0].length;
     }
 
-    public void setValueAt(int i, int j, double val)
+    public Matrix changeValueAt(int i, int j, double val)
     {
         if(i < 0)
         {
@@ -103,7 +103,9 @@ public final class Matrix
             throw new IllegalArgumentException("j >= columns: " + j + " >= "
                     + columns);
         }
-        values[i][j] = val;
+        Matrix result = new Matrix(values);
+        result.values[i][j] = val;
+        return result;
     }
 
     public double getValueAt(int i, int j)
