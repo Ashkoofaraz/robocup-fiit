@@ -1,6 +1,12 @@
 package sk.fiit.jim.agent.moves.ik;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.acos;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 import sk.fiit.robocup.library.geometry.Point3D;
 
 class HeadIk

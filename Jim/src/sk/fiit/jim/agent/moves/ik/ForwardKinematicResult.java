@@ -1,6 +1,7 @@
 package sk.fiit.jim.agent.moves.ik;
 
-import static java.lang.Math.*;
+import static java.lang.Math.atan2;
+import static java.lang.Math.sqrt;
 
 class ForwardKinematicResult
 {

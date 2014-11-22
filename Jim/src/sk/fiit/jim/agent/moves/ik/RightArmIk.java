@@ -1,7 +1,20 @@
 package sk.fiit.jim.agent.moves.ik;
 
-import static java.lang.Math.*;
-import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.acos;
+import static java.lang.Math.asin;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toDegrees;
+import static java.lang.Math.toRadians;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.ELBOW_OFFSET_Y;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.HAND_OFFSET_X;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.LOWER_ARM_LENGTH;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.SHOULDER_OFFSET_Y;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.SHOULDER_OFFSET_Z;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.UPPER_ARM_LENGTH;
 
 import java.util.HashMap;
 import java.util.Map;

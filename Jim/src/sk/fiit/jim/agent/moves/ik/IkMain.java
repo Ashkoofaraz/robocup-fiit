@@ -1,7 +1,6 @@
 package sk.fiit.jim.agent.moves.ik;
 
-import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.*;
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
 import sk.fiit.robocup.library.geometry.Point3D;
 
 public class IkMain
@@ -30,7 +29,7 @@ public class IkMain
         System.err.println(diff / 1000000000.0);
         
         long time2 = System.nanoTime();
-        Matrix forwardRightLeg = new Kinematics().getForwardRightLeg(toRadians(-75), 0, 0, 0, 0, 0);
+        Matrix forwardRightLeg = new Kinematics().getForwardRightLeg(-PI/2, 0, 0, 0, 0, 0);
         System.out.println(forwardRightLeg);
         ForwardKinematicResult rightLeg = new ForwardKinematicResult(forwardRightLeg);
         System.out.println(rightLeg);

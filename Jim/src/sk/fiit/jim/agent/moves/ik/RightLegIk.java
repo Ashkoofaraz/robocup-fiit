@@ -1,11 +1,16 @@
 package sk.fiit.jim.agent.moves.ik;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.acos;
+import static java.lang.Math.asin;
+import static java.lang.Math.atan;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.toDegrees;
 import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.THIGH_LENGHT;
 import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.TIBIA_LENGHT;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,7 +19,7 @@ import java.util.Set;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.geometry.Point3D;
 
-strictfp class RightLegIk
+class RightLegIk
 {
     private double theta1;
 
