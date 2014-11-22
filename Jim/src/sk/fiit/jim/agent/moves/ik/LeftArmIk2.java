@@ -56,7 +56,7 @@ class LeftArmIk2
 
     public LeftArmIk2(Point3D endpoint, Orientation angle)
     {
-        T = Matrix.createKinematic(endpoint, angle);
+        T = Matrix.createTransformation(endpoint, angle);
     }
 
     public LeftArmIk2(Matrix target)

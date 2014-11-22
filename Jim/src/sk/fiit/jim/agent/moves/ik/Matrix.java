@@ -309,7 +309,7 @@ public final class Matrix
     public static Matrix createTransformation(double px, double py, double pz,
             double rx, double ry, double rz)
     {
-        Matrix result = new Matrix(DEFAULT_N, DEFAULT_N);
+        Matrix result = createIdentity(DEFAULT_N);
         result.values[0][0] = cos(rz) * cos(ry);
         result.values[0][1] = cos(rz) * sin(ry) * sin(rx) - sin(rz) * cos(rx);
         result.values[0][2] = cos(rz) * sin(ry) * cos(rx) + sin(rz) * sin(rx);
@@ -322,6 +322,18 @@ public final class Matrix
         result.values[2][1] = cos(ry) * sin(rx);
         result.values[2][2] = cos(ry) * cos(rx);
         result.values[2][3] = pz;
+        return result;
+    }
+    
+    static Matrix createTransformation(Point3D end, Orientation angle)
+    {
+        double rx = angle.getAxRadians();
+        double ry = angle.getAyRadians();
+        double rz = angle.getAzRadians();
+        double px = end.x;
+        double py = end.y;
+        double pz = end.z;
+        Matrix result = createTransformation(px, py, pz, rx, ry, rz);
         return result;
     }
 
@@ -414,32 +426,4 @@ public final class Matrix
         return result;
     }
     
-    static Matrix createKinematic(Point3D endpoint, Orientation angle)
-    {
-        double ax = angle.getAxRadians();
-        double ay = angle.getAyRadians();
-        double az = angle.getAzRadians();
-        double px = endpoint.x;
-        double py = endpoint.y;
-        double pz = endpoint.z;
-        Matrix result = createIdentity(DEFAULT_N);
-        result.values[0][0] = cos(ay) * cos(az);
-        result.values[0][1] = -1 * cos(ax) * sin(az) + sin(ax) * sin(ay) * cos(az);
-        result.values[0][2] = sin(ax) * sin(az) + cos(ax) * sin(ay) * cos(az);
-        result.values[0][3] = px;
-        result.values[1][0] = cos(ay) * sin(az);
-        result.values[1][1] = cos(ax) * cos(az) + sin(ax) * sin(ay) * sin(az);
-        result.values[1][2] = -1 * sin(ax) * cos(az) + cos(ax) * sin(ay) * sin(az);
-        result.values[1][3] = py;
-        result.values[2][0] = -1 * sin(ay);
-        result.values[2][1] = sin(ax) * cos(ay);
-        result.values[2][2] = cos(ax) * cos(ay);
-        result.values[2][3] = pz;
-//        result.values[3][0] = 0;
-//        result.values[3][1] = 0;
-//        result.values[3][2] = 0;
-//        result.values[3][3] = 1;
-        return result;
-    }
-
 }

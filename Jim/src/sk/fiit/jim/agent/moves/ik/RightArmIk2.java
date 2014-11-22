@@ -46,7 +46,7 @@ class RightArmIk2
     
     public RightArmIk2(Point3D endpoint, Orientation angle)
     {
-        T = Matrix.createKinematic(endpoint, angle);
+        T = Matrix.createTransformation(endpoint, angle);
         T_ = T.mult(Matrix.ROTATION_Z_PI_MINUS.inverse());
     }
 

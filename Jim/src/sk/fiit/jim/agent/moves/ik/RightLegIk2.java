@@ -42,7 +42,7 @@ class RightLegIk2
     
     public RightLegIk2(Point3D end, Orientation angle)
     {
-        T = Matrix.createKinematic(end, angle);
+        T = Matrix.createTransformation(end, angle);
         
         Matrix temp = Matrix.invAbaseRightLeg.mult(T);
         temp = temp.mult(Matrix.invAendRightLeg);
