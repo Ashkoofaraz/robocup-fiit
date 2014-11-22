@@ -8,9 +8,6 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
-import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.FOOT_HEIGHT;
-import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.HIP_OFFSET_Y;
-import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.HIP_OFFSET_Z;
 import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.THIGH_LENGHT;
 import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.TIBIA_LENGHT;
 
@@ -38,72 +35,35 @@ class RightLegIk
 
     private double l2 = TIBIA_LENGHT;
     
-    private double sx = 0;
-    
-    private double sy = 0;
-    
-    private double sz = 0; 
-    
-    private double[][] T = new double[4][4];
-    private double[][] T_ = new double[4][4];
-    private double[][] T__ = new double[4][4];
-    private double[][] T___ = new double[4][4];
+    private Matrix T ;
+    private Matrix T_ ;
+    private Matrix T__ ;
+    private Matrix T___ ;
     
     public RightLegIk(Point3D end, Orientation angle)
     {
-        double ax = angle.getAxRadians();
-        double ay = angle.getAyRadians();
-        double az = angle.getAzRadians();
-        double px = end.x;
-        double py = end.y;
-        double pz = end.z;
-        T[0][0] = cos(ax) * cos(az);
-        T[0][1] = -1 * cos(ax) * sin(az) + sin(ax) * sin(ay) * cos(az);
-        T[0][2] = sin(ax) * sin(az) + cos(ax) * sin(ay) * cos(az);
-        T[0][3] = px;
-        T[1][0] = cos(ay) * sin(az);
-        T[1][1] = cos(ax) * cos(az) + sin(ax) * sin(ay) * sin(az);
-        T[1][2] = -1 * sin(ax) * cos(az) + cos(ax) * sin(ay) * sin(az);
-        T[1][3] = py;
-        T[2][0] = -1 * sin(ay);
-        T[2][1] = sin(ax) * cos(az);
-        T[2][2] = cos(ax) * cos(ay);
-        T[2][3] = pz;
-        T[3][0] = 0;
-        T[3][1] = 0;
-        T[3][2] = 0;
-        T[3][3] = 1;
+        T = Matrix.createTransformation(end, angle);
         
-        double[][] AbaseRightLeg = MatrixOperations.createTranslation(0, -HIP_OFFSET_Y, -HIP_OFFSET_Z);
-        double[][] invAbaseRightLeg = MatrixOperations.inverse(AbaseRightLeg);
-        double[][] temp = MatrixOperations.mult(invAbaseRightLeg, T);
-        double[][] AendRightLeg = MatrixOperations.createTranslation(0, 0, -FOOT_HEIGHT);
-        double[][] invAendRightLeg = MatrixOperations.inverse(AendRightLeg);
-        temp = MatrixOperations.mult(temp, invAendRightLeg);
-        T_ = MatrixOperations.mult(MatrixOperations.createRotationX(-PI / 4), temp);
-        T_ = MatrixOperations.inverse(T_);
+        Matrix temp = Matrix.invAbaseRightLeg.mult(T);
+        temp = temp.mult(Matrix.invAendRightLeg);
+        Matrix tempT_ = Matrix.ROTATION_X_PI_4_MINUS.mult(temp);
+        T_ = tempT_.inverse();
         
-        // TODO posun vyssie a usetris vypocet
-        double[][] left = MatrixOperations.inverse(T_);
-        double[][] T56RightLeg = MatrixOperations.createDHTransformation(0, -PI/2, 0, 0);
-        double[][] RzRightLeg = MatrixOperations.createRotationZ(PI);
-        double[][] RyRightLeg = MatrixOperations.createRotationY(-PI/2);
-        double[][] right = MatrixOperations.mult(T56RightLeg, RzRightLeg);
-        right = MatrixOperations.mult(right, RyRightLeg);
-        right = MatrixOperations.inverse(right);
-        T__ = MatrixOperations.mult(left, right);
-        T__ = MatrixOperations.inverse(T__);
+        Matrix left = tempT_;
+        Matrix right = (Matrix.T56RightLeg.mult(Matrix.RzRightLeg).mult(Matrix.RyRightLeg)).inverse();
+        Matrix tempT__ = left.mult(right);
+        T__ = tempT__.inverse();
         
-        double[][] T34RightLeg = MatrixOperations.createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
-        double[][] T45RightLeg = MatrixOperations.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
-        double[][] TTemp = MatrixOperations.mult(T34RightLeg, T45RightLeg);
-        TTemp = MatrixOperations.inverse(TTemp);
-        T___ = MatrixOperations.mult(MatrixOperations.inverse(T__), TTemp);
+        Matrix TTemp = (Matrix.T34RightLeg.mult(Matrix.T45RightLeg)).inverse();
+        T___ = tempT__.mult(TTemp);
     }
     
     double getTheta4()
     {
-        double d = sqrt((0-T_[0][3]) * (0-T_[0][3]) + (0-T_[1][3]) * (0-T_[1][3]) + (0-T_[2][3]) * (0-T_[2][3]));
+        double T_03 = T_.getValueAt(0, 3);
+        double T_13 = T_.getValueAt(1, 3);
+        double T_23 = T_.getValueAt(2, 3);
+        double d = sqrt((0-T_03) * (0-T_03) + (0-T_13) * (0-T_13) + (0-T_23) * (0-T_23));
         double nominator = l1*l1 + l2*l2 - d*d;
         double denom = 2*l1*l2;
         theta4 = PI - acos(nominator/denom);
@@ -113,7 +73,10 @@ class RightLegIk
     
     double getTheta5()
     {
-        double nominator = T__[1][3]*(l2 + l1*cos(theta4)) + l1*T__[0][3]*sin(theta4);
+        double T__03 = T__.getValueAt(0, 3);
+        double T__13 = T__.getValueAt(1, 3);
+        
+        double nominator = T__13*(l2 + l1*cos(theta4)) + l1*T__03*sin(theta4);
         double denominator = l1*l1*sin(theta4)*sin(theta4) + (l2 + l1*cos(theta4));
         theta5 = asin(-nominator/denominator);
         return theta5;
@@ -129,7 +92,9 @@ class RightLegIk
     {
         if(l2 * cos(theta5) + l1 * cos(theta4 + theta5) != 0)
         {
-            theta6 = atan(T_[1][3] / T_[2][3]);
+            double T_13 = T_.getValueAt(1, 3);
+            double T_23 = T_.getValueAt(2, 3);
+            theta6 = atan(T_13 / T_23);
         }
         else
         {
@@ -140,7 +105,8 @@ class RightLegIk
     
     double getTheta2()
     {
-        theta2 = acos(T___[1][2]);
+        double T___12 = T___.getValueAt(1, 2);
+        theta2 = acos(T___12);
         // TODO +- theta2
         // TODO - PI/4
         return theta2;
@@ -148,7 +114,8 @@ class RightLegIk
     
     double getTheta3()
     {
-        theta3 = asin(T___[1][1]/sin(theta2 + PI/4));
+        double T___11 = T___.getValueAt(1, 1);
+        theta3 = asin(T___11/sin(theta2 + PI/4));
         return theta3;
     }
     
@@ -160,7 +127,8 @@ class RightLegIk
     
     double getTheta1()
     {
-        theta1 = acos(T___[0][2]/sin(theta2 + PI/4));
+        double T___02 = T___.getValueAt(0,2);
+        theta1 = acos(T___02/sin(theta2 + PI/4));
         // TODO +- theta1
         // TODO + PI/2
         return theta1;

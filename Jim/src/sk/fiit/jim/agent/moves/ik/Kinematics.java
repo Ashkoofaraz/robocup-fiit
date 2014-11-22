@@ -113,24 +113,4 @@ public class Kinematics
     {
         return new RightLegIk(endpoint, angle).getResult();
     }
-    
-    public Map<Joint, Double> getInverseLeftArm2(Point3D endpoint, Orientation angle)
-    {
-        return new LeftArmIk2(endpoint, angle).getResult();
-    }
-    
-    public Map<Joint, Double> getInverseRightArm2(Point3D endpoint, Orientation angle)
-    {
-        return new RightArmIk2(endpoint, angle).getResult();
-    }
-    
-    public Map<Joint, Double> getInverseLeftLeg2(Point3D endpoint, Orientation angle)
-    {
-        return new LeftLegIk2(endpoint, angle).getResult();
-    }
-    
-    public Map<Joint, Double> getInverseRightLeg2(Point3D endpoint, Orientation angle)
-    {
-        return new RightLegIk2(endpoint, angle).getResult();
-    }
 }
