@@ -423,7 +423,7 @@ public final class Matrix
         double py = endpoint.y;
         double pz = endpoint.z;
         Matrix result = createIdentity(DEFAULT_N);
-        result.values[0][0] = cos(ax) * cos(az);
+        result.values[0][0] = cos(ay) * cos(az);
         result.values[0][1] = -1 * cos(ax) * sin(az) + sin(ax) * sin(ay) * cos(az);
         result.values[0][2] = sin(ax) * sin(az) + cos(ax) * sin(ay) * cos(az);
         result.values[0][3] = px;
@@ -432,7 +432,7 @@ public final class Matrix
         result.values[1][2] = -1 * sin(ax) * cos(az) + cos(ax) * sin(ay) * sin(az);
         result.values[1][3] = py;
         result.values[2][0] = -1 * sin(ay);
-        result.values[2][1] = sin(ax) * cos(az);
+        result.values[2][1] = sin(ax) * cos(ay);
         result.values[2][2] = cos(ax) * cos(ay);
         result.values[2][3] = pz;
 //        result.values[3][0] = 0;
