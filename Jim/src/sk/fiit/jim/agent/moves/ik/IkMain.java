@@ -19,11 +19,23 @@ public class IkMain
     public static void main(String[] args)
     {
         System.out.println("left leg");
-        Matrix forwardLeftLeg = new Kinematics().getForwardLeftLeg(0, -PI/8, 0, 0, 0, 0);
+        
+        long time = System.nanoTime();
+        Matrix forwardLeftLeg = new Kinematics().getForwardLeftLeg(-PI/2, 0, 0, 0, 0, 0);
         System.out.println(forwardLeftLeg);
         ForwardKinematicResult leftLeg = new ForwardKinematicResult(forwardLeftLeg);
         System.out.println(leftLeg);
         System.out.println(new LeftLegIk(new Point3D(leftLeg.getPx(), leftLeg.getPy(), leftLeg.getPz()), Orientation.fromRadians(leftLeg.getAx(), leftLeg.getAy(), leftLeg.getAz())).getResult());
-        System.out.println(new LeftLegIk2(new Point3D(leftLeg.getPx(), leftLeg.getPy(), leftLeg.getPz()), Orientation.fromRadians(leftLeg.getAx(), leftLeg.getAy(), leftLeg.getAz())).getResult());
+        long diff = System.nanoTime() - time;
+        System.err.println(diff / 1000000000.0);
+        
+        long time2 = System.nanoTime();
+        Matrix forwardRightLeg = new Kinematics().getForwardRightLeg(toRadians(-75), 0, 0, 0, 0, 0);
+        System.out.println(forwardRightLeg);
+        ForwardKinematicResult rightLeg = new ForwardKinematicResult(forwardRightLeg);
+        System.out.println(rightLeg);
+        System.out.println(new RightLegIk(new Point3D(rightLeg.getPx(), rightLeg.getPy(), rightLeg.getPz()), Orientation.fromRadians(rightLeg.getAx(), rightLeg.getAy(), rightLeg.getAz())).getResult());
+        long diff2 = System.nanoTime() - time2;
+        System.err.println(diff2 / 1000000000.0);
     }
 }

@@ -1,18 +1,21 @@
 package sk.fiit.jim.agent.moves.ik;
 
 import static java.lang.Math.*;
-import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.*;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.THIGH_LENGHT;
+import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.TIBIA_LENGHT;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.geometry.Point3D;
 
-class LeftLegIk
+strictfp class LeftLegIk
 {
     private double theta1;
-
+    
     private double theta2;
 
     private double theta3;
@@ -22,6 +25,18 @@ class LeftLegIk
     private double theta5;
     
     private double theta6;
+    
+    private Set<Double> theta1Result = new HashSet<Double>();
+    
+    private Set<Double> theta2Result = new HashSet<Double>();
+    
+    private Set<Double> theta3Result = new HashSet<Double>();
+    
+    private Set<Double> theta4Result = new HashSet<Double>();
+    
+    private Set<Double> theta5Result = new HashSet<Double>();
+    
+    private Set<Double> theta6Result = new HashSet<Double>();
 
     private double l1 = THIGH_LENGHT; 
 
@@ -51,7 +66,7 @@ class LeftLegIk
         T___ = tempT__.mult(TTemp.inverse());
     }
     
-    double getTheta4()
+    void getTheta4()
     {
         double T_03 = T_.getValueAt(0, 3);
         double T_13 = T_.getValueAt(1, 3);
@@ -60,145 +75,142 @@ class LeftLegIk
         double nominator = l1*l1 + l2*l2 - d*d;
         double denom = 2*l1*l2;
         theta4 = PI - acos(nominator/denom);
-        // TODO +- theta4
-        return theta4;
+        if(Utils.validateJointRange2(Joint.LLE4, theta4))
+        {
+            theta4Result.add(theta4);
+        }
+        if(Utils.validateJointRange2(Joint.LLE4, -theta4))
+        {
+            theta4Result.add(-theta4);
+        }
     }
     
-    double getTheta5()
+    void getTheta5()
     {
         double T__03 = T__.getValueAt(0, 3);
         double T__13 = T__.getValueAt(1, 3);
-        
-        double nominator = T__13*(l2 + l1*cos(theta4)) + l1*T__03*sin(theta4);
-        double denominator = l1*l1*sin(theta4)*sin(theta4) + (l2 + l1*cos(theta4));
-        theta5 = asin(-nominator/denominator);
-        return theta5;
-    }
-    
-    double getTheta5_2()
-    {
-        theta5 = PI - theta5;
-        return theta5;
-    }
-    
-    double getTheta6()
-    {
-        if(l2 * cos(theta5) + l1 * cos(theta4 + theta5) != 0)
+        for(double t4 : theta4Result)
         {
-            double T_13 = T_.getValueAt(1, 3);
-            double T_23 = T_.getValueAt(2, 3);
-            theta6 = atan(T_13 / T_23);
+            double nominator = T__13*(l2 + l1*cos(t4)) + l1*T__03*sin(t4);
+            double denominator = l1*l1*sin(t4)*sin(t4) + (l2 + l1*cos(t4));
+            theta5 = asin(-nominator/denominator);
+            if(Utils.validateJointRange2(Joint.LLE5,theta5))
+            {
+                theta5Result.add(theta5);
+            }
+            if(Utils.validateJointRange2(Joint.LLE5, PI - theta5))
+            {
+                theta5Result.add(PI -theta5);
+            }
         }
-        else
-        {
-            theta6 = 0; // undefined
-        }
-        return theta6;
     }
     
-    double getTheta2()
+    void getTheta6()
+    {
+        for(double t5: theta5Result)
+        {
+            for(double t4: theta4Result)
+            {
+                if(l2 * cos(t5) + l1 * cos(t4 + t5) != 0)
+                {
+                    double T_13 = T_.getValueAt(1, 3);
+                    double T_23 = T_.getValueAt(2, 3);
+                    theta6 = atan(T_13 / T_23);
+                }
+                else
+                {
+                    theta6 = 0; // undefined
+                }
+                if(Utils.validateJointRange2(Joint.LLE6, theta6))
+                {
+                    theta6Result.add(theta6);
+                }
+            }
+        }
+    }
+    
+    void getTheta2()
     {
         double T___12 = T___.getValueAt(1, 2);
         theta2 = acos(T___12);
         // TODO +- theta2
         // TODO - PI/4
-        return theta2;
+        if(Utils.validateJointRange2(Joint.LLE2, theta2 - PI/4))
+        {
+            theta2Result.add(theta2 - PI/4);
+        }
+        if(Utils.validateJointRange2(Joint.LLE2, -theta2 - PI/4))
+        {
+            theta2Result.add(-theta2 - PI/4);
+        }
     }
     
-    double getTheta3()
+    void getTheta3()
     {
-        double T___11 = T___.getValueAt(1, 1);
-        theta3 = asin(T___11/sin(theta2 + PI/4));
-        return theta3;
+        for(double t2 : theta2Result)
+        {
+            double T___11 = T___.getValueAt(1, 1);
+            theta3 = asin(T___11/sin(t2 + PI/4));
+            if(Utils.validateJointRange2(Joint.LLE3, theta3))
+            {
+                theta3Result.add(theta3);
+            }
+            if(Utils.validateJointRange2(Joint.LLE3, PI - theta3))
+            {
+                theta3Result.add(PI - theta3);
+            }
+        }
     }
     
-    double getTheta3_2()
+    void getTheta1()
     {
-        theta3 = PI - theta3;
-        return theta3;
-    }
-    
-    double getTheta1()
-    {
-        double T___02 = T___.getValueAt(0,2);
-        theta1 = acos(T___02/sin(theta2 + PI/4));
-        // TODO +- theta1
-        // TODO + PI/2
-        return theta1;
+        for(double t2 : theta2Result)
+        {
+            double T___02 = T___.getValueAt(0,2);
+            theta1 = acos(T___02/sin(t2 + PI/4));
+            if(Utils.validateJointRange2(Joint.LLE1, theta1 + PI/2))
+            {
+                theta1Result.add(theta1 + PI/2);
+            }
+            if(Utils.validateJointRange2(Joint.LLE1, -theta1 + PI/2))
+            {
+                theta1Result.add(-theta1 + PI/2);
+            }
+        }
     }
     
     public Map<Joint, Double> getResult()
     {
+        getTheta4();
+        getTheta5();
+        getTheta6();
+        getTheta2();
+        getTheta3();
+        getTheta1();
         Map<Joint, Double> result = new HashMap<Joint, Double>();
-        double theta4Deg = toDegrees(getTheta4());
-        if(Utils.validateJointRange(Joint.LLE4, theta4Deg))
+        for(double t1 : theta1Result)
         {
-            result.put(Joint.LLE4, theta4Deg);
+            result.put(Joint.LLE1, toDegrees(t1));
         }
-        else if(Utils.validateJointRange(Joint.LLE4, -theta4Deg))
+        for(double t2 : theta2Result)
         {
-            theta4Deg = -theta4Deg;
-            result.put(Joint.LLE4, toDegrees(-theta4Deg));
+            result.put(Joint.LLE2, toDegrees(t2));
         }
-        double theta5Deg = toDegrees(getTheta5());
-        if(Utils.validateJointRange(Joint.LLE5, theta5Deg))
+        for(double t3 : theta3Result)
         {
-            result.put(Joint.LLE5, theta5Deg);
+            result.put(Joint.LLE3, toDegrees(t3));
         }
-        else
+        for(double t4 : theta4Result)
         {
-            theta5Deg = 180 - theta5Deg;
-            if(Utils.validateJointRange(Joint.LLE5, theta5Deg))
-            {
-                result.put(Joint.LLE5, theta5Deg);
-            }
+            result.put(Joint.LLE4, toDegrees(t4));
         }
-        double theta6Deg = toDegrees(getTheta6());
-        if(Utils.validateJointRange(Joint.LLE6, theta6Deg))
+        for(double t5 : theta5Result)
         {
-            result.put(Joint.LLE6, theta6Deg);
+            result.put(Joint.LLE5, toDegrees(t5));
         }
-        
-        double theta2Deg = toDegrees(getTheta2()) - 45;
-        if(Utils.validateJointRange(Joint.LLE2, theta2Deg))
+        for(double t6 : theta6Result)
         {
-            result.put(Joint.LLE2, theta2Deg);
-        }
-        else 
-        {
-            theta2Deg = -toDegrees(getTheta2()) - 45;
-            if(Utils.validateJointRange(Joint.LLE2, theta2Deg))
-            {
-                result.put(Joint.LLE2, theta2Deg);
-            }
-        }
-        
-        double theta3Deg = toDegrees(getTheta3());
-        if(Utils.validateJointRange(Joint.LLE3, theta3Deg))
-        {
-            result.put(Joint.LLE3, theta3Deg);
-        }
-        else 
-        {
-            theta3Deg = 180 - theta3Deg;
-            if(Utils.validateJointRange(Joint.LLE3, theta3Deg))
-            {
-                result.put(Joint.LLE3, theta3Deg);
-            }
-        }
-        
-        double theta1Deg = toDegrees(getTheta1()) + 90;
-        if(Utils.validateJointRange(Joint.LLE1, theta1Deg))
-        {
-            result.put(Joint.LLE1, theta1Deg);
-        }
-        else 
-        {
-            theta1Deg = -toDegrees(getTheta1()) + 90;
-            if(Utils.validateJointRange(Joint.LLE1, theta1Deg))
-            {
-                result.put(Joint.LLE1, theta1Deg);
-            }
+            result.put(Joint.LLE6, toDegrees(t6));
         }
         return result;
     }
