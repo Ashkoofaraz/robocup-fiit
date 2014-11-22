@@ -116,14 +116,23 @@ public class IkMain
 //        System.out.println(new Kinematics().getForwardRightLeg(0, 0, 0, 0, 0, 0));
         
         // Left arm forward
-        System.out.println("Left arm");
-        ForwardKinematicResult res = new ForwardKinematicResult(new Kinematics().getForwardLeftHand(PI/2, 0, 0, 0));
-        System.out.println(res);
-        System.out.println(new LeftArmIk(new Point3D(res.getPx(), res.getPy(), res.getPz()), Orientation.fromRadians(res.getAx(), res.getAy(), res.getAz())).getResult());
+//        System.out.println("Left arm");
+//        ForwardKinematicResult res = new ForwardKinematicResult(new Kinematics().getForwardLeftHand(PI/2, 0, 0, 0));
+//        System.out.println(res);
+//        System.out.println(new LeftArmIk(new Point3D(res.getPx(), res.getPy(), res.getPz()), Orientation.fromRadians(res.getAx(), res.getAy(), res.getAz())).getResult());
+//        
+//        System.out.println("Right arm");
+//        ForwardKinematicResult res2 = new ForwardKinematicResult(new Kinematics().getForwardRightHand(0, -PI/2, 0, 0));
+//        System.out.println(res2);
+//        System.out.println(new RightArmIk(new Point3D(res2.getPx(), res2.getPy(), res2.getPz()), Orientation.fromRadians(res2.getAx(), res2.getAy(), res2.getAz())).getResult());
         
-        System.out.println("Right arm");
-        ForwardKinematicResult res2 = new ForwardKinematicResult(new Kinematics().getForwardRightHand(0, -PI/2, 0, 0));
-        System.out.println(res2);
-        System.out.println(new RightArmIk(new Point3D(res2.getPx(), res2.getPy(), res2.getPz()), Orientation.fromRadians(res2.getAx(), res2.getAy(), res2.getAz())).getResult());
+        System.out.println("left leg");
+        Matrix forwardLeftLeg = new Kinematics().getForwardLeftLeg(0, -PI/8, 0, 0, 0, 0);
+        System.out.println(forwardLeftLeg);
+        ForwardKinematicResult leftLeg = new ForwardKinematicResult(forwardLeftLeg);
+        System.out.println(leftLeg);
+        System.out.println(new LeftLegIk(new Point3D(leftLeg.getPx(), leftLeg.getPy(), leftLeg.getPz()), Orientation.fromRadians(leftLeg.getAx(), leftLeg.getAy(), leftLeg.getAz())).getResult());
+        System.out.println(new LeftLegIk2(new Point3D(leftLeg.getPx(), leftLeg.getPy(), leftLeg.getPz()), Orientation.fromRadians(leftLeg.getAx(), leftLeg.getAy(), leftLeg.getAz())).getResult());
+        System.out.println(new LeftLegIk3(new Point3D(leftLeg.getPx(), leftLeg.getPy(), leftLeg.getPz()), Orientation.fromRadians(leftLeg.getAx(), leftLeg.getAy(), leftLeg.getAz())).getResult());
     }
 }
