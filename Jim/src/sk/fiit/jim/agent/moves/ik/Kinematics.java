@@ -67,7 +67,7 @@ public class Kinematics
         Matrix T12LeftLeg =  Matrix.createDHTransformation(0, -PI/2, 0, PI/4 + theta2);
         Matrix T23LeftLeg =  Matrix.createDHTransformation(0, PI/2, 0, 0 + theta3);
         Matrix T34LeftLeg =  Matrix.createDHTransformation(-THIGH_LENGHT, 0, 0, 0+ theta4);
-        Matrix T45LeftLeg =  Matrix.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0+ theta4);
+        Matrix T45LeftLeg =  Matrix.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0+ theta5);
         Matrix T56LeftLeg =  Matrix.createDHTransformation(0, -PI/2, 0, 0 + theta6);
         Matrix RzLeftLeg =   Matrix.createRotationZ(PI);
         Matrix RyLeftLeg =   Matrix.createRotationY(-PI/2);
@@ -84,7 +84,7 @@ public class Kinematics
         Matrix T12RightLeg =  Matrix.createDHTransformation(0, -PI/2, 0, -PI/4 + theta2);
         Matrix T23RightLeg =  Matrix.createDHTransformation(0, PI/2, 0, 0 + theta3);
         Matrix T34RightLeg =  Matrix.createDHTransformation(-THIGH_LENGHT, 0, 0, 0+ theta4);
-        Matrix T45RightLeg =  Matrix.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0+ theta4);
+        Matrix T45RightLeg =  Matrix.createDHTransformation(-TIBIA_LENGHT, 0, 0, 0+ theta5);
         Matrix T56RightLeg =  Matrix.createDHTransformation(0, -PI/2, 0, 0 + theta6);
         Matrix RzRightLeg =   Matrix.createRotationZ(PI);
         Matrix RyRightLeg =   Matrix.createRotationY(-PI/2);
