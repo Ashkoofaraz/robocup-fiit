@@ -16,6 +16,16 @@ import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.TIBIA_LENGHT;
 import static sk.fiit.jim.agent.moves.ik.SimsparkConstants.UPPER_ARM_LENGTH;
 import sk.fiit.robocup.library.geometry.Point3D;
 
+/**
+ * <p>
+ * Immutable representation of matrices. Contains basic matrix operations.
+ * </p>
+ * <p>
+ * Note that matrix rows and column are indexed from zero.
+ * </p>
+ * @author Pidanic
+ *
+ */
 public final class Matrix
 {
     static final Matrix AbaseLeftArm = createTranslation(0, SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
@@ -61,6 +71,13 @@ public final class Matrix
 
     private final int columns;
 
+    /**
+     * Creates empty matrix with given rows and columns count.
+     * 
+     * @param rows Row count of new Matrix.
+     * @param columns Column count of new Matrix.
+     * @throws IllegalArgumentException if given column or rows are less than 1.
+     */
     public Matrix(int rows, int columns)
     {
         if(rows < 1)
@@ -76,84 +93,178 @@ public final class Matrix
         this.values = new double[rows][columns];
     }
 
-    private Matrix(double[][] values)
+   /**
+    * <p>
+    * Creates new matrix with given values stored in 2 dimensional array.
+    * </p>
+    * <p>
+    * It is required for a matrix to be full matrix. Elements count must be equal for all rows and all columns.
+    * </p>
+    * @param values Given values of matrix.
+    * @throws IllegalArgumentException if array is empty or elements count is not equal for all rows and all columns.
+    * @throws NullPointerException if <b>value</b> is <code>null</code>.
+    * 
+    */
+    public Matrix(double[][] values)
     {
+        this.validateMatrix(values);
         this.values = values;
         this.rows = values.length;
         this.columns = values[0].length;
     }
-
-    public Matrix changeValueAt(int i, int j, double val)
+    
+    private void validateMatrix(double[][] values)
     {
-        if(i < 0)
+        if(values == null)
+        {
+            throw new NullPointerException("Parameter values is null");
+        }
+        if(values.length == 0)
+        {
+            throw new IllegalArgumentException("Empty values");
+        }
+        if(values[0].length == 0)
+        {
+            throw new IllegalArgumentException("Empty values");
+        }
+        
+        @SuppressWarnings("unused")
+        int rows = values.length;
+        int columns = values[0].length;
+        for(int i = 1; i < values.length; i++)
+        {
+            if(values[i] == null)
+            {
+                throw new NullPointerException("Row " + i + " is null");
+            }
+            if(values[i].length != columns)
+            {
+                throw new IllegalArgumentException("Column count in all rows is not equal");
+            }
+        }
+    }
+
+    /**
+     * Changes a value at given row and columns index and creates new {@link Matrix}. Former matrix stay unchanged.
+     * 
+     * @param row Value at row to be changed.
+     * @param column Value at column to be changed.
+     * @param value new value
+     * @return new {@link Matrix} with changed value at given row and column. 
+     * 
+     * @throws IllegalArgumentException if row or column is negative or higher than row or column count of matrix. 
+     */
+    public Matrix changeValueAt(int row, int column, double value)
+    {
+        if(row < 0)
         {
             throw new IllegalArgumentException("i < 0");
         }
-        if(j < 0)
+        if(column < 0)
         {
             throw new IllegalArgumentException("j < 0");
         }
 
-        if(i >= rows)
+        if(row >= rows)
         {
-            throw new IllegalArgumentException("i >= rows: " + i + " >= " + rows);
+            throw new IllegalArgumentException("i >= rows: " + row + " >= " + rows);
         }
-        if(j >= columns)
+        if(column >= columns)
         {
-            throw new IllegalArgumentException("j >= columns: " + j + " >= "
+            throw new IllegalArgumentException("j >= columns: " + column + " >= "
                     + columns);
         }
         Matrix result = new Matrix(values);
-        result.values[i][j] = val;
+        result.values[row][column] = value;
         return result;
     }
 
-    public double getValueAt(int i, int j)
+    /**
+     * Return a value at given row and column.
+     * 
+     * @param row Row index.
+     * @param column Column index.
+     * @return value at row and column index.
+     * 
+     * @throws IllegalArgumentException if row or column is negative or higher than row or column count of matrix. 
+     */
+    public double getValueAt(int row, int column)
     {
-        if(i < 0)
+        if(row < 0)
         {
             throw new IllegalArgumentException("i < 0");
         }
-        if(j < 0)
+        if(column < 0)
         {
             throw new IllegalArgumentException("j < 0");
         }
 
-        if(i >= rows)
+        if(row >= rows)
         {
-            throw new IllegalArgumentException("i >= rows: " + i + " >= " + rows);
+            throw new IllegalArgumentException("i >= rows: " + row + " >= " + rows);
         }
-        if(j >= columns)
+        if(column >= columns)
         {
-            throw new IllegalArgumentException("j >= columns: " + j + " >= "
+            throw new IllegalArgumentException("j >= columns: " + column + " >= "
                     + columns);
         }
-        return values[i][j];
+        return values[row][column];
     }
 
+    /**
+     * Returns row count of the matrix.
+     * 
+     * @return row count.
+     */
     public int getRows()
     {
         return rows;
     }
 
+    /**
+     * Returns column count of the matrix.
+     * 
+     * @return column count.
+     */
     public int getColumns()
     {
         return columns;
     }
 
+    /**
+     * Return new inverted matrix of former matrix.
+     * 
+     * @return inverted matrix.
+     */
     public Matrix inverse()
     {
         double determinant = this.determinant();
         return cofactor().transpose().mult(1 / determinant);
     }
 
+    /**
+     * Creates new matrix that is result of addition of 2 matrices.
+     * 
+     * @param matrix Matrix to add.
+     * @return result of 2 matrices addition.
+     * 
+     * @throws IllegalArgumentException if dimensions of matrix are not suitable for addition.
+     * @throws NullPointerException if input matrix is <code>null</code>.
+     */
     public Matrix add(Matrix matrix)
     {
-        // TODO check dimensions
-        Matrix result = new Matrix(matrix.rows, matrix.columns);
-        for (int i = 0; i < DEFAULT_N; i++)
+        if(matrix == null)
         {
-            for (int j = 0; j < DEFAULT_N; j++)
+            throw new NullPointerException("matrix is null");
+        }
+        if(matrix.getRows() != rows || matrix.getColumns() != columns)
+        {
+            throw new IllegalArgumentException("Incorrect matrices dimensions for addition: " + rows + "×" + columns + " != " + matrix.getRows() + "×" + matrix.getColumns());
+        }
+        Matrix result = new Matrix(matrix.rows, matrix.columns);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
             {
                 result.values[i][j] = this.values[i][j] + matrix.values[i][j];
             }
@@ -161,26 +272,50 @@ public final class Matrix
         return result;
     }
 
-    public Matrix add(double val)
+    /**
+     * Creates new matrix that is result of scalar addition.
+     * 
+     * @param value Scalar value.
+     * @return result of scalar addition.
+     * 
+     */
+    public Matrix add(double value)
     {
         Matrix result = new Matrix(rows, columns);
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < columns; j++)
             {
-                result.values[i][j] = this.values[i][j] + val;
+                result.values[i][j] = this.values[i][j] + value;
             }
         }
         return result;
     }
 
+    /**
+     * Creates new matrix that is result of subtraction of 2 matrices.
+     * 
+     * @param matrix Matrix to subtract.
+     * @return result of 2 matrices subtraction.
+     * 
+     * @throws IllegalArgumentException if dimensions of matrix are not suitable for subtraction.
+     * @throws NullPointerException if input matrix is <code>null</code>.
+     */
     public Matrix sub(Matrix matrix)
     {
-        // TODO check dimensions
-        Matrix result = new Matrix(matrix.rows, matrix.columns);
-        for (int i = 0; i < DEFAULT_N; i++)
+        if(matrix == null)
         {
-            for (int j = 0; j < DEFAULT_N; j++)
+            throw new NullPointerException("matrix is null");
+        }
+        if(matrix.getRows() != rows || matrix.getColumns() != columns)
+        {
+            throw new IllegalArgumentException("Incorrect matrices dimensions for subtraction: " + rows + "×" + columns + " != " + matrix.getRows() + "×" + matrix.getColumns());
+        }
+        
+        Matrix result = new Matrix(matrix.rows, matrix.columns);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < columns; j++)
             {
                 result.values[i][j] = this.values[i][j] - matrix.values[i][j];
             }
@@ -188,17 +323,16 @@ public final class Matrix
         return result;
     }
 
-    public Matrix sub(double val)
+    /**
+     * Creates new matrix that is result of scalar subtraction.
+     * 
+     * @param value Scalar value.
+     * @return result of scalar subtraction.
+     * 
+     */
+    public Matrix sub(double value)
     {
-        Matrix result = new Matrix(rows, columns);
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < columns; j++)
-            {
-                result.values[i][j] = this.values[i][j] - val;
-            }
-        }
-        return result;
+        return add(-value);
     }
 
     public Matrix mult(Matrix matrix)
@@ -412,12 +546,13 @@ public final class Matrix
         return result;
     }
 
+    //The cofactor of a matrix A is matrix C that the value of element Cij equals the determinant of a matrix created by removing row i and column j from matrix A. Here is the method that calculates the cofactor matrix
     public Matrix cofactor()
     {
-        Matrix result = new Matrix(rows, rows);
+        Matrix result = new Matrix(rows, columns);
         for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < rows; j++)
+            for (int j = 0; j < columns; j++)
             {
                 result.values[i][j] = changeSign(i) * changeSign(j)
                         * submatrix(i, j).determinant();
