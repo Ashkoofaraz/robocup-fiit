@@ -80,7 +80,7 @@ class RightLegIk
         double d = sqrt((0-T_03) * (0-T_03) + (0-T_13) * (0-T_13) + (0-T_23) * (0-T_23));
         double nominator = l1*l1 + l2*l2 - d*d;
         double denom = 2*l1*l2;
-        theta4 = PI - acos(nominator/denom);
+        theta4 = PI - acos(Utils.validateArcsinArccosRange(nominator/denom));
         if(Utils.validateJointRange2(Joint.RLE4, theta4))
         {
             theta4Result.add(theta4);
@@ -99,7 +99,7 @@ class RightLegIk
         {
             double nominator = T__13*(l2 + l1*cos(t4)) + l1*T__03*sin(t4);
             double denominator = l1*l1*sin(t4)*sin(t4) + (l2 + l1*cos(t4));
-            theta5 = asin(-nominator/denominator);
+            theta5 = asin(Utils.validateArcsinArccosRange(-nominator/denominator));
             if(Utils.validateJointRange2(Joint.RLE5,theta5))
             {
                 theta5Result.add(theta5);
@@ -138,7 +138,7 @@ class RightLegIk
     void getTheta2()
     {
         double T___12 = T___.getValueAt(1, 2);
-        theta2 = acos(T___12);
+        theta2 = acos(Utils.validateArcsinArccosRange(T___12));
         // TODO +- theta2
         // TODO + PI/4
         if(Utils.validateJointRange2(Joint.RLE2, theta2 + PI/4))
@@ -156,7 +156,7 @@ class RightLegIk
         for(double t2 : theta2Result)
         {
             double T___11 = T___.getValueAt(1, 1);
-            theta3 = asin(T___11/sin(t2 - PI/4));
+            theta3 = asin(Utils.validateArcsinArccosRange(T___11/sin(t2 - PI/4)));
             if(Utils.validateJointRange2(Joint.RLE3, theta3))
             {
                 theta3Result.add(theta3);
@@ -173,7 +173,7 @@ class RightLegIk
         for(double t2 : theta2Result)
         {
             double T___02 = T___.getValueAt(0,2);
-            theta1 = acos(T___02/sin(t2 - PI/4));
+            theta1 = acos(Utils.validateArcsinArccosRange(T___02/sin(t2 - PI/4)));
             if(Utils.validateJointRange2(Joint.RLE1, theta1 + PI/2))
             {
                 theta1Result.add(theta1 + PI/2);
