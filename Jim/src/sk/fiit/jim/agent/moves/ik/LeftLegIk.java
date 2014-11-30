@@ -82,11 +82,11 @@ class LeftLegIk
         double nominator = l1*l1 + l2*l2 - d*d;
         double denom = 2*l1*l2;
         theta4 = PI - acos(nominator/denom);
-        if(Utils.validateJointRange2(Joint.LLE4, theta4))
+        if(KinematicUtils.validateJointRange2(Joint.LLE4, theta4))
         {
             theta4Result.add(theta4);
         }
-        if(Utils.validateJointRange2(Joint.LLE4, -theta4))
+        if(KinematicUtils.validateJointRange2(Joint.LLE4, -theta4))
         {
             theta4Result.add(-theta4);
         }
@@ -101,11 +101,11 @@ class LeftLegIk
             double nominator = T__13*(l2 + l1*cos(t4)) + l1*T__03*sin(t4);
             double denominator = l1*l1*sin(t4)*sin(t4) + (l2 + l1*cos(t4));
             theta5 = asin(-nominator/denominator);
-            if(Utils.validateJointRange2(Joint.LLE5,theta5))
+            if(KinematicUtils.validateJointRange2(Joint.LLE5,theta5))
             {
                 theta5Result.add(theta5);
             }
-            if(Utils.validateJointRange2(Joint.LLE5, PI - theta5))
+            if(KinematicUtils.validateJointRange2(Joint.LLE5, PI - theta5))
             {
                 theta5Result.add(PI -theta5);
             }
@@ -128,7 +128,7 @@ class LeftLegIk
                 {
                     theta6 = 0; // undefined
                 }
-                if(Utils.validateJointRange2(Joint.LLE6, theta6))
+                if(KinematicUtils.validateJointRange2(Joint.LLE6, theta6))
                 {
                     theta6Result.add(theta6);
                 }
@@ -142,11 +142,11 @@ class LeftLegIk
         theta2 = acos(T___12);
         // TODO +- theta2
         // TODO - PI/4
-        if(Utils.validateJointRange2(Joint.LLE2, theta2 - PI/4))
+        if(KinematicUtils.validateJointRange2(Joint.LLE2, theta2 - PI/4))
         {
             theta2Result.add(theta2 - PI/4);
         }
-        if(Utils.validateJointRange2(Joint.LLE2, -theta2 - PI/4))
+        if(KinematicUtils.validateJointRange2(Joint.LLE2, -theta2 - PI/4))
         {
             theta2Result.add(-theta2 - PI/4);
         }
@@ -158,11 +158,11 @@ class LeftLegIk
         {
             double T___11 = T___.getValueAt(1, 1);
             theta3 = asin(T___11/sin(t2 + PI/4));
-            if(Utils.validateJointRange2(Joint.LLE3, theta3))
+            if(KinematicUtils.validateJointRange2(Joint.LLE3, theta3))
             {
                 theta3Result.add(theta3);
             }
-            if(Utils.validateJointRange2(Joint.LLE3, PI - theta3))
+            if(KinematicUtils.validateJointRange2(Joint.LLE3, PI - theta3))
             {
                 theta3Result.add(PI - theta3);
             }
@@ -175,11 +175,11 @@ class LeftLegIk
         {
             double T___02 = T___.getValueAt(0,2);
             theta1 = acos(T___02/sin(t2 + PI/4));
-            if(Utils.validateJointRange2(Joint.LLE1, theta1 + PI/2))
+            if(KinematicUtils.validateJointRange2(Joint.LLE1, theta1 + PI/2))
             {
                 theta1Result.add(theta1 + PI/2);
             }
-            if(Utils.validateJointRange2(Joint.LLE1, -theta1 + PI/2))
+            if(KinematicUtils.validateJointRange2(Joint.LLE1, -theta1 + PI/2))
             {
                 theta1Result.add(-theta1 + PI/2);
             }

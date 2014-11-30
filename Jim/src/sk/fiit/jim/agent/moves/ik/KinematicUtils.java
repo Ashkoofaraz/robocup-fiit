@@ -2,12 +2,12 @@ package sk.fiit.jim.agent.moves.ik;
 
 import sk.fiit.jim.agent.moves.Joint;
 
-final class Utils
+final class KinematicUtils
 {
     // radians
     private static final double EPSILON = 0.01;
     
-    private Utils()
+    private KinematicUtils()
     {
     }
     

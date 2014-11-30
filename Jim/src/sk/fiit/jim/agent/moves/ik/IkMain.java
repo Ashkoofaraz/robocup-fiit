@@ -37,11 +37,11 @@ public class IkMain
         long diff2 = System.nanoTime() - time2;
         System.err.println(diff2 / 1000000000.0);
         
-        System.out.println(Utils.validateArcsinArccosRange(1.000007));
-        System.out.println(Utils.validateArcsinArccosRange(-1.000007));
-        System.out.println(Utils.validateArcsinArccosRange(0));
-        System.out.println(Utils.validateArcsinArccosRange(-1.700007));
-        System.out.println(Utils.validateArcsinArccosRange(-0.99999));
+        System.out.println(KinematicUtils.validateArcsinArccosRange(1.000007));
+        System.out.println(KinematicUtils.validateArcsinArccosRange(-1.000007));
+        System.out.println(KinematicUtils.validateArcsinArccosRange(0));
+        System.out.println(KinematicUtils.validateArcsinArccosRange(-1.700007));
+        System.out.println(KinematicUtils.validateArcsinArccosRange(-0.99999));
         System.out.println(Math.toDegrees(0.01));
     }
 }

@@ -147,11 +147,11 @@ class LeftArmIk
     {
         Map<Joint, Double> result = new HashMap<Joint, Double>();
         theta4 = toDegrees(getTheta4());
-        if(Utils.validateJointRange(Joint.LAE4, theta4))
+        if(KinematicUtils.validateJointRange(Joint.LAE4, theta4))
         {
             result.put(Joint.LAE4, theta4);
             theta2 = toDegrees(getTheta2() + PI / 2);
-            if(Utils.validateJointRange(Joint.LAE2, theta2))
+            if(KinematicUtils.validateJointRange(Joint.LAE2, theta2))
             {
                 result.put(Joint.LAE2, theta2);
             }
@@ -159,34 +159,34 @@ class LeftArmIk
             {
                 theta2 = toRadians(theta2 - 90);
                 theta2 = toDegrees(getTheta2_b() +  PI / 2);
-                if(Utils.validateJointRange(Joint.LAE2, theta2));
+                if(KinematicUtils.validateJointRange(Joint.LAE2, theta2));
                 {
                     result.put(Joint.LAE2, theta2);
                 }
             }
             
             theta3 = toDegrees(getTheta3_1());
-            if(Utils.validateJointRange(Joint.LAE3, theta3))
+            if(KinematicUtils.validateJointRange(Joint.LAE3, theta3))
             {
                 result.put(Joint.LAE3, theta3);
             }
             else 
             {
                 theta3 = toDegrees(getTheta3_2());
-                if(Utils.validateJointRange(Joint.LAE3, theta3));
+                if(KinematicUtils.validateJointRange(Joint.LAE3, theta3));
                 {
                     result.put(Joint.LAE3, theta3);
                 }
             }
             theta1 = toDegrees(getTheta1());
-            if(Utils.validateJointRange(Joint.LAE1, theta1))
+            if(KinematicUtils.validateJointRange(Joint.LAE1, theta1))
             {
                 result.put(Joint.LAE1, theta1);
             }
             else
             {
                 theta1 = -theta1;
-                if(Utils.validateJointRange(Joint.LAE1, theta1))
+                if(KinematicUtils.validateJointRange(Joint.LAE1, theta1))
                 {
                     result.put(Joint.LAE1, theta1);
                 }
