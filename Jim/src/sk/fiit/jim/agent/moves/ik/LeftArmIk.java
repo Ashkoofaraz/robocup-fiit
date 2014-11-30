@@ -22,6 +22,14 @@ import java.util.Map;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.geometry.Point3D;
 
+/**
+ * 
+ * The purpose of this class is encapsulating inverse kinematics calculations of
+ * left arm.
+ * 
+ * @author Pidanic
+ *
+ */
 class LeftArmIk
 {
     private double theta1;
@@ -32,20 +40,15 @@ class LeftArmIk
 
     private double theta4;
 
-    // mal by som si dat pozor na osi a stranu?
-    private double l1 = SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y; // ShoulderOffsetY +
-                                                            // ElbowOffsetY
+    private double l1 = SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y;
 
-    private double l2 = SHOULDER_OFFSET_Z; // ShoulderOffsetZ
+    private double l2 = SHOULDER_OFFSET_Z;
 
-    private double l3 = UPPER_ARM_LENGTH; // UpperArmLength
+    private double l3 = UPPER_ARM_LENGTH;
 
-    private double l4 = HAND_OFFSET_X + LOWER_ARM_LENGTH; // HandOffsetX +
-                                                          // LowerArmLength.
+    private double l4 = HAND_OFFSET_X + LOWER_ARM_LENGTH;
 
     // leftShoulderPitch (sx, sy, sz) = (0, l1, l2)
-
-    // treba si dat pozor, ktora os, prava alebo lava?
     private double sx = 0;
 
     private double sy = l1;
@@ -71,8 +74,7 @@ class LeftArmIk
         double T13 = T.getValueAt(1, 3);
         double T23 = T.getValueAt(2, 3);
         // TODO optimalizuj odstran mocninu a odmocninu
-        double d = sqrt((sx - T03) * (sx - T03) + (sy - T13)
-                * (sy - T13) + (sz - T23) * (sz - T23));
+        double d = sqrt((sx - T03) * (sx - T03) + (sy - T13) * (sy - T13) + (sz - T23) * (sz - T23));
         double nominator = l3 * l3 + l4 * l4 - d * d;
         double denominator = 2 * l3 * l4;
         theta4 = -1 * (PI - acos(nominator / denominator));
@@ -83,13 +85,11 @@ class LeftArmIk
     {
         double T13 = T.getValueAt(1, 3);
         double T11 = T.getValueAt(1, 1);
-        double nominator = T13 - l1
-                - ((l4 * sin(theta4) * T11) / (cos(theta4)));
-        double denominator = l3 + l4 * cos(theta4) + l4
-                * (sin(theta4) * sin(theta4)) / cos(theta4);
+        double nominator = T13 - l1 - ((l4 * sin(theta4) * T11) / (cos(theta4)));
+        double denominator = l3 + l4 * cos(theta4) + l4 * (sin(theta4) * sin(theta4)) / cos(theta4);
         theta2 = acos(nominator / denominator);
-        // +  PI / 2 in result
-        return theta2 ;
+        // + PI / 2 in result
+        return theta2;
     }
 
     double getTheta2_b()
@@ -106,7 +106,7 @@ class LeftArmIk
 
     double getTheta3_2()
     {
-        theta3 = -1 *  theta3 - PI;
+        theta3 = -1 * theta3 - PI;
         return theta3;
     }
 
@@ -116,13 +116,10 @@ class LeftArmIk
         {
             double T22 = T.getValueAt(2, 2);
             double T02 = T.getValueAt(0, 2);
-            
-            double nominator = T22
-                    + ((T02 * sin(-1 * theta3) * cos(theta3 - PI / 2)) / (cos(-1
-                            * theta3)));
+
+            double nominator = T22 + ((T02 * sin(-1 * theta3) * cos(theta3 - PI / 2)) / (cos(-1 * theta3)));
             double denominator = cos(-1 * theta3)
-                    + (cos(theta2 - PI / 2) * cos(theta2 - PI / 2)
-                            * sin(-1 * theta3) * sin(-1 * theta3))
+                    + (cos(theta2 - PI / 2) * cos(theta2 - PI / 2) * sin(-1 * theta3) * sin(-1 * theta3))
                     / (cos(-1 * theta3));
             // TODO +- theta1
             theta1 = acos(nominator / denominator);
@@ -143,50 +140,57 @@ class LeftArmIk
         return theta1;
     }
 
+    /**
+     * Calculates and returns result of inverse kinematics for left arm.
+     * 
+     * @see Joint
+     */
     public Map<Joint, Double> getResult()
     {
         Map<Joint, Double> result = new HashMap<Joint, Double>();
         theta4 = toDegrees(getTheta4());
-        if(KinematicUtils.validateJointRange(Joint.LAE4, theta4))
+        if(KinematicUtils.validateJointRangeInDegrees(Joint.LAE4, theta4))
         {
             result.put(Joint.LAE4, theta4);
             theta2 = toDegrees(getTheta2() + PI / 2);
-            if(KinematicUtils.validateJointRange(Joint.LAE2, theta2))
+            if(KinematicUtils.validateJointRangeInDegrees(Joint.LAE2, theta2))
             {
                 result.put(Joint.LAE2, theta2);
             }
-            else 
+            else
             {
                 theta2 = toRadians(theta2 - 90);
-                theta2 = toDegrees(getTheta2_b() +  PI / 2);
-                if(KinematicUtils.validateJointRange(Joint.LAE2, theta2));
+                theta2 = toDegrees(getTheta2_b() + PI / 2);
+                if(KinematicUtils.validateJointRangeInDegrees(Joint.LAE2, theta2))
+                    ;
                 {
                     result.put(Joint.LAE2, theta2);
                 }
             }
-            
+
             theta3 = toDegrees(getTheta3_1());
-            if(KinematicUtils.validateJointRange(Joint.LAE3, theta3))
+            if(KinematicUtils.validateJointRangeInDegrees(Joint.LAE3, theta3))
             {
                 result.put(Joint.LAE3, theta3);
             }
-            else 
+            else
             {
                 theta3 = toDegrees(getTheta3_2());
-                if(KinematicUtils.validateJointRange(Joint.LAE3, theta3));
+                if(KinematicUtils.validateJointRangeInDegrees(Joint.LAE3, theta3))
+                    ;
                 {
                     result.put(Joint.LAE3, theta3);
                 }
             }
             theta1 = toDegrees(getTheta1());
-            if(KinematicUtils.validateJointRange(Joint.LAE1, theta1))
+            if(KinematicUtils.validateJointRangeInDegrees(Joint.LAE1, theta1))
             {
                 result.put(Joint.LAE1, theta1);
             }
             else
             {
                 theta1 = -theta1;
-                if(KinematicUtils.validateJointRange(Joint.LAE1, theta1))
+                if(KinematicUtils.validateJointRangeInDegrees(Joint.LAE1, theta1))
                 {
                     result.put(Joint.LAE1, theta1);
                 }

@@ -2,6 +2,13 @@ package sk.fiit.jim.agent.moves.ik;
 
 import sk.fiit.jim.agent.moves.Joint;
 
+/**
+ * 
+ * Utility class that is used for common kinematic calculations.
+ * 
+ * @author Pidanic
+ *
+ */
 final class KinematicUtils
 {
     // radians
@@ -9,15 +16,28 @@ final class KinematicUtils
     
     private KinematicUtils()
     {
+        throw new AssertionError(KinematicUtils.class.getName() + " can not be instantiated.");
     }
     
-    static boolean validateJointRange(Joint joint, double angle)
+    /**
+     * Validates if given angle value in range of given {@link Joint}.
+     * @param joint {@link Joint}.
+     * @param angle angle value in degrees.
+     * @return <code>true</code> if in joint range, otherwise <code>false</code>.
+     */
+    static boolean validateJointRangeInDegrees(Joint joint, double angle)
     {
         return !Double.isNaN(angle) && angle >= joint.getLow()
                 && angle <= joint.getUp();
     }
     
-    static boolean validateJointRange2(Joint joint, double angle)
+    /**
+     * Validates if given angle value in range of given {@link Joint}.
+     * @param joint {@link Joint}.
+     * @param angle angle value in radians.
+     * @return <code>true</code> if in joint range, otherwise <code>false</code>.
+     */
+    static boolean validateJointRangeInRadians(Joint joint, double angle)
     {
         return !Double.isNaN(angle) && angle >= Math.toRadians(joint.getLow())
                 && angle <= Math.toRadians(joint.getUp());

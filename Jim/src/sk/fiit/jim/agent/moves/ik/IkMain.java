@@ -3,6 +3,12 @@ package sk.fiit.jim.agent.moves.ik;
 import static java.lang.Math.PI;
 import sk.fiit.robocup.library.geometry.Point3D;
 
+/**
+ * Class for testing
+ * 
+ * @author Pidanic
+ *
+ */
 public class IkMain
 {
     private static final Point3D DEF_LEFT_ARM = new Point3D(195, 98, 75); // predpazena
@@ -24,7 +30,7 @@ public class IkMain
         System.out.println(forwardLeftLeg);
         ForwardKinematicResult leftLeg = new ForwardKinematicResult(forwardLeftLeg);
         System.out.println(leftLeg);
-        System.out.println(new LeftLegIk(new Point3D(leftLeg.getPx(), leftLeg.getPy(), leftLeg.getPz()), Orientation.fromRadians(leftLeg.getAx(), leftLeg.getAy(), leftLeg.getAz())).getResult());
+        System.out.println(new LeftLegIk(leftLeg.getEndPoint(), leftLeg.getOrientation()).getResult());
         long diff = System.nanoTime() - time;
         System.err.println(diff / 1000000000.0);
         
@@ -33,7 +39,7 @@ public class IkMain
         System.out.println(forwardRightLeg);
         ForwardKinematicResult rightLeg = new ForwardKinematicResult(forwardRightLeg);
         System.out.println(rightLeg);
-        System.out.println(new RightLegIk(new Point3D(rightLeg.getPx(), rightLeg.getPy(), rightLeg.getPz()), Orientation.fromRadians(rightLeg.getAx(), rightLeg.getAy(), rightLeg.getAz())).getResult());
+        System.out.println(new RightLegIk(rightLeg.getEndPoint(), rightLeg.getOrientation()).getResult());
         long diff2 = System.nanoTime() - time2;
         System.err.println(diff2 / 1000000000.0);
         

@@ -23,46 +23,75 @@ import sk.fiit.robocup.library.geometry.Point3D;
  * <p>
  * Note that matrix rows and column are indexed from zero.
  * </p>
+ * 
  * @author Pidanic
  *
  */
 public final class Matrix
 {
     static final Matrix AbaseLeftArm = createTranslation(0, SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
-    static final Matrix T01LeftArm = createDHTransformation(0, -PI / 2, 0, 0); // a, alpha, d, theta
+
+    static final Matrix T01LeftArm = createDHTransformation(0, -PI / 2, 0, 0); // a,
+                                                                               // alpha,
+                                                                               // d,
+                                                                               // theta
+
     static final Matrix T12LeftArm = createDHTransformation(0, PI / 2, 0, -PI / 2);
+
     static final Matrix T23LeftArm = createDHTransformation(0, -PI / 2, UPPER_ARM_LENGTH, 0);
+
     static final Matrix T34LeftArm = createDHTransformation(0, PI / 2, 0, 0);
+
     static final Matrix RzLeftArm = createRotationZ(PI / 2);
+
     static final Matrix AendLeftArm = createTranslation(HAND_OFFSET_X + LOWER_ARM_LENGTH, 0, 0);
 
     static final Matrix AendRightArm = createTranslation(-HAND_OFFSET_X - LOWER_ARM_LENGTH, 0, 0);
+
     static final Matrix invAendRightArm = AendRightArm.inverse();
-    
+
     static final Matrix AbaseLeftLeg = createTranslation(0, HIP_OFFSET_Y, -HIP_OFFSET_Z);
+
     static final Matrix invAbaseLeftLeg = AbaseLeftLeg.inverse();
+
     static final Matrix AendLeftLeg = createTranslation(0, 0, -FOOT_HEIGHT);
+
     static final Matrix invAendLeftLeg = AendLeftLeg.inverse();
+
     static final Matrix T34LeftLeg = createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
+
     static final Matrix T45LeftLeg = createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
-    static final Matrix T56LeftLeg = createDHTransformation(0, -PI/2, 0, 0);
-    static final Matrix RzLeftLeg =  createRotationZ(PI);
-    static final Matrix RyLeftLeg =  createRotationY(-PI/2);
-    
+
+    static final Matrix T56LeftLeg = createDHTransformation(0, -PI / 2, 0, 0);
+
+    static final Matrix RzLeftLeg = createRotationZ(PI);
+
+    static final Matrix RyLeftLeg = createRotationY(-PI / 2);
+
     static final Matrix AbaseRightLeg = Matrix.createTranslation(0, -HIP_OFFSET_Y, -HIP_OFFSET_Z);
+
     static final Matrix invAbaseRightLeg = AbaseRightLeg.inverse();
+
     static final Matrix AendRightLeg = createTranslation(0, 0, -FOOT_HEIGHT);
+
     static final Matrix invAendRightLeg = AendRightLeg.inverse();
+
     static final Matrix T34RightLeg = createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
+
     static final Matrix T45RightLeg = createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
-    static final Matrix T56RightLeg = createDHTransformation(0, -PI/2, 0, 0);
+
+    static final Matrix T56RightLeg = createDHTransformation(0, -PI / 2, 0, 0);
+
     static final Matrix RzRightLeg = createRotationZ(PI);
-    static final Matrix RyRightLeg = createRotationY(-PI/2);
-    
-    static final Matrix ROTATION_X_PI_4 = createRotationX(PI/4);
-    static final Matrix ROTATION_X_PI_4_MINUS = createRotationX(-PI/4);
-    static final Matrix ROTATION_Z_PI_MINUS = createRotationZ(PI/2);
-    
+
+    static final Matrix RyRightLeg = createRotationY(-PI / 2);
+
+    static final Matrix ROTATION_X_PI_4 = createRotationX(PI / 4);
+
+    static final Matrix ROTATION_X_PI_4_MINUS = createRotationX(-PI / 4);
+
+    static final Matrix ROTATION_Z_PI_MINUS = createRotationZ(PI / 2);
+
     private static final int DEFAULT_N = 4;
 
     private final double[][] values;
@@ -74,9 +103,12 @@ public final class Matrix
     /**
      * Creates empty matrix with given rows and columns count.
      * 
-     * @param rows Row count of new Matrix.
-     * @param columns Column count of new Matrix.
-     * @throws IllegalArgumentException if given column or rows are less than 1.
+     * @param rows
+     *            Row count of new Matrix.
+     * @param columns
+     *            Column count of new Matrix.
+     * @throws IllegalArgumentException
+     *             if given column or rows are less than 1.
      */
     public Matrix(int rows, int columns)
     {
@@ -93,18 +125,24 @@ public final class Matrix
         this.values = new double[rows][columns];
     }
 
-   /**
-    * <p>
-    * Creates new matrix with given values stored in 2 dimensional array.
-    * </p>
-    * <p>
-    * It is required for a matrix to be full matrix. Elements count must be equal for all rows and all columns.
-    * </p>
-    * @param values Given values of matrix.
-    * @throws IllegalArgumentException if array is empty or elements count is not equal for all rows and all columns.
-    * @throws NullPointerException if <b>value</b> is <code>null</code>.
-    * 
-    */
+    /**
+     * <p>
+     * Creates new matrix with given values stored in 2 dimensional array.
+     * </p>
+     * <p>
+     * It is required for a matrix to be full matrix. Elements count must be
+     * equal for all rows and all columns.
+     * </p>
+     * 
+     * @param values
+     *            Given values of matrix.
+     * @throws IllegalArgumentException
+     *             if array is empty or elements count is not equal for all rows
+     *             and all columns.
+     * @throws NullPointerException
+     *             if <b>value</b> is <code>null</code>.
+     * 
+     */
     public Matrix(double[][] values)
     {
         this.validateMatrix(values);
@@ -112,7 +150,7 @@ public final class Matrix
         this.rows = values.length;
         this.columns = values[0].length;
     }
-    
+
     private void validateMatrix(double[][] values)
     {
         if(values == null)
@@ -127,11 +165,11 @@ public final class Matrix
         {
             throw new IllegalArgumentException("Empty values");
         }
-        
+
         @SuppressWarnings("unused")
         int rows = values.length;
         int columns = values[0].length;
-        for(int i = 1; i < values.length; i++)
+        for (int i = 1; i < values.length; i++)
         {
             if(values[i] == null)
             {
@@ -145,14 +183,20 @@ public final class Matrix
     }
 
     /**
-     * Changes a value at given row and columns index and creates new {@link Matrix}. Former matrix stay unchanged.
+     * Changes a value at given row and columns index and creates new
+     * {@link Matrix}. Former matrix stay unchanged.
      * 
-     * @param row Value at row to be changed.
-     * @param column Value at column to be changed.
-     * @param value new value
-     * @return new {@link Matrix} with changed value at given row and column. 
+     * @param row
+     *            Value at row to be changed.
+     * @param column
+     *            Value at column to be changed.
+     * @param value
+     *            new value.
+     * @return new {@link Matrix} with changed value at given row and column.
      * 
-     * @throws IllegalArgumentException if row or column is negative or higher than row or column count of matrix. 
+     * @throws IllegalArgumentException
+     *             if row or column is negative or higher than row or column
+     *             count of matrix.
      */
     public Matrix changeValueAt(int row, int column, double value)
     {
@@ -171,8 +215,7 @@ public final class Matrix
         }
         if(column >= columns)
         {
-            throw new IllegalArgumentException("j >= columns: " + column + " >= "
-                    + columns);
+            throw new IllegalArgumentException("j >= columns: " + column + " >= " + columns);
         }
         Matrix result = new Matrix(values);
         result.values[row][column] = value;
@@ -182,11 +225,15 @@ public final class Matrix
     /**
      * Return a value at given row and column.
      * 
-     * @param row Row index.
-     * @param column Column index.
+     * @param row
+     *            Row index.
+     * @param column
+     *            Column index.
      * @return value at row and column index.
      * 
-     * @throws IllegalArgumentException if row or column is negative or higher than row or column count of matrix. 
+     * @throws IllegalArgumentException
+     *             if row or column is negative or higher than row or column
+     *             count of matrix.
      */
     public double getValueAt(int row, int column)
     {
@@ -205,8 +252,7 @@ public final class Matrix
         }
         if(column >= columns)
         {
-            throw new IllegalArgumentException("j >= columns: " + column + " >= "
-                    + columns);
+            throw new IllegalArgumentException("j >= columns: " + column + " >= " + columns);
         }
         return values[row][column];
     }
@@ -245,11 +291,14 @@ public final class Matrix
     /**
      * Creates new matrix that is result of addition of 2 matrices.
      * 
-     * @param matrix Matrix to add.
+     * @param matrix
+     *            Matrix to add.
      * @return result of 2 matrices addition.
      * 
-     * @throws IllegalArgumentException if dimensions of matrix are not suitable for addition.
-     * @throws NullPointerException if input matrix is <code>null</code>.
+     * @throws IllegalArgumentException
+     *             if dimensions of matrix are not suitable for addition.
+     * @throws NullPointerException
+     *             if input matrix is <code>null</code>.
      */
     public Matrix add(Matrix matrix)
     {
@@ -259,7 +308,8 @@ public final class Matrix
         }
         if(matrix.getRows() != rows || matrix.getColumns() != columns)
         {
-            throw new IllegalArgumentException("Incorrect matrices dimensions for addition: " + rows + "×" + columns + " != " + matrix.getRows() + "×" + matrix.getColumns());
+            throw new IllegalArgumentException("Incorrect matrices dimensions for addition: " + rows + "×" + columns
+                    + " != " + matrix.getRows() + "×" + matrix.getColumns());
         }
         Matrix result = new Matrix(matrix.rows, matrix.columns);
         for (int i = 0; i < rows; i++)
@@ -275,7 +325,8 @@ public final class Matrix
     /**
      * Creates new matrix that is result of scalar addition.
      * 
-     * @param value Scalar value.
+     * @param value
+     *            Scalar value.
      * @return result of scalar addition.
      * 
      */
@@ -295,11 +346,14 @@ public final class Matrix
     /**
      * Creates new matrix that is result of subtraction of 2 matrices.
      * 
-     * @param matrix Matrix to subtract.
+     * @param matrix
+     *            Matrix to subtract.
      * @return result of 2 matrices subtraction.
      * 
-     * @throws IllegalArgumentException if dimensions of matrix are not suitable for subtraction.
-     * @throws NullPointerException if input matrix is <code>null</code>.
+     * @throws IllegalArgumentException
+     *             if dimensions of matrix are not suitable for subtraction.
+     * @throws NullPointerException
+     *             if input matrix is <code>null</code>.
      */
     public Matrix sub(Matrix matrix)
     {
@@ -309,9 +363,10 @@ public final class Matrix
         }
         if(matrix.getRows() != rows || matrix.getColumns() != columns)
         {
-            throw new IllegalArgumentException("Incorrect matrices dimensions for subtraction: " + rows + "×" + columns + " != " + matrix.getRows() + "×" + matrix.getColumns());
+            throw new IllegalArgumentException("Incorrect matrices dimensions for subtraction: " + rows + "×" + columns
+                    + " != " + matrix.getRows() + "×" + matrix.getColumns());
         }
-        
+
         Matrix result = new Matrix(matrix.rows, matrix.columns);
         for (int i = 0; i < rows; i++)
         {
@@ -326,7 +381,8 @@ public final class Matrix
     /**
      * Creates new matrix that is result of scalar subtraction.
      * 
-     * @param value Scalar value.
+     * @param value
+     *            Scalar value.
      * @return result of scalar subtraction.
      * 
      */
@@ -335,24 +391,57 @@ public final class Matrix
         return add(-value);
     }
 
+    /**
+     * Calculates product of 2 matrices and return new {@link Matrix} as a
+     * result.
+     * 
+     * @param matrix
+     *            {@link Matrix} to multiply.
+     * @return result of product of 2 matrices.
+     * 
+     * @throws NullPointerException
+     *             if {@code matrix} is null.
+     * @throws IllegalArgumentException
+     *             if matrix dimensions do not hold
+     * 
+     *             <pre>
+     * (n × m) × (m × p)
+     * </pre>
+     */
     public Matrix mult(Matrix matrix)
     {
-        // TODO check dimensions
-        Matrix result = new Matrix(rows, matrix.columns);
-        for (int i = 0; i < DEFAULT_N; i++)
+        if(matrix == null)
         {
-            for (int j = 0; j < DEFAULT_N; j++)
+            throw new NullPointerException("matrix is null");
+        }
+        if(this.columns != matrix.rows)
+        {
+            throw new IllegalArgumentException(
+                    "Incorrect dimensions for multiplication (n × m) × (m × p). Dimensions: "
+                            + String.format("(%d × %d) × (%d × %d)", rows, columns, matrix.rows, matrix.columns));
+        }
+        Matrix result = new Matrix(rows, matrix.columns);
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < matrix.columns; j++)
             {
-                for (int k = 0; k < DEFAULT_N; k++)
+                for (int k = 0; k < columns; k++)
                 {
-                    result.values[i][j] += this.values[i][k]
-                            * matrix.values[k][j];
+                    result.values[i][j] += this.values[i][k] * matrix.values[k][j];
                 }
             }
         }
         return result;
     }
 
+    /**
+     * Creates new matrix that is result of scalar multiplication.
+     * 
+     * @param val
+     *            Scalar value.
+     * @return result of scalar multiplication.
+     * 
+     */
     public Matrix mult(double val)
     {
         Matrix result = new Matrix(rows, columns);
@@ -366,6 +455,10 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * 
+     * @return new transposed matrix.
+     */
     public Matrix transpose()
     {
         Matrix result = new Matrix(columns, rows);
@@ -420,8 +513,7 @@ public final class Matrix
         return result;
     }
 
-    public static Matrix createDHTransformation(double a, double alpha,
-            double d, double theta)
+    public static Matrix createDHTransformation(double a, double alpha, double d, double theta)
     {
         Matrix result = new Matrix(DEFAULT_N, DEFAULT_N);
         result.values[0][0] = cos(theta);
@@ -440,8 +532,7 @@ public final class Matrix
         return result;
     }
 
-    public static Matrix createTransformation(double px, double py, double pz,
-            double rx, double ry, double rz)
+    public static Matrix createTransformation(double px, double py, double pz, double rx, double ry, double rz)
     {
         Matrix result = createIdentity(DEFAULT_N);
         result.values[0][0] = cos(rz) * cos(ry);
@@ -458,7 +549,7 @@ public final class Matrix
         result.values[2][3] = pz;
         return result;
     }
-    
+
     static Matrix createTransformation(Point3D end, Orientation angle)
     {
         double rx = angle.getAxRadians();
@@ -512,8 +603,7 @@ public final class Matrix
         double result = 0;
         for (int i = 0; i < rows; i++)
         {
-            result += changeSign(i) * values[0][i]
-                    * submatrix(0, i).determinant();
+            result += changeSign(i) * values[0][i] * submatrix(0, i).determinant();
         }
         return result;
     }
@@ -526,7 +616,7 @@ public final class Matrix
     public Matrix submatrix(int excludingRow, int excludingColumn)
     {
         // TODO zovseobecni a kontroluj stvorcovu maticu
-        Matrix result = new Matrix(rows - 1, rows - 1);
+        Matrix result = new Matrix(rows - 1, columns - 1);
         int r = -1;
         for (int i = 0; i < rows; i++)
         {
@@ -546,7 +636,9 @@ public final class Matrix
         return result;
     }
 
-    //The cofactor of a matrix A is matrix C that the value of element Cij equals the determinant of a matrix created by removing row i and column j from matrix A. Here is the method that calculates the cofactor matrix
+    // The cofactor of a matrix A is matrix C that the value of element Cij
+    // equals the determinant of a matrix created by removing row i and column j
+    // from matrix A. Here is the method that calculates the cofactor matrix
     public Matrix cofactor()
     {
         Matrix result = new Matrix(rows, columns);
@@ -554,11 +646,10 @@ public final class Matrix
         {
             for (int j = 0; j < columns; j++)
             {
-                result.values[i][j] = changeSign(i) * changeSign(j)
-                        * submatrix(i, j).determinant();
+                result.values[i][j] = changeSign(i) * changeSign(j) * submatrix(i, j).determinant();
             }
         }
         return result;
     }
-    
+
 }

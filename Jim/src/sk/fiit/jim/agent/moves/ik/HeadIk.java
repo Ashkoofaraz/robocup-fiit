@@ -9,6 +9,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import sk.fiit.robocup.library.geometry.Point3D;
 
+// NOT USED AT THIS TIME
 class HeadIk
 {
     // milimeters
