@@ -30,7 +30,9 @@ class PlanDynamicMove < Plan
           @plan << Beam.new(Java::sk.fiit.robocup.library.geometry.Vector3D.cartesian(-0.2, -0.05, 0.4))
         end
         @beamed = true  
-	#elsif (me.on_ground? or me.is_lying_on_back? or me.is_lying_on_belly?)
+	elsif (not me.on_ground?)# or is_lying_on_back?)
+		puts "falling"
+		@plan << Fall.new	
     #	@agentInfo.loguj('GetUp');
     # 	@plan << GetUp.new(Proc.new{me.on_ground?})		
 	#elsif (not see_ball?) 
@@ -39,17 +41,13 @@ class PlanDynamicMove < Plan
 	#elsif (is_ball_mine? and straight? and turned_to_goal?)
     #  @agentInfo.loguj('Kick');
     #	@plan << Kick.new(@kick_target)
+	elsif (me.is_lying_on_back?)
+		puts "lying on back"
+		@plan << RubyDynamicMove.new
+		#@plan << Fall.new
     else
         @agentInfo.loguj('Dynamic Move')
-        #ball_pos = @worldModel.getBall().getPosition             
-        #puts "Ball X:"    
-        #puts ball_pos.getX()
-        #puts "Ball Y:"
-        #puts ball_pos.getY()
-        #@ball_distance = @agentInfo.calculateDistance(Java::sk.fiit.robocup.library.geometry.Vector3D.cartesian(0, 0, 0), ball_pos)
-        #puts "Ball distance from mid:"
-        #puts @ball_distance
-        
+              
 		
 		puts "joint angles: #{Java::sk.fiit.jim.agent.models.AgentModel.getInstance().getJointAngles}"
 		puts "parsed data: #{Java::sk.fiit.jim.agent.models.AgentModel.getInstance().getLastDataReceived}"
@@ -62,6 +60,7 @@ class PlanDynamicMove < Plan
         #end           	
         puts "pre init RubyDynamicMove"
 		@plan << RubyDynamicMove.new		
+		
 	
     end
   end

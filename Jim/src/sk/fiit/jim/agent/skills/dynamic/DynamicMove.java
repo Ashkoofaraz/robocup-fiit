@@ -15,63 +15,69 @@ import sk.fiit.robocup.library.geometry.Point3D;
 
 /**
  * 
+ * <p>
+ * Class for creating dynamic moves for Nao based on sequences of end effector positions and orientations.
+ * </p>
+ * <p>
+ * Created move is "pure" dynamic. It is not dependent on any of static defined moves in XML files.
+ * </p>
  * @author Pidanic
  *
  */
 public abstract class DynamicMove extends DynamicSkill
 {
 
-    public LowSkill createDynamicMove()
+    /**
+     * 
+     * Creates {@link LowSkill} which consists of sequence of {@link Phase}s. Phase specifies joint angle values to move on based on
+     * positions and orientation for end effector.
+     * 
+     * @param limb name of a limb to move.
+     * @param points sequence of positions for end effector to move.
+     * @param orientations sequence of orientatins for end effector to move.
+     * @return newly created dynamic low skill
+     * @throws IllegalArgumentException if {@code points} size not equal {@code orientations} size or
+     *              if {@code limb} is other than {@code "leftArm", "leftLeg", "rightArm", "rightLeg"}}
+     */
+    public LowSkill createDynamicMove(String limb, List<Point3D> points, List<Orientation> orientations)
     {
-        Kinematics kin = Kinematics.getInstance();
-        Point3D end1 = new Point3D(195, 98, 75);
-        Orientation angle = Orientation.fromDegrees(0, 0, 0);
-        Map<Joint, Double> result1 = kin.getInverseLeftArm(end1, angle);
-        System.out.println("Kinematics result " + result1);
-        
-        Point3D end2 = new Point3D(0, 293, 75);
-        Map<Joint, Double> result2 = kin.getInverseLeftArm(end2, angle);
-        System.out.println("Kinematics result " + result2);
-        
-        Point3D end3 = new Point3D(0, 98, -120);
-        Map<Joint, Double> result3 = kin.getInverseLeftArm(end3, Orientation.fromDegrees(45, 90, 45));
-        System.out.println("Kinematics result " + result3);
-        
-        Point3D end4 = new Point3D(0, 98, 270);
-        Map<Joint, Double> result4 = kin.getInverseLeftArm(end4, angle);
-        System.out.println("Kinematics result " + result4);
-        
-        Point3D end5 = new Point3D(170, 98, 100);
-        Map<Joint, Double> result5 = kin.getInverseLeftArm(end5, angle);
-        System.out.println("Kinematics result " + result5);
-
-        Point3D end6 = new Point3D(123.00, 203.86, -26.25);
-        Map<Joint, Double> result6 = kin.getInverseLeftArm(end6, Orientation.fromRadians(0.93, 0.42, 0.84));
-        System.out.println("Kinematics result " + result6);
-        
-        Phase phase1 = createPhase(300, result1);
-        Phase phase2 = createPhase(300, result2);
-        Phase phase3 = createPhase(300, result3);
-        Phase phase4 = createPhase(300, result4);
-        Phase phase5 = createPhase(300, result5);
-        Phase phase6 = createPhase(300, result6);
+        if(points.size() != orientations.size())
+        {
+            throw new IllegalArgumentException("points size must equal orientations size");
+        }
         List<Phase> phases = new ArrayList<Phase>();
-        phases.add(phase1);
-        phases.add(phase2);
-        phases.add(phase3);
-        phases.add(phase4);
-        phases.add(phase5);
-        phases.add(phase6);
-        //Phase finalPhase = new Phase();
-        //phases.add(finalPhase);
-        
-        System.out.println("created phases " + phases);
-        
+        for(int i = 0; i < points.size(); i++)
+        {
+            Kinematics kinematics = Kinematics.getInstance();
+            Map<Joint, Double> result;
+            if("leftLeg".equals(limb))
+            {
+                result = kinematics.getInverseLeftLeg(points.get(i), orientations.get(i));
+            }
+            else if("rightLeg".equals(limb))
+            {
+                result = kinematics.getInverseRightLeg(points.get(i), orientations.get(i));
+            }
+            else if("leftArm".equals(limb))
+            {
+                result = kinematics.getInverseLeftArm(points.get(i), orientations.get(i));
+            }
+            else if("rightArm".equals(limb))
+            {
+                result = kinematics.getInverseRightArm(points.get(i), orientations.get(i));
+            }
+            else
+            {
+                throw new IllegalArgumentException("unknown limb: " + limb);
+            }
+            System.out.println("point: " + points.get(i) + ", orientation: " + orientations.get(i));
+            Phase phase = createPhase(300, result);
+            phases.add(phase);
+        }
         UUID uuid = UUID.randomUUID();
         String skillName = "dynamic_move" + uuid.toString(); 
         
         LowSkill ls = addSkill(skillName);
-        
         addPhases(phases, skillName);
         System.out.println("addedPhases");
         return ls;
