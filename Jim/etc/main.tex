@@ -1,0 +1,106 @@
+\documentclass[a4paper, 12pt]{article}
+\usepackage[slovak]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{slovak}				%obsahuje slovenske znaky, ktore sa nenachadzaju v standardnom baliku
+\usepackage{algorithm}%[section]{algorithm}
+\usepackage{algorithmic}
+%\usepackage{cite}
+\usepackage{graphicx}			% pre vkladanie obrazkov \includegraphics
+\usepackage{subfig}				
+\usepackage{courier}			% \textt{} bude zodpovedat pismu Courier
+\usepackage{float}				% plávajúce objekty/obrázky, možné použiť parameter "H" pre príkaz figure
+\usepackage{chngcntr}			% Na číslovanie objektov. (Defines commands \counterwithin (which sets up a counter to be reset when another is incremented) and \counterwithout (which unsets such a relationship)).
+\usepackage{pdflscape}			% lanscape mod
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{geometry}			% pre rozmery stran a pod.
+
+%\usepackage{url}
+\usepackage{hyperref}			% klikatelne krizove odkazy na kapitoly, obrazky, referencie
+	\hypersetup{colorlinks,				%linky budu farebne
+    	citecolor=black,						%citacie cierne
+    	filecolor=black,
+    	linkcolor=black,						%
+    	urlcolor=blue,							%url budu modre
+    	}    	
+
+\counterwithin{equation}{section} % Cislovanie rovnic bude obsahovat c. kapitoly a poriadie rovnice v danej kapitole, pre tento prikaz musi byt package "chngcntr"
+ 	
+\linespread{1.3}					% riadkovanie 1,5
+%\linespread{1.4}
+
+\floatname{algorithm}{Algoritmus} 	% zmeni prostredie \algorithm na slov. Algoritmus
+%\newtheorem{Algoritmus}{Algoritmus}[section]
+
+\begin{document}
+
+%\title{My Article}
+%\author{Nobody Jr.}
+%\date{Today}
+%\maketitle
+%\newpage
+
+%\input{cover.tex}
+%\input{titlepage.tex}
+%\input{abstract_sk.tex}
+%\input{abstract_en.tex}
+
+\pagenumbering{Roman}			% číslovanie strán rímskymi číslami (kapitálky)
+%\tableofcontents				% obsah
+%\newpage
+
+%\listoffigures					% zoznam obrázkov
+%\newpage
+%\listoftables					% zoznam tabuliek
+%\newpage
+
+\pagenumbering{arabic}			% číslovanie strán arabskými číslami
+%\input{intro.tex}
+%\newpage
+
+%\input{nieco.tex}
+
+%\input{jim.tex}
+
+%\input{lukas_durcak.tex}
+
+%\input{peter_passak.tex}
+
+%\input{auder_hudec_passakm_hujsi.tex}
+
+%\input{A55Kickers.tex}
+
+%\input{older_teams.tex}
+
+%\input{foreign_teams.tex}
+
+% co sa nezmestilo a este neviem, kam to dam
+%\newpage
+%\input{other.tex}
+
+%\input{dp2014.tex}
+%\newpage
+\input{forward_kinematics.tex}
+%\newpage
+\input{inverse_kinematics.tex}
+%\newpage
+%\input{implementation.tex}
+%\newpage
+%\input{overenie.tex}
+
+%\newpage
+%\input{conclusion.tex}
+
+
+\newpage
+\bibliographystyle{acm}
+%plain, ieeetr, jbact
+\bibliography{references}
+
+\newpage
+\appendix					% čislovanie kapitol pre prílohy, abecedne
+\input{appendix_nao_model.tex}
+%\input{appendix_dh.tex}
+\end{document}
