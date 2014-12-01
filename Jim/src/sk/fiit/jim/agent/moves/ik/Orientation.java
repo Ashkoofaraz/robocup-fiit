@@ -39,4 +39,10 @@ public final class Orientation
     {
         return az;
     }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("%1$.4f %2$.4f %3$.4f radians", ax, ay, az);
+    }
 }
