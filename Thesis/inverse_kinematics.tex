@@ -1,0 +1,94 @@
+\subsubsection{Rovnice pre inverznú kinematiku} \label{sec_inverse_kinematics_equations}
+\textbf{Ľavá ruka}\\
+Ľavá ruka sa skladá zo 4 kĺbov, pre ktoré sa vypočítajú uhly $\theta_1$, $\theta_2$, $\theta_3$, $\theta_4$.
+\begin{equation}
+	\theta_4 = -\left(\pi - \arccos\left(\frac{l_3^2 + l_4^2 - \sqrt{\left(s_x - T_{\left(1,4\right)}\right)^2 + \left(s_y - T_{\left(2,4\right)}\right)^2 + \left(s_z - T_{\left(3,4\right)}\right)^2}^2}{2l_3l_4}\right)\right)
+\end{equation}
+
+\begin{equation}
+	\theta_2 = \pm \arccos{\left(\frac{T_{\left(2,4\right)}-l_1-\left(\frac{l_4 \sin{\theta_4}T_{\left(2,2\right)}}{\cos{\theta_4}}\right)}{l_3 + l_4\cos{\theta_4}+l_4\frac{\sin^2{\theta_4}}{\cos{\theta_4}}}\right)} + \frac{\pi}{2}
+\end{equation}
+
+\begin{equation}
+	\begin{tabular}{c}
+		$\theta_3 = -\arcsin\left(\frac{T_{\left(2,3\right)}}{\sin\left(\theta_2 - \frac{\pi}{2}\right)}\right)$ \\\\
+		$\theta_3 = -\left(\pi - \arcsin\left(\frac{T_{\left(2,3\right)}}{\sin\left(\theta_2 - \frac{\pi}{2}\right)}\right)\right)$
+	\end{tabular}
+\end{equation}
+
+\begin{equation}
+	\begin{tabular}{lr}
+		$\theta_1=\pm \arccos\left(\frac{T_{\left(3,3\right)} + \frac{T_{\left(1,3\right)}\sin\left(-\theta_3\right)\cos\left(\theta_2 - \frac{\pi}{2}\right)}{\cos\left(-\theta_3\right)}}{\cos\left(-\theta_3\right) + \frac{\cos^2\left(\theta_2 - \frac{\pi}{2}\right) \sin^2\left(-\theta_3\right)}{\cos\left(-\theta_3\right)}}\right)$ & 
+	$\text{if }\theta_3 \neq \left|\frac{\pi}{2}\right|$
+	\end{tabular}
+\end{equation}
+
+% mozno upravit pomocou tabulky, alebo zistit, ako zvacsit pismo
+\begin{equation}
+	\theta_1 = \pm \arccos\left(\frac{T_{\left(1,3\right)}}{\cos\left(\theta_2 - \frac{\pi}{2}\right) \sin\left(-\theta_3\right)}\right)
+	\text{if }\theta_3 = \left|\frac{\pi}{2}\right|\text{ and }\theta_2 \neq 0
+\end{equation}
+
+$$\widehat{T} = T\left(A_4^{End}\right)^{-1}$$
+
+\begin{equation}
+	\theta_1 = \pm \arccos\left(\frac{\widehat{T}_{\left(1,4\right)}}{l_3}\right)
+	\text{if }\theta_3 = \left|\frac{\pi}{2}\right|\text{ and }\theta_2 = 0
+\end{equation}
+\\\\
+\textbf{Pravá ruka}\\
+	Rovnica pre riešenie uhlov $\theta_1$, $\theta_2$, $\theta_3$, $\theta_4$ sa pre pravú ruku líši oproti ľavej ruke v hodnotách Denavit-Hartenberg parametrov a fixácii rotácie začiatočného kĺbu $R_x(\pi)$, ktorá sa vykráti z oboch strán rovnice. Riešenie je uvedené v \cite{kofinas_master}.
+\\\\
+\textbf{Ľavá noha}
+\\Ľavá noha sa skladá zo 6 kĺbov, pre ktoré sa vypočítajú uhly $\theta_1$, $\theta_2$, $\theta_3$, $\theta_4$, $\theta_5$, $\theta_6$.
+
+$$T'=\left(R_x\left(\frac{\pi}{4}\right) \left(\left(A_{Base}^0\right)^{-1}T\left(A_6^{End}\right)^{-1} \right) \right)^{-1}$$
+\begin{equation}
+	\theta_4 = \pm \left(\pi - \arccos\left(\frac{l_1^2 + l_2^2 - \sqrt{\left(0-T'_{\left(1,4\right)}\right)^2 + \left(0-T'_{\left(2,4\right)}\right)^2 + \left(0-T'_{\left(3,4\right)}\right)^2}^2 }{2l_1l_2}\right)\right)
+\end{equation}
+
+\begin{equation}
+	\theta_6 = \arctan\left(\frac{T'_{\left(2,4\right)}}{T'_{\left(3,4\right)}}\right)
+	\text{if }\left(l_2\cos\theta_5 + l_1\cos\left(\theta_4 + \theta_5\right)\right) \neq 0
+\end{equation}
+
+\begin{equation}
+	\theta_6 = 0
+	\text{if }\left(l_2\cos\theta_5 + l_1\cos\left(\theta_4 + \theta_5\right)\right) = 0 
+\end{equation}
+
+$$T''=\left(\left(T'\right)^{-1} \left(T_5^6 R_z\left(\pi\right) R_y\left(-\frac{\pi}{2}\right)\right)^{-1}\right)^{-1}$$
+
+\begin{equation}
+	\theta_5 = \arcsin\left(-\frac{T''_{\left(2,4\right)} \left(l_2 + l_1\cos\theta_4\right) + l_1T''_{\left(1,4\right)}\sin\theta_4 } {l_1^2\sin^2 \theta_4 + \left(l_2 + l_1\cos\theta_4\right) }\right)
+\end{equation}
+
+\begin{equation}
+	\theta_5 = \pi - \arcsin\left(-\frac{T''_{\left(2,4\right)} \left(l_2 + l_1\cos\theta_4\right) + l_1T''_{\left(1,4\right)}\sin\theta_4 } {l_1^2\sin^2 \theta_4 + \left(l_2 + l_1\cos\theta_4\right) }\right)
+\end{equation}
+
+$$T''' = \left(T''\right)^{-1} \left(T_3^4 T_4^5\right)^{-1}$$
+
+\begin{equation}
+	\theta_2 = \pm \arccos\left(T'''_{\left(2,3\right)}\right) + \frac{\pi}{4}
+\end{equation}
+
+\begin{equation}
+	\theta_3 = \arcsin\left(\frac{T'''_{\left(2,2\right)}}{\sin\left(\theta_2 + \frac{\pi}{4}\right)}\right)
+\end{equation}
+
+\begin{equation}
+	\theta_3 = \pi - \arcsin\left(\frac{T'''_{\left(2,2\right)}}{\sin\left(\theta_2 + \frac{\pi}{4}\right)}\right)
+\end{equation}
+
+\begin{equation}
+	\theta_1 = \pm \arccos\left(\frac{T'''_{\left(1,3\right)}}{\sin\left(\theta_2 + \frac{\pi}{4}\right)}\right) + \frac{\pi}{2}
+\end{equation}
+\\\\
+\textbf{Pravá noha} \\
+Riešenie sa líši v transformačných maticiach Denavit-Hartenbergových parametrov a je uvedené v \cite{kofinas_master}.
+\\
+
+Z práce využijeme výsledné rovnice uhlov pre všetky končatiny. Analytické riešenie v príslušnom zdroji \cite{kofinas, kofinas_master}.
+
+Oproti použitému riešeniu zo štandardnej ligy sa model robota v simulovanej lige líši. Ide len o rozmery končatín a kĺbov. Ide o konštanty, na ktorých je analytické riešenie nezávislé. Všetky konštanty nájdeme v prílohe  \ref{appendix_nao_model}.

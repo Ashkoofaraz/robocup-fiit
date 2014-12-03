@@ -121,20 +121,20 @@ class LeftArmIk
             double denominator = cos(-1 * theta3)
                     + (cos(theta2 - PI / 2) * cos(theta2 - PI / 2) * sin(-1 * theta3) * sin(-1 * theta3))
                     / (cos(-1 * theta3));
-            // TODO +- theta1
+            // +- theta1
             theta1 = acos(nominator / denominator);
         }
         else if((abs(theta3) == PI / 2) && theta2 != 0.0)
         {
-            // TODO +- theta1
+            // +- theta1
             theta1 = acos((T.getValueAt(0, 3)) / (cos(theta2 - PI / 2) * sin(-1 * theta3)));
         }
         else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
             // T*(A4end^-1)
-            Matrix T_ = T.mult(Matrix.AendLeftArm.inverse());
+            Matrix T_ = T.mult(Matrix.A_END_LEFT_ARM.inverse());
             double T_13 = T_.getValueAt(1, 3);
-            // TODO +- theta1
+            // +- theta1
             theta1 = acos(T_13 / l3);
         }
         return theta1;

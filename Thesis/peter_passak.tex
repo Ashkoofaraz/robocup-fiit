@@ -1,0 +1,17 @@
+\subsubsection{Diplomová práca Petra Paššáka} \label{sec_passakp}
+Ide o druhú dokončenú prácu v roku 2013. V nej sa zameral na vylepšenie už existujúcich pohybov robota pomocou evolučných algoritmov. Pohyby, ktorým sa venoval boli kopy do lopty, chôdza vpred a vzad a úkroky do strany \cite{passak_peter}.
+
+Predtým ako sa pustil do vylepšovania, upravil jemu dostupné testovacie prostredie, aby poskytovalo používateľské rozhranie, ktoré zaznamenávalo metriky, mohlo nastavovať parametre testovania a aby bolo možné vyhodnocovať výsledky.
+
+Pre skúmané pohyby si určil ich kvalitu, ktorú sa snažil dosiahnuť.
+\begin{itemize}
+	\item stabilita pre všetky pohyby
+	\item vzdialenosť, ktorú prejde za určitý čas a vychýlenie z trasy pre chôdzu
+	\item vzdialenosť a vychýlenie zo smeru pre kopy
+\end{itemize}
+
+Pri kopoch si zvolil pohyb \texttt{shot\_left}. Z pôvodnej priemernej vzdialenosti $4,4~m$ a maximálnej vzdialenosti $4,7~m$ dosiahol hodnoty v priemere $9,21~m$ a dosiahnuté maximum bolo $10,65~m$. Tieto dĺžky kopov zodpovedajú vzdialenosti od stredového kruhu až k bráne.
+
+Pri chôdzi bol zvolený pohyb \texttt{walk\_fine2\_optimized2}. Tento pohyb však mal pri vylepšovaní problémy so stabilitou pri rozbehu chôdze. Preto vytvoril nový pohyb pod menom \texttt{turbo\_walk}, ktorý rozšíril o fázu úkrokov pravej a ľavej nohy. Pôvodnú rýchlosť chôdze $0,32~ms^{-1}$ vylepšil na výsledných $0,97~ms^{-1}$ pri  $80\%$ stabilite. So $100\%$ stabilitou chôdza dosahovala rýchlosť $0,68~ms^{-1}$.
+
+Chôdzu vzad \texttt{walk\_back} vylepšil z $0,1~ms^{-1}$ na $0,54~ms^{-1}$ pri $92\%$ stabilite. A pri úkrokoch do strany \texttt{stepleft\_new\_smaller} z pôvodnej rýchlosti $0,05~ms^{-1}$ dosiahol rýchlosť $0,09~ms^{-1}$ so $100\%$ stabilitou a $0,16~ms^{-1}$ s úspešnosťou $93\%$.

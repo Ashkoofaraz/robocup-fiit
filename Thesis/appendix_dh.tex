@@ -1,0 +1,126 @@
+\section{Parameter Denavit Hanenberg} \label{appedix_dh}
+
+\subsection{hlava}
+\begin{center}
+	\begin{tabular}{|l|c|c|c|c|}
+	\hline
+	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
+	\hline
+	Base & \multicolumn{4}{|c|}{A(0, 0, NeckOffsetZ)} \\
+	\hline
+	HeadYaw & 0 & 0 & 0 & $\theta_1$ \\
+	\hline
+	HeadPitch & 0 & $-\frac{\pi}{2}$ & 0 & $\theta_2 - \frac{\pi}{2}$ \\
+	\hline
+	Rotation & \multicolumn{4}{|c|}{$R_x\left(\frac{\pi}{2}\right)R_y\left(\frac{\pi}{2}\right))$} \\
+	\hline
+	Top Camera & \multicolumn{4}{|c|}{A(topCameraX, 0, topCameraZ)} \\
+	\hline
+	Bottom Camera & \multicolumn{4}{|c|}{A(bottomCameraX, 0, bottomCameraZ)} \\
+	\hline
+	%\multicolumn{1}{|c|}{ \scriptsize{topCameraX=53.9mm, topCameraZ=67.9mm, bottomCameraX=48.8mm, bottomCameraZ=23.8mm}} \\
+	%\hline
+	\end{tabular}
+\end{center}
+
+\subsection{ľavá ruka}
+\begin{center}
+	\begin{tabular}{|l|c|c|c|c|}
+	\hline
+	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
+	\hline
+	Base & \multicolumn{4}{|c|}{A(0, ShoulderOffsetY+ElbowOffsetY, ShoulderOffsetZ)} \\
+	\hline
+	LShoulderPitch & 0 & $-\frac{\pi}{2}$ & 0 & $\theta_1$ \\
+	\hline
+	LShoulderRoll & 0 & $\frac{\pi}{2}$ & 0 & $\theta_2 - \frac{\pi}{2}$ \\
+	\hline
+	LElbowYaw & 0 & $-\frac{\pi}{2}$ & UpperArmLength & $-\theta_3$ \\
+	\hline
+	LElbowRoll & 0 & $\frac{\pi}{2}$ & 0 & $-\theta_4$ \\
+	\hline
+	Rotation & \multicolumn{4}{|c|}{$R_z\left(\frac{\pi}{2}\right)$} \\
+	\hline
+	End effector & \multicolumn{4}{|c|}{A(HandOffsetX+LowerArmLength, 0, 0)} \\
+	\hline
+	\end{tabular}
+\end{center}
+
+\subsection{pravá ruka}
+\begin{center}
+	\begin{tabular}{|l|c|c|c|c|}
+	\hline
+	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
+	\hline
+	Base & \multicolumn{4}{|c|}{A(0, -ShoulderOffsetY-ElbowOffsetY, ShoulderOffsetZ)} \\
+	\hline
+	LShoulderPitch & 0 & $-\frac{\pi}{2}$ & 0 & $\theta_1$ \\
+	\hline
+	LShoulderRoll & 0 & $\frac{\pi}{2}$ & 0 & $\theta_2 + \frac{\pi}{2}$ \\
+	\hline
+	LElbowYaw & 0 & $-\frac{\pi}{2}$ & -UpperArmLength & $-\theta_3$ \\
+	\hline
+	LElbowRoll & 0 & $\frac{\pi}{2}$ & 0 & $-\theta_4$ \\
+	\hline
+	Rotation & \multicolumn{4}{|c|}{$R_z\left(\frac{\pi}{2}\right)$} \\
+	\hline
+	End effector & \multicolumn{4}{|c|}{A(-HandOffsetX-LowerArmLength, 0, 0)} \\
+	\hline
+	Rotation fix & \multicolumn{4}{|c|}{$R_z\left(\pi\right)$} \\
+	\hline
+	\end{tabular}
+\end{center}
+
+\subsection{ľavá noha}
+\begin{center}
+	\begin{tabular}{|l|c|c|c|c|}
+	\hline
+	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
+	\hline
+	Base & \multicolumn{4}{|c|}{A(0, HipOffsetY, -HipOffsetZ)} \\
+	\hline
+	LHipYawPitch & 0 & $-\frac{3\pi}{4}$ & 0 & $\theta_1 - \frac{\pi}{2}$ \\
+	\hline
+	LHipRoll & 0 & $-\frac{\pi}{2}$ & 0 &  $\theta_2 + \frac{\pi}{4}$ \\
+	\hline
+	LHipPitch & 0 & $\frac{\pi}{2}$ & 0 & $\theta_3$ \\
+	\hline
+	LKneePitch & -ThighLength & 0 & 0 & $\theta_4$ \\
+	\hline 
+	LAnklePitch & -TibiaLength & 0 & 0 & $\theta_5$ \\
+	\hline
+	LAnkleRoll & 0 & $\frac{\pi}{2}$ & 0 & $\theta_5$ \\
+	\hline
+	Rotation & \multicolumn{4}{|c|}{$R_z\left(\pi\right)R_y\left(-\frac{\pi}{2}\right)$} \\
+	\hline
+	End effector & \multicolumn{4}{|c|}{A(0, 0, -FootHeight)} \\
+	\hline
+	\end{tabular}
+\end{center}
+
+\subsection{pravá noha}
+\begin{center}
+	\begin{tabular}{|l|c|c|c|c|}
+	\hline
+	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
+	\hline
+	Base & \multicolumn{4}{|c|}{A(0, -HipOffsetY, -HipOffsetZ)} \\
+	\hline
+	LHipYawPitch & 0 & $-\frac{\pi}{4}$ & 0 & $\theta_1 - \frac{\pi}{2}$ \\
+	\hline
+	LHipRoll & 0 & $-\frac{\pi}{2}$ & 0 &  $\theta_2 - \frac{\pi}{4}$ \\
+	\hline
+	LHipPitch & 0 & $\frac{\pi}{2}$ & 0 & $\theta_3$ \\
+	\hline
+	LKneePitch & -ThighLength & 0 & 0 & $\theta_4$ \\
+	\hline 
+	LAnklePitch & -TibiaLength & 0 & 0 & $\theta_5$ \\
+	\hline
+	LAnkleRoll & 0 & $\frac{\pi}{2}$ & 0 & $\theta_5$ \\
+	\hline
+	Rotation & \multicolumn{4}{|c|}{$R_z\left(\pi\right)R_y\left(-\frac{\pi}{2}\right)$} \\
+	\hline
+	End effector & \multicolumn{4}{|c|}{A(0, 0, -FootHeight)} \\
+	\hline
+	\end{tabular}
+\end{center}

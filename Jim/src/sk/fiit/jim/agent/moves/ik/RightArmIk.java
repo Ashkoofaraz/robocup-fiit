@@ -68,7 +68,7 @@ class RightArmIk
     public RightArmIk(Point3D endpoint, Orientation angle)
     {
         T = Matrix.createTransformation(endpoint, angle);
-        T_ = T.mult(Matrix.ROTATION_Z_PI_MINUS.inverse());
+        T_ = T.mult(Matrix.R_Z_RIGHT_ARM.inverse());
     }
 
     // radians
@@ -135,7 +135,7 @@ class RightArmIk
         }
         else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
-            Matrix T__ = T.mult(Matrix.invAendRightArm);
+            Matrix T__ = T.mult(Matrix.INV_A_END_RIGHT_ARM);
             // TODO +- theta1
             theta1 = acos(T__.getValueAt(1, 3) / l3);
         }

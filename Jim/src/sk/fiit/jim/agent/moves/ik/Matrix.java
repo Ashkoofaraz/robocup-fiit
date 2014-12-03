@@ -29,69 +29,165 @@ import sk.fiit.robocup.library.geometry.Point3D;
  */
 public final class Matrix
 {
-    static final Matrix AbaseLeftArm = createTranslation(0, SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
+    /**
+     * translation matrix from torso to base joint of left arm
+     */
+    static final Matrix A_BASE_LEFT_ARM = createTranslation(0, SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y, SHOULDER_OFFSET_Z);
 
-    static final Matrix T01LeftArm = createDHTransformation(0, -PI / 2, 0, 0); // a,
-                                                                               // alpha,
-                                                                               // d,
-                                                                               // theta
+    /**
+     * transformation matrix from base of left arm to LAE1
+     */
+    static final Matrix T_01_LEFT_ARM = createDHTransformation(0, -PI / 2, 0, 0);
 
-    static final Matrix T12LeftArm = createDHTransformation(0, PI / 2, 0, -PI / 2);
+    /**
+     * transformation matrix from LAE1 to LAE2 for left arm
+     */
+    static final Matrix T_12_LEFT_ARM = createDHTransformation(0, PI / 2, 0, -PI / 2);
 
-    static final Matrix T23LeftArm = createDHTransformation(0, -PI / 2, UPPER_ARM_LENGTH, 0);
+    /**
+     * transformation matrix from LAE2 to LAE3 for left arm
+     */
+    static final Matrix T_23_LEFT_ARM = createDHTransformation(0, -PI / 2, UPPER_ARM_LENGTH, 0);
 
-    static final Matrix T34LeftArm = createDHTransformation(0, PI / 2, 0, 0);
+    /**
+     * transformation matrix from LAE3 to LAE4 for left arm
+     */
+    static final Matrix T_34_LEFT_ARM = createDHTransformation(0, PI / 2, 0, 0);
 
-    static final Matrix RzLeftArm = createRotationZ(PI / 2);
+    /**
+     * rotation matrix fix for left arm with angle <tt>&pi;/2</tt> about
+     * <tt>z</tt>-axis
+     */
+    static final Matrix R_Z_LEFT_ARM = createRotationZ(PI / 2);
 
-    static final Matrix AendLeftArm = createTranslation(HAND_OFFSET_X + LOWER_ARM_LENGTH, 0, 0);
+    /**
+     * translation matrix from LAE4 to end of left arm
+     */
+    static final Matrix A_END_LEFT_ARM = createTranslation(HAND_OFFSET_X + LOWER_ARM_LENGTH, 0, 0);
 
-    static final Matrix AendRightArm = createTranslation(-HAND_OFFSET_X - LOWER_ARM_LENGTH, 0, 0);
+    /**
+     * translation matrix from RAE4 to end of right arm
+     */
+    static final Matrix A_END_RIGHT_ARM = createTranslation(-HAND_OFFSET_X - LOWER_ARM_LENGTH, 0, 0);
 
-    static final Matrix invAendRightArm = AendRightArm.inverse();
+    /**
+     * inverse matrix of {@link #A_END_RIGHT_ARM}
+     */
+    static final Matrix INV_A_END_RIGHT_ARM = A_END_RIGHT_ARM.inverse();
 
-    static final Matrix AbaseLeftLeg = createTranslation(0, HIP_OFFSET_Y, -HIP_OFFSET_Z);
+    /**
+     * translation matrix from torso to base of left leg
+     */
+    static final Matrix A_BASE_LEFT_LEG = createTranslation(0, HIP_OFFSET_Y, -HIP_OFFSET_Z);
 
-    static final Matrix invAbaseLeftLeg = AbaseLeftLeg.inverse();
+    /**
+     * inverse matrix of {@link #A_BASE_LEFT_LEG}
+     */
+    static final Matrix INV_A_BASE_LEFT_LEG = A_BASE_LEFT_LEG.inverse();
 
-    static final Matrix AendLeftLeg = createTranslation(0, 0, -FOOT_HEIGHT);
+    /**
+     * translation matrix from LLE6 to end of left foot.
+     */
+    static final Matrix A_END_LEFT_LEG = createTranslation(0, 0, -FOOT_HEIGHT);
 
-    static final Matrix invAendLeftLeg = AendLeftLeg.inverse();
+    /**
+     * inverse matrix of {@link #A_END_LEFT_LEG}
+     */
+    static final Matrix INV_A_END_LEFT_LEG = A_END_LEFT_LEG.inverse();
 
-    static final Matrix T34LeftLeg = createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
+    /**
+     * transformation matrix from LLE3 to LLE4
+     */
+    static final Matrix T_34_LEFT_LEG = createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
 
-    static final Matrix T45LeftLeg = createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
+    /**
+     * transformation matrix from LLE4 to LLE5
+     */
+    static final Matrix T_45_LEFT_LEG = createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
 
-    static final Matrix T56LeftLeg = createDHTransformation(0, -PI / 2, 0, 0);
+    /**
+     * transformation matrix from LLE3 to LLE4
+     */
+    static final Matrix T_56_LEFT_LEG = createDHTransformation(0, -PI / 2, 0, 0);
 
-    static final Matrix RzLeftLeg = createRotationZ(PI);
+    /**
+     * rotation matrix fix for left leg with angle <tt>&pi;</tt> about
+     * <tt>z</tt>-axis
+     */
+    static final Matrix R_Z_LEFT_LEG = createRotationZ(PI);
 
-    static final Matrix RyLeftLeg = createRotationY(-PI / 2);
+    /**
+     * rotation matrix fix for left leg with angle <tt>-&pi;/2</tt> about
+     * <tt>y</tt>-axis
+     */
+    static final Matrix R_Y_LEFT_LEG = createRotationY(-PI / 2);
 
-    static final Matrix AbaseRightLeg = Matrix.createTranslation(0, -HIP_OFFSET_Y, -HIP_OFFSET_Z);
+    /**
+     * translation matrix from torso to base of right leg
+     */
+    static final Matrix A_BASE_RIGHT_LEG = Matrix.createTranslation(0, -HIP_OFFSET_Y, -HIP_OFFSET_Z);
 
-    static final Matrix invAbaseRightLeg = AbaseRightLeg.inverse();
+    /**
+     * inverse matrix of {@link A_BASE_RIGHT_LEG}
+     */
+    static final Matrix INV_A_BASE_RIGHT_LEG = A_BASE_RIGHT_LEG.inverse();
 
-    static final Matrix AendRightLeg = createTranslation(0, 0, -FOOT_HEIGHT);
+    /**
+     * transformation matrix from RLE6 to end of right leg
+     */
+    static final Matrix A_END_RIGHT_LEG = createTranslation(0, 0, -FOOT_HEIGHT);
 
-    static final Matrix invAendRightLeg = AendRightLeg.inverse();
+    /**
+     * inverse matrix of {@link #A_END_RIGHT_LEG}
+     */
+    static final Matrix INV_A_END_RIGHT_LEG = A_END_RIGHT_LEG.inverse();
 
-    static final Matrix T34RightLeg = createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
+    /**
+     * transformation matrix from RLE3 to RLE4
+     */
+    static final Matrix T_34_RIGHT_LEG = createDHTransformation(-THIGH_LENGHT, 0, 0, 0);
 
-    static final Matrix T45RightLeg = createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
+    /**
+     * transformation matrix from RLE4 to RLE5
+     */
+    static final Matrix T_45_RIGHT_LEG = createDHTransformation(-TIBIA_LENGHT, 0, 0, 0);
 
-    static final Matrix T56RightLeg = createDHTransformation(0, -PI / 2, 0, 0);
+    /**
+     * transformation matrix from RLE5 to RLE6
+     */
+    static final Matrix T_56_RIGHT_LEG = createDHTransformation(0, -PI / 2, 0, 0);
 
-    static final Matrix RzRightLeg = createRotationZ(PI);
+    /**
+     * rotation matrix fix for right leg with angle <tt>&pi;</tt> about
+     * <tt>z</tt>-axis
+     */
+    static final Matrix R_Z_RIGHT_LEG = createRotationZ(PI);
 
-    static final Matrix RyRightLeg = createRotationY(-PI / 2);
+    /**
+     * rotation matrix fix for right leg with angle <tt>-&pi;/2</tt> about
+     * <tt>y</tt>-axis
+     */
+    static final Matrix R_Y_RIGHT_LEG = createRotationY(-PI / 2);
 
-    static final Matrix ROTATION_X_PI_4 = createRotationX(PI / 4);
+    /**
+     * rotation matrix fix with angle <tt>&pi;/4</tt> about <tt>x</tt>-axis
+     */
+    static final Matrix R_X_PI_4 = createRotationX(PI / 4);
 
-    static final Matrix ROTATION_X_PI_4_MINUS = createRotationX(-PI / 4);
+    /**
+     * rotation matrix fix with angle <tt>-&pi;/4</tt> about <tt>x</tt>-axis
+     */
+    static final Matrix R_X_PI_4_MINUS = createRotationX(-PI / 4);
 
-    static final Matrix ROTATION_Z_PI_MINUS = createRotationZ(PI / 2);
+    /**
+     * rotation matrix fix for right arm with angle <tt>-&pi;</tt> about
+     * <tt>z</tt>-axis
+     */
+    static final Matrix R_Z_RIGHT_ARM = createRotationZ(-PI);
 
+    /**
+     * default dimension size for transformation matrices in 3D space.
+     */
     private static final int DEFAULT_N = 4;
 
     private final double[][] values;
@@ -472,9 +568,34 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * <p>
+     * Creates new translation matrix in 3D space with size {@code 4×4}.
+     * </p>
+     * <p>
+     * The matrix has the form
+     * 
+     * <pre>
+     * |       x |
+     * |   I   y |
+     * |       z |
+     * | 0 0 0 1 |
+     * </pre>
+     * 
+     * where {@code I} is the identity {@code 3×3} matrix.
+     * </p>
+     * 
+     * @param x
+     *            {@code x} coordinate.
+     * @param y
+     *            {@code y} coordinate.
+     * @param z
+     *            {@code z} coordinate.
+     * @return translation matrix.
+     */
     public static Matrix createTranslation(double x, double y, double z)
     {
-        // expected 4x4
+        // default 4x4
         Matrix result = createIdentity(DEFAULT_N);
         result.values[0][3] = x;
         result.values[1][3] = y;
@@ -482,9 +603,19 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * <p>
+     * Creates new rotation matrix in 3D space with size {@code 4×4} about
+     * {@code x}-axis.
+     * </p>
+     * 
+     * @param angle
+     *            angle value in radians.
+     * @return rotation matrix.
+     */
     public static Matrix createRotationX(double angle)
     {
-        // expected 4x4
+        // default 4x4
         Matrix result = createIdentity(DEFAULT_N);
         result.values[1][1] = cos(angle);
         result.values[1][2] = -sin(angle);
@@ -493,6 +624,16 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * <p>
+     * Creates new rotation matrix in 3D space with size {@code 4×4} about
+     * {@code y}-axis.
+     * </p>
+     * 
+     * @param angle
+     *            angle value in radians.
+     * @return rotation matrix.
+     */
     public static Matrix createRotationY(double angle)
     {
         Matrix result = createIdentity(DEFAULT_N);
@@ -503,6 +644,16 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * <p>
+     * Creates new rotation matrix in 3D space with size {@code 4×4} about
+     * {@code z}-axis.
+     * </p>
+     * 
+     * @param angle
+     *            angle value in radians.
+     * @return rotation matrix.
+     */
     public static Matrix createRotationZ(double angle)
     {
         Matrix result = createIdentity(DEFAULT_N);
@@ -513,6 +664,40 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * <p>
+     * Creates new transformation matrix in 3D space with size {@code 4×4} using
+     * Denavit-Hartenberg (DH) parameters.
+     * </p>
+     * <p>
+     * DH matrix is a product of 4 matrices: <br>
+     * 
+     * <pre>
+     * T<sub>DH</sub>=R<sub>x</sub>(&alpha;)T<sub>x</sub>(a)R<sub>z</sub>(&theta;)T<sub>z</sub>(d)
+     * </pre>
+     * 
+     * where <tt>R<sub>x</sub>(&alpha;)</tt> is a rotation matrix about
+     * <tt>x</tt>-axis with angle size <tt>&alpha;</tt>,
+     * <tt>T<sub>x</sub>(a)</tt> is a translation matrix about <tt>x</tt>-axis
+     * with size <tt>a</tt>, <tt>R<sub>z</sub>(&theta;)</tt> is a rotation
+     * matrix about <tt>z</tt>-axis with angle size <tt>&theta;</tt>,
+     * <tt>T<sub>z</sub>(d)</tt> is a translation matrix about <tt>z</tt>-axis
+     * with size <tt>d</tt>.
+     * </p>
+     * 
+     * @param a
+     *            length of the common normal.
+     * @param alpha
+     *            angle about the common normal, from <tt>z<sub>i−1</sub></tt>
+     *            -axis to <tt>z<sub>i</sub></tt>-axis.
+     * @param d
+     *            offset along the <tt>z<sub>i−1</sub></tt>-axis to the common
+     *            normal.
+     * @param theta
+     *            angle about the <tt>z<sub>i−1</sub></tt>-axis, from
+     *            <tt>x<sub>i−1</sub></tt>-axis to <tt>x<sub>i</sub></tt>-axis.
+     * @return transformation matrix.
+     */
     public static Matrix createDHTransformation(double a, double alpha, double d, double theta)
     {
         Matrix result = new Matrix(DEFAULT_N, DEFAULT_N);
@@ -532,6 +717,41 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * <p>
+     * Creates new transformation matrix in 3D space with size {@code 4×4} with
+     * given point and orientation about all axes.
+     * </p>
+     * <p>
+     * A transformation matrix has following form:
+     * 
+     * <pre>
+     * |       px|
+     * |   R   py|
+     * |       pz|
+     * | 0 0 0 1 |
+     * </pre>
+     * 
+     * where <tt>R</tt> is a rotation matrix about all axes, <tt>px</tt> is
+     * <tt>x</tt> coordinate of an endpoint, <tt>py</tt> is <tt>y</tt>
+     * coordinate of an endpoint, <tt>pz</tt> is <tt>z</tt> coordinate of an
+     * endpoint.
+     * </p>
+     * 
+     * @param px
+     *            <tt>x</tt> coordinate of an endpoint.
+     * @param py
+     *            <tt>y</tt> coordinate of an endpoint.
+     * @param pz
+     *            <tt>z</tt> coordinate of an endpoint.
+     * @param rx
+     *            angle of rotation about <tt>x</tt>-axis.
+     * @param ry
+     *            angle of rotation about <tt>y</tt>-axis.
+     * @param rz
+     *            angle of rotation about <tt>z</tt>-axis.
+     * @return transformation matrix.
+     */
     public static Matrix createTransformation(double px, double py, double pz, double rx, double ry, double rz)
     {
         Matrix result = createIdentity(DEFAULT_N);
@@ -550,6 +770,20 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * <p>
+     * Creates new transformation matrix in 3D space with size {@code 4×4} with
+     * given point and orientation about all axes.
+     * </p>
+     * 
+     * @param end
+     *            coordinates of an endpoint in 3D space.
+     * @param angle
+     *            about all axes in 3D space.
+     * @return transformation matrix.
+     * @see Matrix#createTransformation(double, double, double, double, double,
+     *      double)
+     */
     static Matrix createTransformation(Point3D end, Orientation angle)
     {
         double rx = angle.getAxRadians();
@@ -562,6 +796,13 @@ public final class Matrix
         return result;
     }
 
+    /**
+     * Creates new square identity matrix with given size.
+     * 
+     * @param n
+     *            dimensions of a matrix.
+     * @return identity matrix.
+     */
     public static Matrix createIdentity(int n)
     {
         Matrix result = new Matrix(n, n);
@@ -588,9 +829,20 @@ public final class Matrix
         return sb.toString();
     }
 
+    /**
+     * Calculates a determinant value of square matrix.
+     * 
+     * @return determinant value.
+     * @throws IllegalArgumentException
+     *             if given matrix is not a square matrix.
+     */
     public double determinant()
     {
-        // TODO zovseobecni a testuj na stvorcovu maticu
+        if(rows != columns)
+        {
+            throw new IllegalArgumentException("not a square matrix: " + rows + "x" + columns);
+        }
+
         if(rows == 1)
         {
             return values[0][0];
@@ -613,21 +865,60 @@ public final class Matrix
         return i % 2 == 0 ? 1 : -1;
     }
 
+    /**
+     * Creates new smaller matrix, without given row and column excluded.
+     * 
+     * @param excludingRow
+     *            row to remove.
+     * @param excludingColumn
+     *            column to remove.
+     * @return submatrix of a given matrix.
+     * @throws IllegalArgumentException
+     *             if given matrix is not a square matrix or <br>
+     *             if row or column is negative or higher than row or column
+     *             count of matrix.
+     */
     public Matrix submatrix(int excludingRow, int excludingColumn)
     {
-        // TODO zovseobecni a kontroluj stvorcovu maticu
+        if(excludingRow < 0)
+        {
+            throw new IllegalArgumentException("excludingRow < 0");
+        }
+        if(excludingColumn < 0)
+        {
+            throw new IllegalArgumentException("excludingColumn < 0");
+        }
+
+        if(excludingRow >= rows)
+        {
+            throw new IllegalArgumentException("excludingRow >= rows: " + excludingRow + " >= " + rows);
+        }
+        if(excludingColumn >= columns)
+        {
+            throw new IllegalArgumentException("excludingColumn >= columns: " + excludingColumn + " >= " + columns);
+        }
+        if(rows != columns)
+        {
+            throw new IllegalArgumentException("not a square matrix: " + rows + "x" + columns);
+        }
+
         Matrix result = new Matrix(rows - 1, columns - 1);
         int r = -1;
         for (int i = 0; i < rows; i++)
         {
             if(i == excludingRow)
+            {
                 continue;
+            }
             r++;
             int c = -1;
             for (int j = 0; j < rows; j++)
             {
                 if(j == excludingColumn)
+                {
+
                     continue;
+                }
                 c++;
                 result.values[r][c] = values[i][j];
             }
@@ -636,11 +927,27 @@ public final class Matrix
         return result;
     }
 
-    // The cofactor of a matrix A is matrix C that the value of element Cij
-    // equals the determinant of a matrix created by removing row i and column j
-    // from matrix A. Here is the method that calculates the cofactor matrix
+    /**
+     * <p>
+     * Creates new matrix which is a cofactor of a given matrix.
+     * </p>
+     * <p>
+     * The cofactor of a matrix <tt>A</tt> is matrix <tt>C</tt> that the value
+     * of element <tt>C<sub>ij</sub></tt> equals the determinant of a matrix
+     * created by removing row <tt>i</tt> and column <tt>j</tt> from matrix
+     * <tt>A</tt>.
+     * </p>
+     * 
+     * @return cofactor of a matrix.
+     * @throws IllegalArgumentException
+     *             if given matrix is not a square matrix
+     */
     public Matrix cofactor()
     {
+        if(rows != columns)
+        {
+            throw new IllegalArgumentException("not a square matrix: " + rows + "x" + columns);
+        }
         Matrix result = new Matrix(rows, columns);
         for (int i = 0; i < rows; i++)
         {

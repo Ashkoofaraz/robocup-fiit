@@ -69,17 +69,17 @@ class LeftLegIk
     {
         T = Matrix.createTransformation(end, angle);
 
-        Matrix temp = Matrix.invAbaseLeftLeg.mult(T);
-        temp = temp.mult(Matrix.invAendLeftLeg);
-        Matrix tempT_ = Matrix.ROTATION_X_PI_4.mult(temp);
+        Matrix temp = Matrix.INV_A_BASE_LEFT_LEG.mult(T);
+        temp = temp.mult(Matrix.INV_A_END_LEFT_LEG);
+        Matrix tempT_ = Matrix.R_X_PI_4.mult(temp);
         T_ = tempT_.inverse();
 
         Matrix left = tempT_;
-        Matrix right = Matrix.T56LeftLeg.mult(Matrix.RzLeftLeg).mult(Matrix.RyLeftLeg);
+        Matrix right = Matrix.T_56_LEFT_LEG.mult(Matrix.R_Z_LEFT_LEG).mult(Matrix.R_Y_LEFT_LEG);
         Matrix tempT__ = left.mult(right.inverse());
         T__ = tempT__.inverse();
 
-        Matrix TTemp = Matrix.T34LeftLeg.mult(Matrix.T45LeftLeg);
+        Matrix TTemp = Matrix.T_34_LEFT_LEG.mult(Matrix.T_45_LEFT_LEG);
         T___ = tempT__.mult(TTemp.inverse());
     }
 

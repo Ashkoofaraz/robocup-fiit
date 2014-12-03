@@ -1,0 +1,48 @@
+\section{DP 2014}
+
+\subsection{Tomáš Boleček}
+Diplomová práca Tomáša Bolečeka \cite{bolecek} je jedinou, ktorá sa nezaoberala nižšími schopnosťami hráčov. Podstatou bolo vytvorenie modelu strategickej vrstvy, aby sa hráči správali ako tím a kooperovali medzi sebou. Vychádzal z prác na FIIT pre simulovanú 2D ligu a svetových 3D tímov. 
+
+Jeho model správania bol navrhnutý pre celý tím a zároveň pre konkrétneho hráča. Správanie rozdelil na viac úrovní, aby sa dali upravovať nezávisle od seba:
+\begin{itemize}
+\item stratégie
+\item taktiky
+\item formácie
+\item subtaktiky
+\item roly
+\end{itemize}
+Zo správania implementoval formácie a roly, ktoré je možné zamieňať. Pri formáciách sa určuje nie len pozícia, ale aj oblasť, v ktorej by sa mali pohybovať hráči na základe priradenej role. Formácia sa mení dynamicky. Prepočet sa vykonáva každé 3 sekundy. Nie je naviazaná na počet hráčov. Roly sa pri spustení prideľujú na základe štandardných pozícií. Počas hry sa na základe vypočítaného stavu môžu meniť pozície. Predpokladom je, že cena výmeny bude nižšia, ako by bolo zotrvanie v aktuálnej formácii. Algoritmus pre prideľovanie rolí:
+\begin{enumerate}
+\item vytvoria sa všetky možné dvojice hráčov a rolí na ihrisku
+\item vypočíta sa vzdialenosť medzi aktuálnou pozíciou hráča a pozíciou vo formácii.
+\item vybraná je tá, ktorá dáva najmenšiu hodnotu.
+\end{enumerate}
+Najbližší hráč je vždy priradený k lopte. A to aj napriek tomu, že má pridelenú rolu. V tomto prípade sa ju nebude dodržiavať. Priradenú ju pre prípad, pre jednoduchší návrat do formácie v prípade, že je lopte priradený iný hráč.
+
+Formácie a roly sú uložené v XML súboroch. Formát vychádza zo súborov pre pohyby. Základná štruktúra obsahuje meno formácie, meno autora, popis formácie, počet hráčov, mená hráčov a ich pozície, štartovaciu pozíciu hráčov, určenie, či je možné meniť pozíciu, offset od lopty, index škálovateľnosti pohybu, veľkosť oblasti pozície.
+Nástroj pre vytváranie XML súborov.
+
+
+\subsection{Jaroslav Grega}
+Zameranie práce Jaroslava Gregu \cite{grega} bolo na nižšie pohyby a prístupy k tvorbe pohybov a stabilizácii. Analyzoval prístupy na tvorbu dynamických pohybov. Jeho cieľom bolo vytvorenie agenta, ktorý bude vykonávať rýchle pohyby a zároveň bude stabilný. 
+
+Optimalizoval pomalé a nestabilné pohyby použitím genetického algoritmu. Zvýšil rýchlosť pohybu \texttt{walk\_fast} na $0,4~m/s$ a zvýšil silu kopu \texttt{kick\_step\_strong} na $7,12~m$.
+
+Na stabilizovanie hráča využil Zero Moment Point (ZMP). Stabilizovanie prebieha v nasledujúcich krokoch:
+\begin{itemize}
+	\item získanie informácií o aktuálnom natočení kĺbov a aj o ich nasledujúcom natočení
+	\item výpočet ZMP pre aktuálne a budúce natočenie kĺbov
+	\item ak sa pozícia nachádza mimo oblasti nôh, hráč sa upraví do takej polohy, aby ZMP bolo v oblasti nôh.
+\end{itemize}
+
+\subsection{Pavol Meštaník} \label{sec_mestanik}
+
+Výsledkom práce Pavla Mešťaníka \cite{mestanik} je implementovaný parametrizovaný priamy kop. Dynamicky dokáže určiť silu kopu na základe definovaj želanej cieľovej pozície lopty. Pre určenie takejto funkcie skúmal závislosti kĺbov, ktoré sa podieľajú na sile kopu. Odhalil závislosť bedrového bedrový kĺbu \texttt{RLE3} (ekvivalentné pre ľavú nohu a kĺb \texttt{LLE3}). Výsledná funkcia nie je spojitá, ale je po častiach lineárne aproximovateľná. 
+
+Vznikol úpravou statického pohybu pre obe nohy \texttt{kick\_right\_normal} resp. \texttt{kick\_left\_normal}. Začiatočné fázy pohybu sú zhodné so spomínanými kopmi. Dynamicky sa na základe funkcie upraví natočenie bedrového kĺbu a pohyb sa dokončí nastavením do stabilizovanej polohy, ktorá ostáva zo súboru pre statické kopy. Pre dynamický kop vznikol balíček v zdrojovom kóde, ktorý upravuje implementáciu vykonávania statických pohybov. Po načítaní pohybu nahradí fázy vypočítaným nastavením a vykonanie pohybu sa vykoná rovnakým spôsobom ako kopy zo súborov.
+
+Výsledné kopnutie je spresnosťou na jedno desiatinné miesto.
+
+\subsection{Martin Košický}
+Dynamická chôdza.
+\subsection{Zhrnutie prác na FIIT}

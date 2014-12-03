@@ -1,0 +1,14 @@
+\section{Úvod}
+
+Agentovo-orientované programovanie \cite{shoham} je založené na kognitívnom a sociálnom pohľade na softvér. Agentom sa nazýva softvérová entita, ktorá sa správa autonómne a nezávisle v dynamicky a nepredvídateľne sa meniacom prostredí, v ktorom koexistujú aj iné agenty.
+
+Jedným z príkladov agentovo-orientovaného návrhu softvéru je simulovaná futbalová liga robotov - RoboCup.
+RoboCup \cite{robocup} je svetová iniciatíva, ktorá vznikla v roku 1997. Snaží sa podporiť povedomie verejnosti o robotike a umelej inteligencii. Cieľom je podporiť vedecký výskum. Podporou výskumu a organizovaním súťaži sa zameriava na dosiahnutie hlavného cieľa. Tým je vytvoriť do roku 2050 tím autonómnych hráčov, ktorí dokážu poraziť aktuálnych majstrov sveta vo futbale podľa medzinárodnej futbalovej federácie FIFA. Menším cieľom je vytvoriť tím robotov, ktorí dokážu hrať ako ľudskí hráči. 
+
+V rámci tohto projektu existujú viaceré ligy deliace sa podľa typu používaných hráčov a spôsobu  realizácie  zápasov.  Jedná  sa  napríklad  o ligu  humanoidných  robotov,  ligu  stredne veľkých  robotov,  ligu  malých  robotov,  ligu  štandardnej  platformy  a  simulovanú  ligu. Spomínané  ligy  sa  ešte členia  podľa  rôznych  kritérií. Fakulta informatiky a informačných technológií sa zameriava na simulovanú trojrozmernú ligu. 
+
+Predlohou hráča simulovanej ligy je humanoidný robot Nao vyrábaný spoločnosťou Aldebaran Robotics\footnote{\url{http://www.aldebaran.com/}}. Jeho výška je $57~cm$ a hmotnosť $4,5~kg$. Má 22 kĺbov – 6 na nohe, 4 na ruke a 2 na krku. Zápas prebieha v prostredí so simulovaným fyzikálnym modelom. Ako simulačné prostredie sa využíva server Simspark\footnote{\url{http://simspark.sourceforge.net/}}. Hráči komunikujú so serverom v $20~ms$ intervaloch pomocou TCP/IP protokolu. Hráč prijíma informácie o prostredí pomocou senzorov – perceptorov. Poskytujú informácie o postavení a orientácii hráča v prostredí, natočení kĺbov, silách, ktoré pôsobia na robota. Hráč z prostredia prijíma aj vizuálne a zvukové vnemy. 
+
+Hráč  odosiela  serveru  príkazy  na  zmenu polohy  jednotlivých  kĺbov.  Simultánnou  zmenou  natočenia  viacerých  kĺbov  sa  dosahuje jednoduchý pohyb hráča. Tzv. nižšie schopnosti, ako je chôdza, otáčanie alebo kopnutie do lopty, vznikajú kombináciou týchto pohybov. Vyššie pohyby sa skladajú z nižších a vyberajú sa na základe stavu agenta. Na najvyššej úrovni je taktika. Od vyspelosti taktiky tímu závisí celková hra, aj schopnosť vyhrať nad súperom. 
+
+%\subsection{Štruktúra práce}
