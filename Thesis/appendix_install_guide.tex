@@ -1,0 +1,45 @@
+\section{Inštalačná príručka} \label{appendix_install_guide}
+
+Pre spustenie verzie robota so serverom je potrebné mať nainštalované nasledovné programy. Opísaný postup fungoval na Windows 7 SP1 32 bit\footnote{postup inštalácie pre ostatné operačné systémy \url{http://simspark.sourceforge.net/wiki/index.php/Main_Page}}.
+
+\subsection{Inštalácia servera}
+\begin{enumerate}
+	\item Inštalácia Microsoft Visual C++ 2008 Redistributable Package 
+	\\ \url{http://www.microsoft.com/en-us/download/details.aspx?id=29}
+	\item Inštalácia SimSpark
+	\\ testované na verzii 0.2.4
+	\\ \url{http://sourceforge.net/projects/simspark/files/simspark/}
+	\item Inštalácia RcssServera
+	\\ testované na verzii 0.6.5 
+	\\ \url{http://sourceforge.net/projects/simspark/files/rcssserver3d/}
+	\item Inštalácia Ruby
+	\\ testované na verzii 1.9.3-p551
+	\\ \url{https://www.ruby-lang.org/en/downloads/}
+	\item Niekedy je potrebné reštartovať systém.
+	\item Nastavenie premenných prostredia
+	\begin{itemize}
+		\item vytvoriť alebo pridať do premennej prostredia \texttt{PATH} cestu k inštalácii Ruby (napr. \texttt{C:\textbackslash Program Files\textbackslash ruby\textbackslash bin})
+		\item vytvoriť premennú prostredia \texttt{SET SPARK\_DIR} a priradiť cestu k inštalácii (napr. \texttt{C:\textbackslash Program Files\textbackslash simspark})
+		\item vytvoriť premennú prostredia \texttt{SET RCSSSERVER3D\_DIR} a priradiť cestu k inštalácii (napr. \texttt{C:\textbackslash Program Files\textbackslash rcssserver3d 0.6.5})
+	\end{itemize}
+\end{enumerate}
+
+\subsection{Inštalácia hráča}
+\begin{enumerate}
+	\item Mať nainštalované prostredie Java, minimálne verziu 1.6
+	\\ \url{http://www.oracle.com/technetwork/java/javase/downloads/index.html}
+	\item Mať nainštalované prostredie Ruby.
+	\item Importovať zdrojové súbory hráča
+	\\ minimálne projekt \texttt{Jim} a \texttt{RobocupLibrary}
+	\\ zdrojové súbory sú dostupné na elektronickom médiu (viď príloha \ref{appendix_medium}) alebo importovať z GitHub\footnote{\url{https://github.com/PaulNoth/robocup-fiit}}
+	\\ najlepšie je využiť vývojové prostredie Eclipse\footnote{http://www.eclipse.org/downloads/} (testované aj na verzii Luna 4.4)
+\end{enumerate}
+
+\subsection{Spustenie hráča}
+\begin{enumerate}
+	\item Spustenie servera
+	\item Spustenie monitora\footnote{alternatíva je použitie RoboViz \url{https://sites.google.com/site/umroboviz/}}
+	\item Spustenie hráča
+	\\ na ihrisku by sa mal objaviť Nao robot pred výkopom v strede ihriska
+\end{enumerate}
+Aktuálne zdrojové súbory majú nastavený plán pre vykonanie dynamického pohybu a stačí zapnúť simulačné prostredie.
