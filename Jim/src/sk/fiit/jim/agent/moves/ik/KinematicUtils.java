@@ -1,7 +1,5 @@
 package sk.fiit.jim.agent.moves.ik;
 
-import org.jruby.javasupport.Java;
-
 import sk.fiit.jim.agent.moves.Joint;
 
 /**
