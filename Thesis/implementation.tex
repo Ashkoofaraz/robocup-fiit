@@ -1,4 +1,4 @@
-\section{Implementácia}
+\section{Implementácia} \label{sec_implementation}
 
 Aby fakultný robot dokázal využívať pohyby vypočítané inverznou kinematikou, opísané v kapitole \ref{sec_specification}, rozhodli sme sa výpočet, čo najviac oddeliť od súčasnej štruktúry kódu. Ako podklad sme si zvolili implementáciu diplomovej práce Pavla Meštaníka, ktorá je opísaná v kapitole \ref{sec_mestanik}. Vznikol tak samostatný balíček v jazyku Java s menom \texttt{sk.fiit.jim.agent.moves.ik}. 
 
@@ -40,7 +40,7 @@ Obsahujú výpočty pre uhly zodpovedajúcim končatinám.
 \\
 Pomocné triedy na uchovávanie konštánt a pomocných metód pre všetky ostatné výpočty.
 \\\\
-\textbf{Ostatné triedy}
+\textbf{Ostatné triedy}\\
 Zároveň boli rozšírené existujúce balíčky novými triedami. Tie slúžia na využije inverznej kinematike pri pohyboch robota. Nové triedy:
 \begin{itemize}
 	\item \texttt{DynamicMove} - slúži ako predloha pre dynamické pohyby pre \texttt{Ruby} triedy. Vstupom je sekvencia pozícií a natočení koncového vektora zodpovedajúcej končatiny.
@@ -56,7 +56,7 @@ Závislosti medzi triedami a balíčkami sú zobrazené na obrázku \ref{pic_cla
 \begin{figure}[H]
 \centering
 	\includegraphics[scale=0.3]{./data/class_diagram}
-	\caption{sdnaidna}
+	\caption{Diagram tried vytvoreného modulu inverznej kinematiky}
 	\label{pic_class_diagram}
 \end{figure}
 \end{landscape}

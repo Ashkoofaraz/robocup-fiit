@@ -1,30 +1,31 @@
-\section{Parameter Denavit Hanenberg} \label{appedix_dh}
+\section{Denavit-Hartenbergove parametre pre končatiny} \label{appedix_dh}
+V tabuľkách sa nachádzajú konštanty pre rozmery robota z prílohy \ref{appendix_nao_model}.
+%\subsection{hlava}
+%\begin{center}
+%	\begin{tabular}{|l|c|c|c|c|}
+%	\hline
+%	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
+%	\hline
+%	Base & \multicolumn{4}{|c|}{A(0, 0, NeckOffsetZ)} \\
+%	\hline
+%	HeadYaw & 0 & 0 & 0 & $\theta_1$ \\
+%	\hline
+%	HeadPitch & 0 & $-\frac{\pi}{2}$ & 0 & $\theta_2 - \frac{\pi}{2}$ \\
+%	\hline
+%	Rotation & \multicolumn{4}{|c|}{$R_x\left(\frac{\pi}{2}\right)R_y\left(\frac{\pi}{2}\right))$} \\
+%	\hline
+%	Top Camera & \multicolumn{4}{|c|}{A(topCameraX, 0, topCameraZ)} \\
+%	\hline
+%	Bottom Camera & \multicolumn{4}{|c|}{A(bottomCameraX, 0, bottomCameraZ)} \\
+%	\hline
+%	%\multicolumn{1}{|c|}{ \scriptsize{topCameraX=53.9mm, topCameraZ=67.9mm, bottomCameraX=48.8mm, bottomCameraZ=23.8mm}} \\
+%	%\hline
+%	\end{tabular}
+%\end{center}
 
-\subsection{hlava}
-\begin{center}
-	\begin{tabular}{|l|c|c|c|c|}
-	\hline
-	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
-	\hline
-	Base & \multicolumn{4}{|c|}{A(0, 0, NeckOffsetZ)} \\
-	\hline
-	HeadYaw & 0 & 0 & 0 & $\theta_1$ \\
-	\hline
-	HeadPitch & 0 & $-\frac{\pi}{2}$ & 0 & $\theta_2 - \frac{\pi}{2}$ \\
-	\hline
-	Rotation & \multicolumn{4}{|c|}{$R_x\left(\frac{\pi}{2}\right)R_y\left(\frac{\pi}{2}\right))$} \\
-	\hline
-	Top Camera & \multicolumn{4}{|c|}{A(topCameraX, 0, topCameraZ)} \\
-	\hline
-	Bottom Camera & \multicolumn{4}{|c|}{A(bottomCameraX, 0, bottomCameraZ)} \\
-	\hline
-	%\multicolumn{1}{|c|}{ \scriptsize{topCameraX=53.9mm, topCameraZ=67.9mm, bottomCameraX=48.8mm, bottomCameraZ=23.8mm}} \\
-	%\hline
-	\end{tabular}
-\end{center}
-
-\subsection{ľavá ruka}
-\begin{center}
+\begin{table}[H]
+	\centering
+	\caption{Denavit-Hartenbergove parametre pre ľavú ruku}
 	\begin{tabular}{|l|c|c|c|c|}
 	\hline
 	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
@@ -44,10 +45,11 @@
 	End effector & \multicolumn{4}{|c|}{A(HandOffsetX+LowerArmLength, 0, 0)} \\
 	\hline
 	\end{tabular}
-\end{center}
+\end{table}
 
-\subsection{pravá ruka}
-\begin{center}
+\begin{table}[H]
+	\centering
+	\caption{Denavit-Hartenbergove parametre pre pravú ruku}
 	\begin{tabular}{|l|c|c|c|c|}
 	\hline
 	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
@@ -69,10 +71,12 @@
 	Rotation fix & \multicolumn{4}{|c|}{$R_z\left(\pi\right)$} \\
 	\hline
 	\end{tabular}
-\end{center}
+\end{table}
 
-\subsection{ľavá noha}
-\begin{center}
+
+\begin{table}[H]
+	\centering
+	\caption{Denavit-Hartenbergove parametre pre ľavú noha}
 	\begin{tabular}{|l|c|c|c|c|}
 	\hline
 	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
@@ -96,10 +100,12 @@
 	End effector & \multicolumn{4}{|c|}{A(0, 0, -FootHeight)} \\
 	\hline
 	\end{tabular}
-\end{center}
+\end{table}
 
-\subsection{pravá noha}
-\begin{center}
+
+\begin{table}[H]
+	\centering
+	\caption{Denavit-Hartenbergove parametre pre pravú nohu}
 	\begin{tabular}{|l|c|c|c|c|}
 	\hline
 	\textbf{Kĺb} & $\textbf{a}$ & $\mathbb{\alpha}$ & $\textbf{d}$ & $\theta$ \\
@@ -123,4 +129,4 @@
 	End effector & \multicolumn{4}{|c|}{A(0, 0, -FootHeight)} \\
 	\hline
 	\end{tabular}
-\end{center}
+\end{table}

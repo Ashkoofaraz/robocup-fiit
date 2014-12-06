@@ -1,14 +1,15 @@
 \section{Špecifikácia} \label{sec_specification}
 
-V súčasnom stave sa fakultný robot dokáže pohybovať staticky definovanými pohybmi. Sú definované v XML súbore, v ktorom je napísaná sekvencia fáz natočení kĺbov. V podstate ide o doprednú kinematiku. V doprednej kinematike pre model robota na základe určených uhlov natočení kĺbov vieme vypočítať bod v priestore, v ktorom sa bude nachádzať koncový efektor. Tento bod vieme získať zo stavu, ktorý si implementácia agenta uchováva v každom serverovom cykle.
+V súčasnom stave sa fakultný robot dokáže pohybovať staticky definovanými pohybmi. Sú definované v XML súbore, v ktorom je napísaná sekvencia fáz natočení kĺbov. V podstate ide o doprednú kinematiku.
+
+V doprednej kinematike pre model robota na základe určených uhlov natočení kĺbov vieme vypočítať bod v priestore, v ktorom sa bude nachádzať koncový efektor. Tento bod vieme získať zo stavu, ktorý si implementácia agenta uchováva v každom serverovom cykle.
 
 Avšak aby sme vedeli hýbať končatinami takým spôsobom, že poznáme body priestore, po ktorých sa má hýbať, potrebujeme vedieť určiť také natočenia kĺbov. Ide o opačný problém ako pri doprednej kinematike. Takýto problém  sa nazýva inverzná kinematika. Výpočet inverznej kinematiky chýba v implementácii fakultného robota. Bez nej nebude možné vytvoriť dynamické pohyby a teda aj dynamické kopanie.
 
-\subsection{Inverzná kinematika}
 Problémom inverznej kinematiky je, že riešenie je doménovo závislé od modelu. Každá iná konfigurácia kĺbov vedie k inému riešeniu. Narozdiel od doprednej kinematiky, ktorá je doménovo nezávislá.
-\\\\\\
-...
-\\
+
+\subsection{Inverzná kinematika}
+
 Výborným podkladom pre inverznú kinematiku je práca \cite{kofinas, kofinas_master}, kde vypočítali analytickým spôsobom doprednú a inverznú kinematiku pre robota v štandardnej lige robotov. Ich riešenie je rozdelené na 5 nezávislých podproblémov - hlava, ľavá resp. pravá ruka, ľavá resp. pravá noha. Na riešenie využili metódu vyjadrenia transformačných matíc pre postupnosti kĺbov pomocou Denavit-Hartenbergových parametrov.
 
 \subsubsection{Analytické riešenie tímu Kouretes}
@@ -23,6 +24,7 @@ Vychádzajú zo všeobecnej transformačnej matice v $n$-rozmernom priestore ve�
 \end{equation}
 kde $X$ je matica rozmerov $(n\times n)$, $Y$ je vektor $(n \times 1)$.
 \\
+
 Ďalej traslačná matica, ktorá vyjadruje posun bodu v priestore o pevnú vzdialenosť má tvar:
 \begin{equation}
 	T = \left[
@@ -40,34 +42,40 @@ kde $X$ je matica rozmerov $(n\times n)$, $Y$ je vektor $(n \times 1)$.
 \end{equation}
 kde $d_x$, $d_y$, $d_z$ vyjadrujú vzdialenosť posunu po osiach $x$, $y$ a $z$. Ide vlastne o transformačnú maticu $X=I$.
 \\
+
 Rotačná matica vyjadruje otočenie  vektora o určený uhol v trojrozmernom priestore. Existujú 3 rôzne matice, každá vyjadruje otočenie okolo jednej osi.
-\begin{equation}
-	R_x = \left[
+\begin{align}
+	R_x &= \left[
 	\begin{tabular}{ccc}
 	 1 & 0 & 0 \\
 	 0 & $\cos\theta_x$ & $-\sin\theta_x$ \\
 	 0 & $\sin\theta_x$ & $\cos\theta_x$
 	\end{tabular}
 	\right]	
-	R_y = \left[
+		\nonumber \\
+		\nonumber \\
+	R_y &= \left[
 	\begin{tabular}{ccc}
 	 $\cos\theta_y$ & 0 & $\sin\theta_y$ \\
 	 0 & 1 & 0 \\
 	 $-\sin\theta_y$ & 0 & $\cos\theta_y$
 	\end{tabular}
-	\right]
-	R_z = \left[
+	\right] 
+		\nonumber \\
+		\nonumber \\
+	R_z &= \left[
 	\begin{tabular}{ccc}
 	 $\cos\theta_z$ & $-\sin\theta_z$ & 0 \\
 	 $\sin\theta_z$ & $\cos\theta_z$ & 0 \\
 	 0 & 0 & 1
 	\end{tabular}
 	\right]
-\end{equation}
+\end{align}
 
 Kombináciou rotačných matíc okolo zodpovedajúcich osí v priestore a posunu od vzdialenosť $d$ vyjadreného vektorom $d=(d_x, d_y, d_z)^T$ dostaneme transformačnú maticu v trojrozmernom priestore:
-\begin{equation}
-	T = \left[
+\footnotesize
+\begin{align}
+   T&=\left[
 	\begin{tabular}{cc}
 		$\hat{R}$ & 
 			\begin{tabular}{c}
@@ -77,8 +85,8 @@ Kombináciou rotačných matíc okolo zodpovedajúcich osí v priestore a posunu
 			\end{tabular} \\
 		$[0\ldots0]$ & 1
 	\end{tabular}
-	\right] =
-	\left[
+	\right] = \nonumber \\
+	&=\left[
 	\begin{tabular}{cccc}
 		$\cos a_y \cos a_z$ & $-\cos a_x \sin a_z + \sin a_x \sin a_y \cos a_z$ & $\sin a_x \sin a_z + \cos a_x  \sin a_y \cos a_z$ & $p_x$ \\
 		$\cos a_y \sin a_z$ & $\cos a_x \cos a_z + \sin a_x \sin a_y \sin a_z$ & $-\sin a_x \cos a_z + \cos a_x \sin a_y \sin a_z$ & $p_y$ \\
@@ -86,9 +94,12 @@ Kombináciou rotačných matíc okolo zodpovedajúcich osí v priestore a posunu
 		0 & 0 & 0 & 1
 	\end{tabular}
 	\right]
-\end{equation}
+\end{align}
+
+\normalsize
 kde $\hat{R} = R_xR_yR_z$.
 \\
+
 Ďalším zo spôsobov vytvorenie transformačnej matice, ktorá vyjadruje bod na jednom konci kĺbu vzhľadom na iný koncový bod kĺbu pomocou 4 parametrov $a$, $\alpha$, $d$ a $\theta$. Tieto parametre sa nazývajú Denavit-Hartenbergove a majú nasledovný význam:
 \begin{itemize}
 	\item $a$ - normálová vzdialenosť kĺbov
@@ -135,42 +146,45 @@ a_y = \arctan2\left(-T_{\left(3,1\right)},\sqrt{T_{\left(3,2\right)}^2 + T_{\lef
 \begin{equation}
 a_z = \arctan2\left(T_{\left(2,1\right)},T_{\left(1,1\right)}\right)
 \end{equation}
-kde $(p_x, p_y, p_z)$ je pozícia v priestore a $(a_x, a_y, a_z)$ je výsledné natočenie vzhľadom na osi.
+kde $(p_x, p_y, p_z)$ je pozícia v priestore a $(a_x, a_y, a_z)$ je výsledné natočenie vzhľadom na zodpovedajúce osi.
 \\\\
-Pre analytické riešenie inverznej kinematiky využili transformačnú maticu. Do tej sa dosadia hodnoty koncovej pozície efektora príslušnej končatiny. Takto vznikne numberické riešenie. Táto matica sa dá do rovnosti so symbolickou transformačnou maticou pre doprednú kinematiku pre každú končatinu, ktorá vznikne vynásobením rotačných a translačných matíc. Tieto rovnice sú uvedené v kapitole \ref{sec_forward_kinematics_equations}.
+Pre analytické riešenie inverznej kinematiky využili transformačnú maticu. Do tej sa dosadia hodnoty koncovej pozície efektora príslušnej končatiny. Takto vznikne numerické riešenie. Táto matica sa dá do rovnosti so symbolickou transformačnou maticou pre doprednú kinematiku pre každú končatinu, ktorá vznikne vynásobením rotačných a translačných matíc. Tieto rovnice sú uvedené v kapitole \ref{sec_forward_kinematics_equations}.
 
 
 \subsubsection{Rovnice pre doprednú kinematiku}\label{sec_forward_kinematics_equations}
- 
-
+\noindent
 \textbf{Hlava}
 
 \begin{equation}
 T_{\text{Base}}^{\text{End}} = A_{\text{Base}}^{0} T_{1}^{2} R_{x}\left(\frac{\pi}{2}\right) R_{y}\left(\frac{\pi}{2}\right) A_{4}^{\text{end}}
 \end{equation}
 
+\noindent
 \textbf{Ľavá ruka}
 
 \begin{equation}
 T_{\text{Base}}^{\text{End}} = A_{\text{Base}}^{0} T_{1}^{2} T_{2}^{3} T_{3}^{4} R_{z}\left(\frac{\pi}{2}\right) A_{4}^{\text{End}}
 \end{equation}
 
+\noindent
 \textbf{Pravá ruka}
 
 \begin{equation}
 T_{\text{Base}}^{\text{End}} = A_{\text{Base}}^{0} T_{1}^{2} T_{2}^{3} T_{3}^{4} R_{z}\left(\frac{\pi}{2}\right) A_{4}^{\text{End}} R_{z}\left(\pi\right)
 \end{equation}
 
+\noindent
 \textbf{Ľavá noha}
 
 \begin{equation}
 T_{\text{Base}}^{\text{End}} = A_{\text{Base}}^{0} T_{1}^{2} T_{2}^{3} T_{3}^{4} T_{4}^{5} T_{5}^{6} R_{z}\left(\pi\right) R_{y}\left(\frac{\pi}{2}\right) A_{6}^{\text{End}}
 \end{equation}
 
+\noindent
 \textbf{Pravá noha}
 
 \begin{equation}
 T_{\text{Base}}^{\text{End}} = A_{\text{Base}}^{0} T_{1}^{2} T_{2}^{3} T_{3}^{4} T_{4}^{5} T_{5}^{6} R_{z}\left(\pi\right) R_{y}\left(\frac{\pi}{2}\right) A_{6}^{\text{End}} 
 \end{equation}
 
-Kde $T_{\text{Base}}^{\text{End}}$ je výsledná transformačná matica od počiatočného kĺbu ku koncovému kĺbu. $A_{\text{Base}}^{0}$ vyjadruje posunutie počiatočného kĺbu pre príslušnú končatinu vzhľadom k trupu, $T_{i}^{j}$ je transformácia medzi kĺbami $i$ a $j$ v postupnosti, $R_x$ resp. $R_y$, $R_z$ rotácia kĺbu o uhol $\theta$ a $A_{n}^{\text{End}}$ posun koncového efektora.
+Kde $T_{\text{Base}}^{\text{End}}$ je výsledná transformačná matica od počiatočného kĺbu ku koncovému kĺbu. $A_{\text{Base}}^{0}$ vyjadruje posunutie počiatočného kĺbu pre príslušnú končatinu vzhľadom k trupu, $T_{i}^{j}$ je transformácia medzi kĺbami $i$ a $j$ v postupnosti, $R_x$ resp. $R_y$, $R_z$ rotácia kĺbu o uhol $\theta$ a $A_{n}^{\text{End}}$ posun koncového efektora oproti $n$-tému kĺbu končatiny.
