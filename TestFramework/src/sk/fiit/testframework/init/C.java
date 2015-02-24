@@ -23,7 +23,7 @@ public class C {
 	
 	public static final Properties properties;
 	
-	public static final String PROPERTIES_ROBOCUP_SERVER_COMMAND = "robocup.server.command";
+	public static final String PROPERTIES_ROBOCUP_SERVER_COMMAND = "robocup.server.command";	
 	public static final String PROPERTIES_ROBOCUP_SERVER_KILLCOMMAND = "robocup.server.killcommand";
 	public static final String PROPERTIES_ROBOCUP_SERVER_IP = "robocup.server.ip";
 	public static final String PROPERTIES_ROBOCUP_SERVER_MONITOR_PORT = "robocup.server.port.monitor";
@@ -31,6 +31,7 @@ public class C {
 	
 	public static final String PROPERTIES_ROBOCUP_PLAYER_DIR = "robocup.player.dir";
 	public static final String PROPERTIES_ROBOCUP_PLAYER_COMMAND = "robocup.player.command";
+	public static final String PROPERTIES_ROBOCUP_PLAYER_COMMAND_NON_WINDOWS = "robocup.player.command_non_windows";
 	
 	public static final String TESTFRAMEWORK_MONITOR_AGENT_IP = "testframework.monitorAgent.ip";
 	public static final String TESTFRAMEWORK_MONITOR_AGENT_PORT = "testframework.monitorAgent.port";
@@ -43,6 +44,7 @@ public class C {
 		try {
 			properties.load(C.class.getClassLoader().getResourceAsStream("sk/fiit/testframework/init/default.properties"));
 			logger.info("Properties loaded: sk/fiit/testframework/init/default.properties");
+			
 		} catch (IOException e1) {
 			logger.warning("error reading default properties file");
 		}

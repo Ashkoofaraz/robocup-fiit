@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<robot xsi:noNamespaceSchemaLocation="moves.xsd">
+		<low_skills>
+			<low_skill name="kick_left_template" firstPhase="test_left_kick_0"/>
+		</low_skills>
+						
+		<phases>
+
+			<phase name="test_left_kick_0" next="test_left_kick_360">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-90"/> <lae1 end="-90"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="30"/> <lae3 end="-30"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="0"/> <lle1 end="0"/>
+					<rle2 end="7"/> <lle2 end="-7"/>
+					<rle3 end="55"/> <lle3 end="55"/>
+					<rle4 end="-60"/> <lle4 end="-60"/>
+					<rle5 end="30"/> <lle5 end="30"/>
+					<rle6 end="-7"/> <lle6 end="7"/>
+				</effectors>
+				<duration>600</duration>
+			</phase>
+
+			<phase name="test_left_kick_360" next="test_left_kick_860">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-90"/> <lae1 end="-90"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="30"/> <lae3 end="-30"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="0"/> <lle1 end="0"/>
+					<rle2 end="7"/> <lle2 end="-7"/>
+					<rle3 end="75"/> <lle3 end="55"/>
+					<rle4 end="-100"/> <lle4 end="-60"/>
+					<rle5 end="50"/> <lle5 end="30"/>
+					<rle6 end="-7"/> <lle6 end="7"/>
+				</effectors>
+				<duration>500</duration>
+			</phase>
+
+			<phase name="test_left_kick_860" next="test_left_kick_1260">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-90"/> <lae1 end="-90"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="30"/> <lae3 end="-30"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="0"/> <lle1 end="0"/>
+					<rle2 end="7"/> <lle2 end="-7"/>
+					<rle3 end="85"/> <lle3 end="30"/>
+					<rle4 end="-40"/> <lle4 end="-60"/>
+					<rle5 end="-15"/> <lle5 end="60"/>
+					<rle6 end="-7"/> <lle6 end="7"/>
+				</effectors>
+				<duration>400</duration>
+			</phase>
+
+			<phase name="test_left_kick_1260" next="test_left_kick_1760">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-90"/> <lae1 end="-90"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="30"/> <lae3 end="-30"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="0"/> <lle1 end="0"/>
+					<rle2 end="8"/> <lle2 end="-7"/>
+					<rle3 end="35"/> <lle3 end="0"/>
+					<rle4 end="-40"/> <lle4 end="-30"/>
+					<rle5 end="10"/> <lle5 end="40"/>
+					<rle6 end="-10"/> <lle6 end="7"/>
+				</effectors>
+				<duration>500</duration>
+			</phase>
+
+			<phase name="test_left_kick_1760" next="prepare">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-95"/> <lae1 end="-75"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="34"/> <lae3 end="-34"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="-7"/> <lle1 end="-19"/>
+					<rle2 end="8"/> <lle2 end="3"/>
+					<rle3 end="27"/> <lle3 end="-3"/>
+					<rle4 end="-30"/> <lle4 end="-30"/>
+					<rle5 end="8"/> <lle5 end="35"/>
+					<rle6 end="-12"/> <lle6 end="5"/>
+				</effectors>
+				<duration>280</duration>
+			</phase>
+
+			<phase name="prepare" next="kick">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-115"/> <lae1 end="-15"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="45"/> <lae3 end="-45"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="-45"/> <lle1 end="-72"/>
+					<rle2 end="5"/> <lle2 end="30"/>
+					<rle3 end="0"/> <lle3 end="-18"/>
+					<rle4 end="0"/> <lle4 end="-15"/>
+					<rle5 end="5"/> <lle5 end="0"/>
+					<rle6 end="-15"/> <lle6 end="8"/>
+                                        
+                                        <rle1 end="-45" computed="kick_left-rle1-prepare"/> <lle1 end="-72" computed="kick_left-lle1-prepare"/>
+					<rle2 end="5" computed="kick_left-rle2-prepare"/> <lle2 end="30" computed="kick_left-lle2-prepare"/>
+					<rle3 end="0" computed="kick_left-rle3-prepare"/> <lle3 end="-18" computed="kick_left-lle3-prepare"/>
+					<rle4 end="0" computed="kick_left-rle4-prepare"/> <lle4 end="-15" computed="kick_left-lle4-prepare"/>
+					<rle5 end="5" computed="kick_left-rle5-prepare"/> <lle5 end="0" computed="kick_left-lle5-prepare"/>
+					<rle6 end="-15" computed="kick_left-rle6-prepare"/> <lle6 end="8" computed="kick_left-lle6-prepare"/>
+				</effectors>
+				<duration>520</duration>
+			</phase>
+
+
+			<phase name="kick" next="before_final">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-45"/> <lae1 end="-120"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="45"/> <lae3 end="-45"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="-25"/> <lle1 end="-90"/>
+					<rle2 end="15"/> <lle2 end="-25"/>
+					<rle3 end="-25"/> <lle3 end="-25"/>
+					<rle4 end="0"/> <lle4 end="0"/>
+					<rle5 end="5"/> <lle5 end="-25"/>
+					<rle6 end="-18"/> <lle6 end="25"/>
+                                        
+                                        <rle1 end="-25" computed="kick_left-rle1-kick"/> <lle1 end="-90" computed="kick_left-lle1-kick"/>
+					<rle2 end="15" computed="kick_left-rle2-kick"/> <lle2 end="-25" computed="kick_left-lle2-kick"/>
+					<rle3 end="-25" computed="kick_left-rle3-kick"/> <lle3 end="-25" computed="kick_left-lle3-kick"/>
+					<rle4 end="0" computed="kick_left-rle4-kick"/> <lle4 end="0" computed="kick_left-lle4-kick"/>
+					<rle5 end="5" computed="kick_left-rle5-kick"/> <lle5 end="-25" computed="kick_left-lle5-kick"/>
+					<rle6 end="-18" computed="kick_left-rle6-kick"/> <lle6 end="25" computed="kick_left-lle6-kick"/>
+				</effectors>
+				<duration>140</duration>
+			</phase>
+
+			<phase name="before_final" isFinal="true">
+				<effectors>                       
+					<he1 end="0"/>
+					<he2 end="0"/>               
+					<rae1 end="-90"/> <lae1 end="-90"/>
+					<rae2 end="0"/> <lae2 end="0"/>
+					<rae3 end="45"/> <lae3 end="-45"/>
+					<rae4 end="0"/> <lae4 end="0"/>
+										
+					<rle1 end="0"/> <lle1 end="0"/>
+					<rle2 end="-5"/> <lle2 end="-5"/>
+					<rle3 end="0"/> <lle3 end="10"/>
+					<rle4 end="0"/> <lle4 end="0"/>
+					<rle5 end="5"/> <lle5 end="5"/>
+					<rle6 end="0"/> <lle6 end="0"/>
+				</effectors>
+				<duration>800</duration>
+				<finalize>test_left_kick_final1</finalize>
+				
+			</phase>
+
+				<phase name="test_left_kick_final1" isFinal="true">
+			<effectors>
+				<rae1 end="-90"/> <lae1 end="-90"/>
+				<rae2 end="-10"/> <lae2 end="10"/>
+				<rae3 end="90"/> <lae3 end="-90"/>
+				<rae4 end="45"/> <lae4 end="-45"/>
+                                
+				<rle1 end="0" /> <lle1 end="0" />
+				<rle2 end="7" /> <lle2 end="-7" />
+				<rle3 end="55" /> <lle3 end="55" />
+				<rle4 end="-60" /> <lle4 end="-60" />
+				<rle5 end="30" /> <lle5 end="30" />
+				<rle6 end="-7" /> <lle6 end="7" />
+			</effectors>
+			<duration>800</duration>
+			<finalize>test_left_kick_final1</finalize>
+		</phase>
+	</phases>
+</robot>

@@ -2,8 +2,6 @@ package sk.fiit.robocup.library.math;
 
 import java.text.NumberFormat;
 
-import javax.swing.text.NumberFormatter;
-
 import sk.fiit.robocup.library.geometry.Vector3;
 
 public class TransformationMatrix {

@@ -4,17 +4,13 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.InetSocketAddress;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.apache.commons.net.tftp.TFTPClient;
 
 import sk.fiit.jim.agent.models.WorldModel;
-import sk.fiit.jim.agent.moves.Joint;
-import sk.fiit.jim.agent.parsing.ParsedData;
 import sk.fiit.robocup.library.annotations.TestCovered;
 import sk.fiit.robocup.library.annotations.UnderConstruction;
-import sk.fiit.robocup.library.geometry.Vector3D;
 
 /**
  * 
@@ -34,7 +30,7 @@ public class AgentJim {
 	private StringBuilder output = new StringBuilder();
 	private int sceneGraphPlayer = -1;
 	
-	private WorldModel worldModel; //= WorldModel.getInstance();
+	private WorldModel worldModel;
 	
 	/**
 	 * Represents a side that the agent plays on. SimSpark's network protocol
@@ -185,26 +181,27 @@ public class AgentJim {
 	//a potom odtialto volat invokePlanChange
 	@UnderConstruction
 	public void invokeMove(String move) throws IOException {
-		
 		logger.finer("Move invoked: "+move);
-		//StringBuilder sb = new StringBuilder();
-		//sb.append("Plan.instance.change_skill(\"" + move + "\")");
-		if(move.contains("walk"))
-			invokePlanChange("PlanZakladny.config_instance(\\\"" + move  +"\\\")");
-		if(move.contains("kick"))
-			//invokePlanChange("PlanGAKickDistance.config_instance(\\\"" + move  +"\\\")");
-			invokePlanChange("PlanTournamentKickDistance.config_instance(\\\"" + move  +"\\\")");
-		//invokePlanChange("PlanZakladny.config_instance(\"\"walk_slow\"\")\n");
-		
-		//invokePlanChange("PlanZakladny.config_instance(\""+ move + "\")\n");
-		/*else{
-			sb.append("Plan.instance.change_skill(\"" + move + "\")");
-			executeRubyScript(sb.toString());
-		}*/
-			
-		//executeRubyScript(sb.toString());
+		StringBuilder sb = new StringBuilder();
+		sb.append("Plan.instance.change_skill(\"" + move + "\")");
+		executeRubyScript(sb.toString());
 		return;
-
+		//sb.append("require 'high_skills/low_skill.rb'\n");
+		//sb.append("@move = LowSkill.new(\""+move+"\") \n");
+		//sb.append("while !@move.ended? \n");
+		//sb.append("		@move.execute \n");
+		//sb.append("end \n");
+		
+//		sb.append("require 'plan/plan.rb' \n");
+//		sb.append("class MyPlan < Plan \n");
+//		sb.append("end \n");
+//		sb.append("@i = MyPlan.new() \n");
+//		//sb.append("@i.insert \""+move+"\"  \n");
+//		
+//		sb.append("@i.insert \""+move+"\"  \n");
+//		sb.append("puts \"INSERTED \"  \n");
+		
+//		executeRubyScript(sb.toString());
 	}
 	
 	/**
@@ -256,34 +253,10 @@ public class AgentJim {
 	}
 	
 	public void setWorldModel(WorldModel model) {
-		this.worldModel = model;
+		worldModel = model;
 	}
 	
 	public WorldModel getWorldModel() {
 		return worldModel;
 	}
-	
-	public Map<Joint, Double> getJointsAngle(){
-		return worldModel.getAgentModel().getJointAngles();
-	}
-	
-	public Vector3D getZMP(){
-		return worldModel.getAgentModel().getZeroMomentPoint();
-	}
-	
-	public Vector3D[] getForceVectors(){
-		return worldModel.getAgentModel().getForceVectors();
-	}
-
-	public void stabilization(){
-		worldModel.getAgentModel().setFromTF(true);
-		worldModel.getAgentModel().setJointAbout();
-	}
-	
-	public ParsedData getLastData(){
-		return worldModel.getAgentModel().getLastDataReceived();
-	}	
-	
-	
-	
 }

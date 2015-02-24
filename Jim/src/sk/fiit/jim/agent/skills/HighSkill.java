@@ -1,19 +1,18 @@
 package sk.fiit.jim.agent.skills;
 
 import static sk.fiit.jim.log.LogType.HIGH_SKILL;
+import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.communication.testframework.Message;
 import sk.fiit.jim.agent.communication.testframework.TestFrameworkCommunication;
 import sk.fiit.jim.agent.models.AgentModel;
+import sk.fiit.jim.agent.models.EnvironmentModel;
+import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.moves.LowSkill;
-import sk.fiit.jim.agent.AgentInfo;
-import sk.fiit.jim.log.Log;
-
 //------------------------------------------------------------
-// Nasledujúce importy tim 17 v tomto subore nema
+// Nasledujuce importy tim 17 v tomto subore nema
 import sk.fiit.jim.agent.moves.LowSkills;
-import sk.fiit.jim.agent.moves.Phase;
 import sk.fiit.jim.agent.moves.Phases;
-import sk.fiit.jim.agent.moves.SkipFlag;
+import sk.fiit.jim.log.Log;
 //----------------------------------------------------------
 
 
@@ -37,7 +36,8 @@ import sk.fiit.jim.agent.moves.SkipFlag;
  *@author	marosurbanec
  *@author	Androids
  */
-public abstract class HighSkill implements IHighSkill{
+public abstract class HighSkill implements IHighSkill {
+	
 	/**
 	 * The low skill that's currently being performed
 	 */
@@ -71,6 +71,19 @@ public abstract class HighSkill implements IHighSkill{
 	 */
 	public HighSkillState state = HighSkillState.INITIAL_STATE;
 
+	private boolean stopHighSkill = false;
+	
+	protected HighSkill(){
+		
+	}
+	
+	/*
+	 * Gets name of current class - nam of the highskill
+	 */
+    public String getName(){
+    	return this.getClass().getSimpleName();
+    }
+	
 	/**
 	 * <p>Performs a single step of the high skill. This means handling the selection of low skills,
 	 * their execution and finalization. For details, see TODO: wiki link</p>
@@ -99,43 +112,50 @@ public abstract class HighSkill implements IHighSkill{
 			break;
 			
 		case EXECUTING_STATE:
-			if (currentSkill.canFinalize()) {
-				//this happens when a phase with isFinal==true has ended
-				//(so that the current low skill can now be finalized if we choose to do so)
-				//we need to decide whether to continue with the current low skill
-				//or pick a different one
-				
+			if (currentSkill.canFinalize() && !isStoppedHighSkill()) {
+				// this happens when a phase with isFinal==true has ended
+				// (so that the current low skill can now be finalized if we
+				// choose to do so)
+				// we need to decide whether to continue with the current low
+				// skill
+				// or pick a different one
+
 				nextSkill = pickLowSkill();
 				if (nextSkill == currentSkill) {
-					//if it's the same skill, keep going as if nothing happened
+					// if it's the same skill, keep going as if nothing happened
 					currentSkill.step();
-//--------------------------------------------------------------------------------------------
-// Zaciatok kodu, ktory tim 17 nema
-			    
-				//End of current low skill and start of next are similar, 
-				//so it is possible to connect them directly 
-			    }else if(nextSkill!= null && Phases.areSimilarPhases(
-						Phases.get(nextSkill.initialPhase),
-						currentSkill.activePhase,100)){
-					
-					currentSkill = LowSkills.get(nextSkill.name);;
+
+					// End of current low skill and start of next are similar,
+					// so it is possible to connect them directly
+				} else if (nextSkill != null && 
+						Phases.areSimilarPhases(
+								Phases.get(nextSkill.initialPhase), 
+								currentSkill.activePhase, 
+								100)) {
+
+					currentSkill = LowSkills.get(nextSkill.name);
 					currentSkill.reset();
 					currentSkill.step();
-// Koniec kodu, ktory tim 17 nema
-//--------------------------------------------------------------------------------------------
-				}
-				else{
-					//if it's a different one, we need to finalize the current one
+				} else {
+					// if it's a different one, we need to finalize the current
+					// one
 					currentSkill.executeFinalisation();
 					currentSkill.step();
 					state = HighSkillState.FINALIZING_STATE;
 				}
-			}else{
-				//if the current low skill can't be safely interrupted, we have to keep going
+			} else if (currentSkill.canFinalize() && isStoppedHighSkill()) {
+				//we need to finalize the current one
+				currentSkill.executeFinalisation();
+				currentSkill.step();
+				state = HighSkillState.FINALIZING_STATE;
+				
+			} else {
+				// if the current low skill can't be safely interrupted, we have
+				// to keep going
 				checkProgress();
 				currentSkill.step();
 				AgentInfo info = AgentInfo.getInstance();
-				info.setState(currentSkill.name.toString());	
+				info.setState(currentSkill.name.toString());
 			}
 			break;
 			
@@ -143,13 +163,13 @@ public abstract class HighSkill implements IHighSkill{
 			//if the finalization phase has come to an end
 			if (currentSkill.canFinalize()) {
 				//if there's a next skill, start executing it
-				if (nextSkill != null) {
+				if (nextSkill != null && !isStoppedHighSkill()) {
 					currentSkill = nextSkill;
 					currentSkill.reset();
 					currentSkill.step();
 					state = HighSkillState.EXECUTING_STATE;
 				}else{
-					//otherwise just finish the high skill altogehter
+					//otherwise just finish the high skill altogether
 					state = HighSkillState.END_STATE;
 					sayMoveStoppedToFramwork(currentSkill);
 				}
@@ -232,5 +252,17 @@ public abstract class HighSkill implements IHighSkill{
 	@Override
 	public String toString(){
 		return name + ": current low skill: " + currentSkill.toString();
+	}
+	
+	public boolean isballLongUnseen(double gap){
+		return (EnvironmentModel.SIMULATION_TIME - WorldModel.getInstance().getBall().getLastTimeSeen()) > gap;
+	}
+
+	public boolean isStoppedHighSkill() {
+		return stopHighSkill;
+	}
+
+	public void stopHighSkill() {
+		stopHighSkill = true;
 	}
 }

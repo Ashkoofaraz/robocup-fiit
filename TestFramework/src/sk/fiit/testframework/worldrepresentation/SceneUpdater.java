@@ -1,7 +1,6 @@
 package sk.fiit.testframework.worldrepresentation;
 
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 import sk.fiit.testframework.communication.agent.AgentJim;
 import sk.fiit.testframework.communication.agent.AgentManager;
@@ -168,7 +167,6 @@ class SceneUpdater {
 			body.getHead().setTransformation(headNode.getGlobalTransform());
 
 			player.setOnGround(body.getHead().getTransformation().getValues()[14]<0.2);
-			//player.setOnGround(body.getHead().getTransformation().getValues()[14]<=0.5);
 			player.setStanding(body.getHead().getTransformation().getValues()[14]>0.5);
 			
 			count++;

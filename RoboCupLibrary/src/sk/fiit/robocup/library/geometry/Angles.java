@@ -6,12 +6,41 @@ import static java.lang.Math.*;
  *  Angles.java
  *		
  *		Library class dealing with angular calculations 
+ *		Uhol od FROM do TO
  *
  *@Title        Jim
  *@author       $Author: marosurbanec $
  */
 public final class Angles{
-	private Angles(){}
+	private double from; //in radian
+	private double to;	//in radian
+	
+	
+	public Angles(){
+	}
+	public Angles(double from, double to){
+		this.from = from/ 180*Math.PI;
+		this.to = to/180*Math.PI;
+	}
+	public void setRadian (double from,double to){
+		this.from = from;
+		this.to = to;
+	}
+	
+	public void setDegree (double from,double to){
+		this.from = from/ 180*Math.PI;
+		this.to = to/180*Math.PI;
+	}
+	
+	public boolean include (double include_angle){
+		if (from < include_angle && to > include_angle)
+		return true;
+		else return false;
+	}
+	
+	//public static Angles angleRange(Angles from, Angles to){
+		//return (from/180.0*Math.PI) (from/180.0*Math::PI)..(to/180.0*Math::PI)
+	//}
 	
 	public static double angleDiff(double first, double second){
 		double firstDirection = normalize(first - second);

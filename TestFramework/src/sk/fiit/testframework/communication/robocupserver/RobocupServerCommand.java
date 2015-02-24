@@ -7,16 +7,10 @@
 package sk.fiit.testframework.communication.robocupserver;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
-
-import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.annotations.TestCovered;
 import sk.fiit.robocup.library.geometry.Point3D;
-import sk.fiit.testframework.communication.agent.AgentJim;
-
 
 /**
  * Interface with aim to bridge
@@ -263,81 +257,6 @@ public abstract class RobocupServerCommand {
             return String.format(Locale.US, "(vel %1$f %2$f %3$f)", velocity3d.x,
                     velocity3d.y, velocity3d.z);
         }
-    }
-    
-    public static class JointAngle extends RobocupServerCommand{
-    	private Map<Joint, Double> jointsAngles=new HashMap<Joint, Double>();
-    	private AgentJim agent;
-    	public JointAngle(Map<Joint,Double> joint, AgentJim agent){
-    		//super();
-    		this.jointsAngles = joint;
-    		this.agent = agent;
-    	}
-    	
-		@Override
-		public String getCommand() {			
-//			return String.format(Locale.US, "(HJ (n raj1) (ax %2f))" +
-//					"(HJ (n raj2) (ax %2f))(HJ (n raj3) (ax %2f))" +
-//					"(HJ (n raj4) (ax %2f))(HJ (n laj1) (ax %2f))" +
-//					"(HJ (n laj2) (ax %2f))(HJ (n laj3) (ax %2f))" +
-//					"(HJ (n laj4) (ax %2f))(HJ (n rlj1) (ax %2f))" +
-//					"(HJ (n rlj2) (ax %2f))(HJ (n rlj3) (ax %2f))" +
-//					"(HJ (n rlj4) (ax %2f))(HJ (n rlj5) (ax %2f))" +
-//					"(HJ (n rlj6) (ax %2f))(HJ (n llj1) (ax %2f))" +
-//					"(HJ (n llj2) (ax %2f))(HJ (n llj3) (ax %2f))" +
-//					"(HJ (n llj4) (ax %2f))(HJ (n llj5) (ax %2f))" +
-//					"(HJ (n llj6) (ax %2f)) (syn)", 
-//					jointsAngles.get(Joint.RAE1), jointsAngles.get(Joint.RAE2),
-//					jointsAngles.get(Joint.RAE3), jointsAngles.get(Joint.RAE4),
-//					jointsAngles.get(Joint.LAE1), jointsAngles.get(Joint.LAE2),
-//					jointsAngles.get(Joint.LAE3), jointsAngles.get(Joint.LAE4),
-//					jointsAngles.get(Joint.RLE1), jointsAngles.get(Joint.RLE2),
-//					jointsAngles.get(Joint.RLE3), jointsAngles.get(Joint.RLE4),
-//					jointsAngles.get(Joint.RLE5), jointsAngles.get(Joint.RLE6),
-//					jointsAngles.get(Joint.LLE1), jointsAngles.get(Joint.LLE2),
-//					jointsAngles.get(Joint.LLE3), jointsAngles.get(Joint.LLE4),
-//					jointsAngles.get(Joint.LLE5), jointsAngles.get(Joint.LLE6)
-//					);
-			return String.format(Locale.US, 
-				//	"(agent (team %s)(unum %2d) " +
-//							"(HJ (n raj1) (ax %2f))" +
-//							"(HJ (n raj2) (ax %2f))(HJ (n raj3) (ax %2f))" +
-//							"(HJ (n raj4) (ax %2f))(HJ (n laj1) (ax %2f))" +
-//							"(HJ (n laj2) (ax %2f))(HJ (n laj3) (ax %2f))" +
-//							"(HJ (n laj4) (ax %2f))(HJ (n rlj1) (ax %2f))" +
-//							"(HJ (n rlj2) (ax %2f))(HJ (n rlj3) (ax %2f))" +
-//							"(HJ (n rlj4) (ax %2f))(HJ (n rlj5) (ax %2f))" +
-//							"(HJ (n rlj6) (ax %2f))(HJ (n llj1) (ax %2f))" +
-//							"(HJ (n llj2) (ax %2f))(HJ (n llj3) (ax %2f))" +
-//							"(HJ (n llj4) (ax %2f))(HJ (n llj5) (ax %2f))" +
-//							"(HJ (n llj6) (ax %2f)) (syn)",
-					"(rae1 %2f) (rae2 %2f)" +
-					"(rae3 %2f) (rae4 %2f)" +
-					"(lae1 %2f) (lae2 %2f)" +
-					"(lae3 %2f) (lae4 %2f)" +
-					"(rle1 %2f) (rle2 %2f)" +
-					"(rle3 %2f) (rle4 %2f)" +
-					"(rle5 %2f) (rle6 %2f)" +
-					"(lle1 %2f) (lle2 %2f)" +
-					"(lle3 %2f) (lle4 %2f)" +
-					"(lle5 %2f) (lle6 %2f)" +
-					"(he1 %2f) (he2 %2f))",
-					//agent.getAgentData().getTeamName(), agent.getAgentData().getUniformNumber(),
-					jointsAngles.get(Joint.RAE1), jointsAngles.get(Joint.RAE2),
-					jointsAngles.get(Joint.RAE3), jointsAngles.get(Joint.RAE4),
-					jointsAngles.get(Joint.LAE1), jointsAngles.get(Joint.LAE2),
-					jointsAngles.get(Joint.LAE3), jointsAngles.get(Joint.LAE4),
-					jointsAngles.get(Joint.RLE1), jointsAngles.get(Joint.RLE2),
-					jointsAngles.get(Joint.RLE3), jointsAngles.get(Joint.RLE4),
-					jointsAngles.get(Joint.RLE5), jointsAngles.get(Joint.RLE6),
-					jointsAngles.get(Joint.LLE1), jointsAngles.get(Joint.LLE2),
-					jointsAngles.get(Joint.LLE3), jointsAngles.get(Joint.LLE4),
-					jointsAngles.get(Joint.LLE5), jointsAngles.get(Joint.LLE6),
-					jointsAngles.get(Joint.HE1), jointsAngles.get(Joint.HE2)
-		);
-				
-		}
-    	
     }
 
     public byte[] getAsBytes() {

@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 
 import sk.fiit.robocup.library.geometry.Vector3;
 import sk.fiit.testframework.communication.agent.AgentJim;
-import sk.fiit.testframework.communication.agent.AgentJim.TeamSide;
 import sk.fiit.testframework.communication.agent.AgentManager;
 import sk.fiit.testframework.monitor.AgentMonitor;
 import sk.fiit.testframework.monitor.AgentMonitorMessage;

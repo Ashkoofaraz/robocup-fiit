@@ -13,7 +13,7 @@ import java.util.List;
  *  Parse s-expression into tree. It is set of SObjects. SObjects could by another SArray or simple node of tree SString.
  *  
  *@Title        Jim
- *@author       Author: Ondrej Jurèák
+ *@author       Author: Ondrej Jur??k
  */
 public class SArray extends SObject {
 	

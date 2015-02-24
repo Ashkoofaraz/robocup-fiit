@@ -6,7 +6,6 @@
  */
 package sk.fiit.testframework.trainer.testsuite.testcases.tournament;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

@@ -191,7 +191,15 @@ public class AgentManager implements IAgentMonitorListener {
 	 * @param tftp_port port on which the agent's TFTP server should listen
 	 */
 	public void startAgent(final int uniform, final String team, boolean tftp_enabled, int tftp_port) {		
-		if (C.getProperty(C.PROPERTIES_ROBOCUP_PLAYER_COMMAND).isEmpty()) {
+		String properties_robocup_player_command = "";
+		if(System.getProperty("os.name").startsWith("Windows")){			
+			properties_robocup_player_command = C.getProperty(C.PROPERTIES_ROBOCUP_PLAYER_COMMAND);
+		}
+		else {
+			properties_robocup_player_command = C.getProperty(C.PROPERTIES_ROBOCUP_PLAYER_COMMAND_NON_WINDOWS);
+		}
+		
+		if (properties_robocup_player_command.isEmpty()) {
 			logger.info("Unable to start new AgentJim instance - no command");
 			return;
 		}
@@ -199,7 +207,7 @@ public class AgentManager implements IAgentMonitorListener {
 		logger.info(String.format("Starting Jim agent with uniform %d team %s tftp enabled %s on port %d", uniform, team, String.valueOf(tftp_enabled), tftp_port));
 		List<String> command = new ArrayList<String>();
 		//we need to split the string by spaces, to make it possible to run commands with arguments
-		StringTokenizer tok = new StringTokenizer(C.getProperty(C.PROPERTIES_ROBOCUP_PLAYER_COMMAND));
+		StringTokenizer tok = new StringTokenizer(properties_robocup_player_command);
 		while (tok.hasMoreTokens())
 			command.add(tok.nextToken());
 		//this format for command-line arguments directly corresponds to the setting names

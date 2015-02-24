@@ -1,2 +1,0 @@
-INIT[0.0]:Attempting to log to: localhost:3100
-INIT[0.0]:ERROR!!: Unable to connect. Cause: Connection refused: connect

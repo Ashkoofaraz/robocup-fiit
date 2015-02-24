@@ -6,12 +6,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import static sk.fiit.jim.log.LogType.INIT;
-
 import sk.fiit.jim.agent.AgentInfo;
-import sk.fiit.jim.agent.Planner;
+import sk.fiit.jim.agent.highskill.runner.HighSkillRunner;
 import sk.fiit.jim.agent.parsing.Parser;
-import sk.fiit.jim.code_review.Problem;
+import sk.fiit.jim.garbage.code_review.Problem;
 import sk.fiit.jim.log.Log;
 import sk.fiit.jim.log.LogType;
 
@@ -26,13 +24,13 @@ import sk.fiit.jim.log.LogType;
  *@author	marosurbanec
  *@author	Androids
  */
-public class Communication{
+public class Communication {
 	private static final String BYE  = "(bye)"; 
-	byte[] buffer = new byte[5120];
-	Socket socket;
-	String serverIp;
-	Integer port;
-	StringBuilder outMessageBuffer = new StringBuilder();
+	private byte[] buffer = new byte[5120];
+	private Socket socket;
+	private String serverIp;
+	private Integer port;
+	private StringBuilder outMessageBuffer = new StringBuilder();
 	
 	private static Communication instance = new Communication();
 	private DataInputStream input;
@@ -55,17 +53,16 @@ public class Communication{
 	 */
 	public void start() throws UnknownHostException, IOException{
 		try {
-			Log.log(INIT, "Attempting to log to: %s:%d", serverIp, port);
 			socket = new Socket(serverIp, port);
 			input = new DataInputStream(socket.getInputStream());
 			output = new DataOutputStream(socket.getOutputStream());
-			registerSayingByeOnExit();
+			registerSayingByeOnExit();			
 			handshake();
 		} catch (Exception e) {
 			Log.error(LogType.INIT, "Unable to connect. Cause: %s", e.getMessage());
 			System.exit(-1);
-		}
-		mainLoop();
+		}		
+		mainLoop();		
 	}
 	
 	/*
@@ -97,13 +94,14 @@ public class Communication{
 		}));
 	}
 
-	private void mainLoop() throws IOException {
-		while(true){
+	private void mainLoop() throws IOException {					
+		while(true){			
 			while (input.available() == -1) Thread.yield();
-			String incoming = receive();
-			parser.parse(incoming);
-			Planner.proceed();
-			transmit(outMessageBuffer.append("(syn)").toString());
+			String incoming = receive();			
+			parser.parse(incoming);			
+			//TODO use HighSkillRunner
+			HighSkillRunner.proceed();			
+			transmit(outMessageBuffer.append("(syn)").toString());			
 			outMessageBuffer = new StringBuilder();
 		}
 	}

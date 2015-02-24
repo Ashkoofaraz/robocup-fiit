@@ -76,19 +76,16 @@ public class RobocupMonitor extends Thread {
         } catch (EOFException e) {
         	logger.warning("RobocupServer closed connection (EOF)");
         } catch (Exception e) {
-        	logger.log(Level.SEVERE, "mainloop error", e);        	
+        	logger.log(Level.SEVERE, "mainloop error", e);
             return;
         }
     }
 
-    private void mainLoop() throws IOException  {
+    private void mainLoop() throws IOException {
         while (true) {
-           
-        	while (input.available() == -1) {
+            while (input.available() == -1) {
                 Thread.yield();
             }
-            
-            
             logger.finest("Before message receive");
             String incoming = receive();
             logger.finest("Message received: " + incoming);
@@ -113,9 +110,8 @@ public class RobocupMonitor extends Thread {
         }
     }
 
-    private String receive() throws IOException   {
-    	
-    	
+    private String receive() throws IOException {
+        
         int messageLength = input.readInt();
         logger.finest("Read message length " + messageLength);
 
@@ -129,10 +125,8 @@ public class RobocupMonitor extends Thread {
             bytesAlreadyRead += input.read(buffer, bytesAlreadyRead, toRead);
             toRead = maxToRead > messageLength - bytesAlreadyRead ? messageLength - bytesAlreadyRead : maxToRead;
         }
-        
+
         String incoming = new String(buffer, 0, messageLength);
-       
-        
         return incoming;
     }
    

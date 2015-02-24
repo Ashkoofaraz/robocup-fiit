@@ -8,9 +8,8 @@ import java.util.UUID;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.Phase;
-import sk.fiit.jim.agent.moves.ik.Orientation;
-import sk.fiit.jim.agent.moves.ik.Kinematics;
-import sk.fiit.jim.agent.skills.DynamicSkill;
+import sk.fiit.jim.agent.moves.kinematics.Kinematics;
+import sk.fiit.jim.agent.moves.kinematics.Orientation;
 import sk.fiit.robocup.library.geometry.Point3D;
 
 /**
@@ -71,6 +70,7 @@ public abstract class DynamicMove extends DynamicSkill
                 throw new IllegalArgumentException("unknown limb: " + limb);
             }
             System.out.println("point: " + points.get(i) + ", orientation: " + orientations.get(i));
+            System.out.println(result);
             Phase phase = createPhase(300, result);
             phases.add(phase);
         }

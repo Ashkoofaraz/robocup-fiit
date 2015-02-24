@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!--
+Autor:Peter Paššák
+Description: turbo_walk(20130414_054044_1634)
+-->
+<robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="moves.xsd">
+    <low_skills>
+        <low_skill firstPhase="turbo_walk_init" name="walk_turbo"/>
+    </low_skills>
+    <phases>
+	    <phase name="turbo_walk_init" next="turbo_walk_1"> <!-- ROLLBACK for stabilizing -->
+            <effectors>
+				<he2 end="0"/>
+
+				<rae1 end="-90"/>
+				<lae1 end="-90"/>
+				<rae2 end="-10"/>
+				<lae2 end="10"/>
+				<rae3 end="80"/>
+				<lae3 end="-80"/>
+				<rae4 end="60"/>
+				<lae4 end="-60"/>
+
+				<rle1 end="0"/>
+				<lle1 end="0"/>
+				<rle2 end="0"/>
+				<lle2 end="0"/>
+				<rle3 end="40"/>
+				<lle3 end="40"/>
+				<rle4 end="-60"/>
+				<lle4 end="-60"/>
+				<rle5 end="30"/>
+				<lle5 end="30"/>
+				<rle6 end="0"/>
+				<lle6 end="0"/>
+            </effectors>
+            <duration>1000</duration>
+        </phase>
+        <phase name="turbo_walk_1" next="turbo_walk_2">
+            <effectors>
+                <he1 end="0"/>
+                <he2 end="0"/>
+                <rle1 end="1"/>
+                <lle1 end="0"/>
+                <rle2 end="9"/>
+                <lle2 end="-9"/>
+                <rle3 end="20"/>
+                <lle3 end="50"/>
+                <rle4 end="-54"/>
+                <lle4 end="-47"/>
+                <rle5 end="30"/>
+                <lle5 end="44"/>
+                <rle6 end="-10"/>
+                <lle6 end="9"/>
+                <rae1 end="-87"/>
+                <lae1 end="-85"/>
+                <rae2 end="-17"/>
+                <lae2 end="12"/>
+                <rae3 end="72"/>
+                <lae3 end="-90"/>
+                <rae4 end="74"/>
+                <lae4 end="-86"/>
+            </effectors>
+            <duration>620</duration>
+        </phase>
+        <phase name="turbo_walk_2" next="turbo_walk_3">
+            <effectors>
+                <rle3 end="69"/>
+                <rle4 end="-75"/>
+                <rle5 end="41"/>
+                <lle3 end="8"/>
+                <lle4 end="-40"/>
+                <lle5 end="40"/>
+                <rae1 end="-106"/>
+                <lae1 end="-64"/>
+            </effectors>
+            <duration>140</duration>
+        </phase>
+        <phase name="turbo_walk_3" next="turbo_walk_4">
+            <effectors>
+                <rle3 end="60"/>
+                <rle4 end="-45"/>
+                <rle5 end="0"/>
+                <lle3 end="23"/>
+                <lle4 end="-82"/>
+                <lle5 end="55"/>
+                <rae1 end="-91"/>
+                <lae1 end="-91"/>
+            </effectors>
+            <duration>60</duration>
+        </phase>
+        <phase name="turbo_walk_4" next="turbo_walk_5">
+            <effectors>
+                <lle3 end="41"/>
+                <lle4 end="-91"/>
+                <lle5 end="38"/>
+                <rle3 end="15"/>
+                <rle4 end="-37"/>
+                <rle5 end="18"/>
+                <lae1 end="-108"/>
+                <rae1 end="-73"/>
+            </effectors>
+            <duration>140</duration>
+        </phase>
+        <phase name="turbo_walk_5" next="turbo_walk_6">
+            <effectors>
+                <lle3 end="61"/>
+                <lle4 end="-41"/>
+                <lle5 end="17"/>
+                <rle3 end="19"/>
+                <rle4 end="-58"/>
+                <rle5 end="73"/>
+                <lae1 end="-85"/>
+                <rae1 end="-70"/>
+            </effectors>
+            <duration>20</duration>
+        </phase>
+        <phase name="turbo_walk_6" next="turbo_walk_7">
+            <effectors>
+                <rle3 end="61"/>
+                <rle4 end="-65"/>
+                <rle5 end="43"/>
+                <lle3 end="11"/>
+                <lle4 end="-40"/>
+                <lle5 end="34"/>
+                <rae1 end="-81"/>
+                <lae1 end="-68"/>
+            </effectors>
+            <duration>160</duration>
+        </phase>
+        <phase name="turbo_walk_7" next="turbo_walk_8">
+            <effectors>
+                <rle3 end="49"/>
+                <rle4 end="-46"/>
+                <rle5 end="5"/>
+                <lle3 end="29"/>
+                <lle4 end="-70"/>
+                <lle5 end="69"/>
+                <rae1 end="-92"/>
+                <lae1 end="-65"/>
+            </effectors>
+            <duration>60</duration>
+        </phase>
+        <phase name="turbo_walk_8" next="turbo_walk_9" opposite="turbo_walk_6">
+            <effectors>
+                <lle3 end="61"/>
+                <lle4 end="-65"/>
+                <lle5 end="43"/>
+                <rle3 end="11"/>
+                <rle4 end="-40"/>
+                <rle5 end="34"/>
+                <lae1 end="-81"/>
+                <rae1 end="-68"/>
+            </effectors>
+            <duration>160</duration>
+        </phase>
+        <phase isFinal="true" name="turbo_walk_9" next="turbo_walk_6" opposite="turbo_walk_7">
+            <effectors>
+                <lle3 end="49"/>
+                <lle4 end="-46"/>
+                <lle5 end="5"/>
+                <rle3 end="29"/>
+                <rle4 end="-70"/>
+                <rle5 end="69"/>
+                <lae1 end="-92"/>
+                <rae1 end="-65"/>
+            </effectors>
+            <duration>60</duration>
+            <finalize>straighten</finalize>
+        </phase>
+    </phases>
+</robot>

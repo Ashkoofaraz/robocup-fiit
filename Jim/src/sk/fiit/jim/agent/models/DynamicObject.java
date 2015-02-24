@@ -77,6 +77,14 @@ public class DynamicObject implements Serializable {
 	public Vector3D getPosition(){
 		return position;
 	}
+	
+	/**
+	 * Set absolute position of dynamic object. 
+	 *
+	 */
+	public void setPosition(Vector3D position){
+		this.position = position;
+	}
 
 	//added by Androids
 	/**

@@ -1,6 +1,6 @@
 package sk.fiit.jim;
 
-import sk.fiit.jim.agent.Planner;
+import sk.fiit.jim.agent.highskill.runner.GarbageCollecting;
 import sk.fiit.jim.agent.communication.Communication;
 
 /**
@@ -21,10 +21,10 @@ public aspect ExecutionTimeMonitor{
 		within(sk.fiit.jim.agent.communication.Communication) && withincode(private void mainLoop()) && call(* transmit(String));
 	
 	before(): loopStart(){
-		Planner.loopStart = System.nanoTime();
+		GarbageCollecting.loopStart = System.nanoTime();
 	}
 	
 	after() : messageSending(){
-		Planner.runGarbageCollectIfEnoughTime();
+		GarbageCollecting.runGarbageCollectIfEnoughTime();
 	}
 }

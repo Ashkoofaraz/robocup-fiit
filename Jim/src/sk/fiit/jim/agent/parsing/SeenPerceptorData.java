@@ -17,18 +17,11 @@ import sk.fiit.robocup.library.geometry.Vector3D;
  *  Encapsulate data from see perceptora
  *  
  *@Title        Jim
- *@author       Author: Ondrej Jur��k
+ *@author       Author: Ondrej Jur??k
  */
 public class SeenPerceptorData{
 	
 	public Vector3D ball;
 	public Map<FixedObject, Vector3D> fixedObjects = new LinkedHashMap<FixedObject, Vector3D>();
 	public List<PlayerData> players = new ArrayList<PlayerData>();
-	
-	@Override
-	public String toString()
-	{
-	    return "ball: " + ball +" | "
-	            + "fixed objects: " + fixedObjects +" | " + "players: " + players;
-	}
 }

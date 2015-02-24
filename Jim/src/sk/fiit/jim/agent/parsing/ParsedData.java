@@ -20,7 +20,7 @@ import sk.fiit.robocup.library.geometry.Vector3D;
  *@author	marosurbanec
  *@author	Androids
  */
-public class ParsedData{
+public class ParsedData {
 	/**
 	 * The simulation time which is calculated since server starts.
 	 */
@@ -48,22 +48,5 @@ public class ParsedData{
 	
 	public Boolean bumper;
 	public HearReceptor hearReceptor;
-    public String seePerceptor;
-	
-	@Override
-	public String toString()
-	{
-	    return "Parsed Data: \n "  +" playerId: " + PLAYER_ID
-	            + "\n play mode: " + playMode
-	            + "\n agents joints: " + agentsJoints
-	            + "\n gyroscope: " + gyroscope
-	            + "\n accelometer: " + accelerometer
-	            + "\n force receptor: " + forceReceptor
-	            + "\n ballRelativePosition: " + ballRelativePosition
-	            + "\n fixedObjects: " + fixedObjects
-	            + "\n hearReceptor: " + hearReceptor
-	            + "\n bumper: " + bumper
-	            + "\n see perceptor: " + seePerceptor;
-	    }
 
 }

@@ -1,21 +1,14 @@
 package sk.fiit.jim.agent.parsing;
 
+import static java.lang.Math.toRadians;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-
-import static java.lang.Math.toRadians;
-
-import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.models.EnvironmentModel;
 import sk.fiit.jim.agent.models.FixedObject;
 import sk.fiit.jim.agent.moves.Joint;
-import sk.fiit.robocup.library.geometry.Vector3D;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 /**
  *  ParserTest.java
@@ -28,7 +21,7 @@ public class ParserTest{
 	
 	private static final String TEST_MESSAGE = "(time (now 46.28))(GS (unum 1) (team left) (t 31.24) (pm PlayOn))(GYR (n torso) (rt -0.35 -0.28"+
 		" -0.00))(HJ (n hj1) (ax 0.00))(HJ (n hj2) (ax -0.00))(See (G2R (pol 11.52 -13.65"+
- 		" 1.24))(G1R (pol 11.29 -6.51 1.45)) (F1R (pol 11.41 10.30 -2.53)) (F2R (pol"+
+ 		" 1.24)) (G1R (pol 11.29 -6.51 1.45)) (F1R (pol 11.41 10.30 -2.53)) (F2R (pol"+
  		" 12.75 -27.77 -2.07)) (B (pol 5.59 -21.13 -5.14)) (P (team M_M) (id 1)"+
 		" (rlowerarm (pol 0.19 -35.14 -20.99)) (llowerarm (pol 0.19 33.20 -21.53))))"+
 		" (HJ (n raj1) (ax -0.00))(HJ (n raj2) (ax 0.00))(HJ (n raj3) (ax 0.00))(HJ (n raj4)"+

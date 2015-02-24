@@ -17,14 +17,4 @@ public class ForceReceptor{
 	public Vector3D leftFootForce;
 	public Vector3D rightFootPoint;
 	public Vector3D leftFootPoint;
-	
-	@Override
-	public String toString()
-	{
-	    return "Force Receptor: "
-	            + "\n rigthFootForce "+ rightFootForce
-	            + "\n leftFootForce "+ leftFootForce
-	            + "\n rightFootPoint "+ rightFootPoint
-	            + "\n leftFootPoint "+ leftFootPoint;
-	}
 }

@@ -24,7 +24,6 @@ import sk.fiit.testframework.monitor.RobocupMonitor;
 import sk.fiit.testframework.trainer.testsuite.ITestCaseObserver;
 import sk.fiit.testframework.trainer.testsuite.TestCase;
 import sk.fiit.testframework.trainer.testsuite.TestCaseResult;
-import sk.fiit.testframework.ui.MainFrame;
 import sk.fiit.testframework.ui.UserInterface;
 import sk.fiit.testframework.ui.UserInterfaceFactory;
 
@@ -33,7 +32,7 @@ public class LocalImplementation extends Implementation {
 	private Process robocupServerProcess;
 	
 	@Override
-	public void run(String[] args) {
+	public void run(String[] args) {		
 		String robocupServerStartcommand = C.getProperty(C.PROPERTIES_ROBOCUP_SERVER_COMMAND);
 		
 		if (robocupServerStartcommand.length()>0) {
@@ -137,7 +136,7 @@ public class LocalImplementation extends Implementation {
 					ITestCaseObserver observer = localTestCaseObservers.remove(testcase);
 					if (observer != null) observer.testFinished(result);
 				} catch (Exception e) {
-					logger.log(Level.SEVERE, "result test ",e.getStackTrace());
+					e.printStackTrace();
 				}
 			}
 			AgentMoveTrainer trainer = TrainerQueue.poll();

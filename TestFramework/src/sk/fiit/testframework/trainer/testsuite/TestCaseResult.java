@@ -12,10 +12,6 @@ package sk.fiit.testframework.trainer.testsuite;
 public class TestCaseResult {
 
     private double fitness;
-    
-    private double diversion;
-    
-    private int fall;
 
     public TestCaseResult(){}
     
@@ -30,24 +26,8 @@ public class TestCaseResult {
     public void setFitness(double fitness) {
         this.fitness = fitness;
     }
-    
-    public double getDiversion() {
-		return diversion;
-	}
 
-	public void setDiversion(double diversion) {
-		this.diversion = diversion;
-	}
-
-	public int getFall() {
-		return fall;
-	}
-
-	public void setFall(int fall) {
-		this.fall = fall;
-	}
-
-	@Override
+    @Override
     public String toString() {
         return String.valueOf(fitness);
     }

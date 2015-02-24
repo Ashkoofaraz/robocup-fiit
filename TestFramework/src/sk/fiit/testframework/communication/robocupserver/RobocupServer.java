@@ -12,12 +12,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.annotations.UnderConstruction;
 import sk.fiit.robocup.library.geometry.Point3D;
 import sk.fiit.testframework.communication.agent.AgentData;
-import sk.fiit.testframework.communication.agent.AgentJim;
-
 import sk.fiit.testframework.parsing.models.PlayMode;
 
 /**
@@ -96,11 +93,6 @@ public class RobocupServer {
 
 	public void setPlayMode(PlayMode mode) throws IOException {
 		RobocupServerCommand tc = new RobocupServerCommand.PlayMode(mode);
-		performCommand(tc);
-	}
-	
-	public void setAgentJoint(Map<Joint,Double>angleJoints, AgentJim agent) throws IOException{
-		RobocupServerCommand tc = new RobocupServerCommand.JointAngle(angleJoints, agent);
 		performCommand(tc);
 	}
 

@@ -1,6 +1,7 @@
 package sk.fiit.robocup.library.math;
 
-import sk.fiit.robocup.library.init.Script;
+import net.sourceforge.jeval.EvaluationException;
+import net.sourceforge.jeval.Evaluator;
 import sk.fiit.robocup.library.review.ReviewOk;
 
 /**
@@ -12,12 +13,10 @@ import sk.fiit.robocup.library.review.ReviewOk;
  *
  *@Title        Jim
  *@author       $Author: marosurbanec $
+ *@author Tomas Nemecek
  */
 @ReviewOk
 public class MathExpressionEvaluator{
-	private	 static class DoubleHolder{
-		public double value = 0.0;
-	}
 	private final String expression;
 
 	public MathExpressionEvaluator(String expression){
@@ -35,11 +34,14 @@ public class MathExpressionEvaluator{
 	 * @return the result of the expression
 	 */
 	public double getDouble(){
-		String code = String.format("$result.value = (%s)", expression);
-		Script script = Script.createScript(code);
-		DoubleHolder holder = new DoubleHolder();
-		script.registerBean("result", holder);
-		script.execute();
-		return holder.value;
+		Evaluator mEvaluator = new Evaluator();
+		try {
+			String value = mEvaluator.evaluate(expression);
+			double a = Double.parseDouble(value);
+			return a;
+		} catch (EvaluationException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 }

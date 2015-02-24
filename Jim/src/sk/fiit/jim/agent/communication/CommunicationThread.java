@@ -8,10 +8,10 @@ import java.io.IOException;
 import java.net.Socket;
 
 import sk.fiit.jim.agent.AgentInfo;
-import sk.fiit.jim.agent.Planner;
+import sk.fiit.jim.garbage.Planner;
 import sk.fiit.jim.agent.parsing.Parser;
-import sk.fiit.jim.code_review.Problem;
-import sk.fiit.jim.code_review.UnderConstruction;
+import sk.fiit.jim.garbage.code_review.Problem;
+import sk.fiit.jim.garbage.code_review.UnderConstruction;
 import sk.fiit.jim.log.Log;
 import sk.fiit.jim.log.LogType;
 

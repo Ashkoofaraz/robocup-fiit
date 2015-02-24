@@ -10,7 +10,7 @@ package sk.fiit.jim.agent.parsing.sexp;
  *  Error in s-expression parsing.
  *  
  *@Title        Jim
- *@author       Author: Ondrej Jurèák
+ *@author       Author: Ondrej Jur??k
  */
 public class SException extends Exception {
 

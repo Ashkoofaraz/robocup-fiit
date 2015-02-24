@@ -203,7 +203,7 @@ public class Player extends DynamicObject implements Serializable {
 		if(this.worldModel.getBall() == null)
 			return 0;
 		else
-			return computeBallDistance(this.worldModel.getBall().getPosition(), this.getPosition());
+			return DistanceHelper.computeDistanceBetweenObjects(worldModel.getBall().getPosition(), this.getPosition());
 	}
 	
 	/**

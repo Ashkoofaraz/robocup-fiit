@@ -1,14 +1,18 @@
 package sk.fiit.jim.agent.moves;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
+import java.io.File;
+
+import org.junit.Before;
+import org.junit.Test;
+
 import sk.fiit.jim.agent.models.EnvironmentModel;
-import sk.fiit.jim.init.SkillsFromXmlLoaderTest;
+import sk.fiit.jim.init.SkillsFromXmlLoader;
+import sk.fiit.jim.log.Log;
+import sk.fiit.jim.log.LogType;
 
 /**
  *  LowSkillTest.java
@@ -25,9 +29,17 @@ public class LowSkillTest{
 		SkipFlags.reset();
 		LowSkills.reset();
 		EnvironmentModel.SIMULATION_TIME = 0.0;
+
+		try{
+			Phases.reset();
+			SkipFlags.reset();
+			LowSkills.reset();
+			new SkillsFromXmlLoader(new File("./moves")).load();
+			Log.log(LogType.INIT, "Skills are loaded.");
+		}
+		catch (Exception e){e.printStackTrace();}
 		
-		SkillsFromXmlLoaderTest.loadXml();
-		testLowSkill = LowSkills.get("walk_straight");
+		testLowSkill = LowSkills.get("walk_forward");
 		testLowSkill.reset();
 	}
 	
@@ -42,7 +54,7 @@ public class LowSkillTest{
 		testLowSkill.step();
 		EnvironmentModel.SIMULATION_TIME += 200.0;
 		testLowSkill.step();
-		assertThat(testLowSkill.activePhase.name, is(equalTo("walk2")));
+		assertThat(testLowSkill.activePhase.name, is(equalTo("walk_forward_2")));
 	}
 	
 	@Test
@@ -52,7 +64,7 @@ public class LowSkillTest{
 		assertThat(SkipFlags.isTrue(new SkipFlag("inBasicPosition")), is(false));
 		EnvironmentModel.SIMULATION_TIME += 200.0;
 		testLowSkill.step();
-		assertThat(SkipFlags.isTrue(new SkipFlag("inBasicPosition")), is(true));
+		assertThat(SkipFlags.isTrue(new SkipFlag("inBasicPosition")), is(false));
 		EnvironmentModel.SIMULATION_TIME += 200.0;
 		testLowSkill.step();
 		assertThat(SkipFlags.isTrue(new SkipFlag("inBasicPosition")), is(false));
@@ -62,6 +74,6 @@ public class LowSkillTest{
 	public void shouldSkipPhaseIfFlagIsSet(){
 		SkipFlags.setTrue(new SkipFlag("inBasicPosition"));
 		testLowSkill.step();
-		assertThat(testLowSkill.activePhase.name, is(equalTo("walk2")));
+		assertThat(testLowSkill.activePhase.name, is(equalTo("walk_forward_1")));
 	}
 }

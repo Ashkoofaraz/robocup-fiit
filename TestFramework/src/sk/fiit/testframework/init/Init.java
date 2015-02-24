@@ -21,6 +21,8 @@ public class Init {
 	private static Logger logger = Logger.getLogger(Init.class.getName());
 	public static UserInterface interfaceInstance;
 	
+	//Todo #Task(After migrating from Ruby to Java test framework is not working because of some ruby dependencies.) #Solver() #Priority() | xmarkech 2013-12-10T20:38:13.4560000Z
+	
 	public static void main(String args[]) {
 		Logger tmpLogger = logger;
 		

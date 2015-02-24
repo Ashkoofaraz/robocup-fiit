@@ -17,14 +17,10 @@ import org.w3c.dom.Document;
  * @author Roman Kovac
  * 
  */
-public class AgentMove implements Cloneable{
+public class AgentMove {
 
 	private Document doc;
 	private ArrayList<AgentMovePhase> phases;
-	private String name;
-	private Double fitness;
-	
-	
 	
 	public void setDoc(Document doc) {
 		this.doc = doc;
@@ -41,23 +37,4 @@ public class AgentMove implements Cloneable{
 	public ArrayList<AgentMovePhase> getPhases() {
 		return phases;
 	}
-	
-	public void setName(String name){
-		this.name = name;
-	}
-	
-	public String getName(){
-		return name;
-	}
-	
-	public void setFitness(Double fitness){
-		this.fitness = fitness;
-	}
-	public Double getFitness(){
-		return fitness;
-	}
-	public Object clone() throws CloneNotSupportedException{
-		return super.clone();
-	}
-	
 }

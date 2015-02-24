@@ -6,7 +6,6 @@
  */
 package sk.fiit.testframework.trainer.testsuite.testcases.tournament;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -110,13 +109,13 @@ public class TurnAroundTest extends TestCase {
 			return false;
 		} else {
 			/*
-			Tá rotácia je v Player.getNormalizedRotation() (ono to už aj predtým
-			bolo správne, akurát to getRotation 3.tam dávalo rotáciu v opaènom smere
-			než používal agent), vracia rotáciu v rovnakej forme ako sa nachádza v
-			dátach agenta ( AgentModel.getRotationZ() ), teda v radiánoch kde 0 je
-			tam, kde je agent otoèený k ¾avému okraju (strana, ktorá je pri
-			pozeraní sa na modrú bránu po ¾avej ruke). Je to použité napríklad v
-			tom grafickom zobrazení v test frameworku.
+			Ta rotacia je v Player.getNormalizedRotation() (ono to uz aj predtym
+			bolo spravne, akurat to getRotation 3.tam davalo rotaciu v opacnom smere
+			nez poucuval agent), vracia rotaciu v rovnakej forme ako sa nachadza v
+			datach agenta ( AgentModel.getRotationZ() ), teda v radianoch kde 0 je
+			tam, kde je agent otoceny k lavemu okraju (strana, ktora je pri
+			pozerani sa na modru branu po lavej ruke). Je to pouzite napriklad v
+			tom grafickom zobrazeni v test frameworku.
 			*/
 			
 			Player p = ss.getScene().getPlayers().get(0);

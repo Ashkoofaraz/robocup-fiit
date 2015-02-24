@@ -13,8 +13,6 @@ import sk.fiit.jim.agent.moves.LowSkill;
  *@author       $Author: Bimbo $
  */
 public interface IHighSkill {
-
 	public LowSkill pickLowSkill();
-	public void checkProgress() throws Exception;
-	
+	public void checkProgress() throws Exception;	
 }

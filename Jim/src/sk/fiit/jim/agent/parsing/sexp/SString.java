@@ -10,7 +10,7 @@ package sk.fiit.jim.agent.parsing.sexp;
  *  Single node in s-expresion tree.
  *  
  *@Title        Jim
- *@author       Author: Ondrej Jurèák
+ *@author       Author: Ondrej Jur??k
  */
 public class SString extends SObject {
 	

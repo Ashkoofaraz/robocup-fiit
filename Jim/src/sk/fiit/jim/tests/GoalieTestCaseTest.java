@@ -3,9 +3,7 @@
  */
 package sk.fiit.jim.tests;
 
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import org.junit.Test;
 
 //import sk.fiit.testframework.trainer.RobocupServerAddress;
 //import sk.fiit.testframework.trainer.Team;
@@ -21,8 +19,12 @@ import java.net.UnknownHostException;
  *@author	Androids
  */
 public class GoalieTestCaseTest {
+	
+	@Test
+	public void testGoalie(){
+	}
 
-	    public static void main(String[] args) throws UnknownHostException, IOException {
+//	    public static void main(String[] args) throws UnknownHostException, IOException {
 
 	        // define server's and monitor's addresses
 //	        RobocupServerAddress address =
@@ -36,8 +38,8 @@ public class GoalieTestCaseTest {
 //
 //	        // print test case result
 //	        System.out.println(tester.runOnce());
-
-	        // TODO: here comes machine learning module in terms of improving test results
-	    }
+//
+//	      //TODO: here comes machine learning module in terms of improving test results
+//	    }
 
 }

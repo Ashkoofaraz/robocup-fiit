@@ -7,10 +7,8 @@
 package sk.fiit.testframework.agenttrainer;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import sk.fiit.testframework.agenttrainer.models.*;
 
 import static org.w3c.dom.Node.ELEMENT_NODE;
@@ -18,7 +16,6 @@ import static org.w3c.dom.Node.ELEMENT_NODE;
 import javax.xml.parsers.*;
 
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
 
 /**
  * Represents a class responsible for reading agent moves specified in XML
@@ -48,7 +45,7 @@ public class AgentMoveReader {
 		return read(doc);
 	}
 
-	public AgentMove read(Document doc) throws Exception {
+	private AgentMove read(Document doc) throws Exception {
 		AgentMove agentMove = new AgentMove();
 		agentMove.setDoc(doc);
 

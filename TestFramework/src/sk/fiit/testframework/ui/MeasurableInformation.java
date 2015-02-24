@@ -7,7 +7,6 @@ package sk.fiit.testframework.ui;
 
 import sk.fiit.robocup.library.geometry.Vector3;
 import sk.fiit.testframework.communication.agent.AgentJim;
-import sk.fiit.testframework.communication.agent.AgentManager;
 import sk.fiit.testframework.worldrepresentation.models.Player;
 import sk.fiit.testframework.worldrepresentation.models.Scene;
 import sk.fiit.testframework.worldrepresentation.models.SimulationState;

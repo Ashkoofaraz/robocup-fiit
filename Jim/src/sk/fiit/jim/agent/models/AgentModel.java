@@ -1,38 +1,28 @@
 package sk.fiit.jim.agent.models;
 
-import static java.lang.Math.abs;
 import static sk.fiit.jim.agent.models.EnvironmentModel.TIME_STEP;
 import static sk.fiit.jim.log.LogType.AGENT_MODEL;
 
 import java.io.Serializable;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 import sk.fiit.jim.Settings;
 import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.Side;
-import sk.fiit.jim.agent.models.EnvironmentModel.PlayMode;
-import sk.fiit.jim.agent.moves.BodyPart;
 import sk.fiit.jim.agent.moves.Joint;
-import sk.fiit.jim.agent.parsing.ForceReceptor;
 import sk.fiit.jim.agent.parsing.ParsedData;
 import sk.fiit.jim.agent.parsing.ParsedDataObserver;
 import sk.fiit.jim.annotation.data.Annotation;
 import sk.fiit.jim.annotation.data.Axis;
 import sk.fiit.jim.log.Log;
 import sk.fiit.jim.log.LogLevel;
-import sk.fiit.jim.log.LogType;
 import sk.fiit.robocup.library.geometry.Angles;
 import sk.fiit.robocup.library.geometry.Vector3D;
-import sk.fiit.robocup.library.representations.Correction;
 
 /**
  *  AgentModel.java
@@ -56,16 +46,27 @@ import sk.fiit.robocup.library.representations.Correction;
  *@author       $Author: Jojo $
  */
 public class AgentModel implements ParsedDataObserver, Serializable{
-	private boolean f = false;
+	
+	private boolean falled = false;
 	
 	private static final long serialVersionUID = -1939740744252731355L;
-	private static Logger logger = Logger.getLogger(AgentModel.class.getName());
-
 	
+        /*
+         * Half time in seconds.
+         */
+        private static double HALF_TIME = 300.0;
+        
+        /*
+         * True if sides are changed after halftime
+         */
+        private static boolean HALF_TIME_CHANGE_SIDES = false;
+        
+        /*
+         * True if sides were changed. We want them to change only once.
+         */
+        private static boolean sidesChanged = false;
+        
 	private static AgentModel instance = new AgentModel();
-	private static int MAX_HISTORY_SIZE = 500;
-	private static int ACCUMULATOR_STEPS = 5;
-
 	/**
 	 * Rotation by axis X value.
 	 */
@@ -82,28 +83,7 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	 * Current position of agent.
 	 */
 	Vector3D position = Vector3D.cartesian(0, 0, 0);
-	private double startPositionX = 0.0;
-	
-	private Vector3D centerOfMass = Vector3D.ZERO_VECTOR;
-	private Vector3D torsoPosition = Vector3D.ZERO_VECTOR;
-	private Vector3D zeroMomentPoint = Vector3D.ZERO_VECTOR;
-	private List<Vector3D> zmpHistory = new LinkedList<Vector3D>();
-
 	Queue<Vector3D> lastPositions = new LinkedList<Vector3D>();
-	private Map<BodyPart, Vector3D> bodyPartRelPositions = new EnumMap<BodyPart, Vector3D>(BodyPart.class);
-	private Map<BodyPart, Vector3D> bodyPartAbsPositions = new EnumMap<BodyPart, Vector3D>(BodyPart.class);
-	private Vector3D lastMomentum = null;
-	private Vector3D lastAccelerometer = null;
-	private boolean leftFootOnGround = false, rightFootOnGround = false;
-//	private ForceReceptor forceReceptor = new ForceReceptor();
-//	private ForceReceptor forceReceptor;
-	private boolean updateTF = false;
-	
-	Vector3D rFootFR = Vector3D.ZERO_VECTOR;
-	Vector3D lFootFR = Vector3D.ZERO_VECTOR;
-	Vector3D rPointFR = Vector3D.ZERO_VECTOR;
-	Vector3D lPointFR = Vector3D.ZERO_VECTOR;
-
 	/**
 	 * 
 	 */
@@ -119,11 +99,9 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	transient ParsedData lastDataReceived = new ParsedData();
 	public static Side side = Side.LEFT;
 	protected double lastTimeFlagSeen = 0.0;
+	
 
-	private ParsedData data;
-
-	private static boolean fromTF = false;
-
+	
 	public AgentModel(){
 		for (Joint joint : Joint.values())
 			jointAngles.put(joint, 0.0);
@@ -136,6 +114,69 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	 */
 	public static AgentModel getInstance(){
 		return instance;
+	}
+	
+	/**
+	 * @author	Samuel Benkovic
+	 * @year	2013/2014
+	 * @team	RFC Megatroll
+	 * Method return distance from enemy goal
+	 */
+	public double getDistanceFromEnemyGoal()
+	{
+		return  AgentModel.getInstance().getPosition().getXYDistanceFrom(FixedObject.theirPostMiddle());
+	}
+	/**
+	 * @author	Samuel Benkovic
+	 * @year	2013/2014
+ 	 * @team	RFC Megatroll
+	 * Method return distance from Our goal
+	 */
+	public double getDistanceFromOurGoal()
+	{
+		return  AgentModel.getInstance().getPosition().getXYDistanceFrom(FixedObject.ourPostMiddle());
+	}
+	/**
+	 * @author	Samuel Benkovic, Matej Badal <matejbadal@gmail.com>
+	 * @year	2013/2014
+	 * @team	RFC Megatroll
+	 * Method returns the smallest distance from ball in one team
+	 */
+	public double getDistanceNereastToBall(List<Player> players){
+		
+		//my distance
+		double min = this.getDistanceFromBall();
+		for(Player p:players){
+			if (p.getDistanceFromBall() < min){
+				min = p.getDistanceFromBall();
+			}
+		}
+		
+		return min;
+	}
+	
+	/**
+	 * @author  Vladimir Bosiak <vladimir.bosiak@gmail.com>
+	 * @year	2013/2014
+	 * @team	RFC Megatroll
+	 */
+	public double getDistanceFromBall() {
+		return DistanceHelper.computeDistanceBetweenObjects(WorldModel.getInstance().getBall().getPosition(), this.getPosition());
+	}
+	
+	/**
+	 * @author  Vladimir Bosiak <vladimir.bosiak@gmail.com>
+	 * @year	2013/2014
+	 * @team	RFC Megatroll
+	 */
+	public boolean isAgentNearestToBall(){
+		double myDistance = this.getDistanceFromBall();
+		for(Player p:WorldModel.getInstance().getTeamPlayers()){
+			if(p.getDistanceFromBall() < myDistance) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	//added by team17
@@ -188,19 +229,9 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	public static double getJointAngleOf(Joint joint){
 		return instance.jointAngles.get(joint);
 	}
+	
 	/**
-	 * Returns all joints with their angles 
-	 * @return
-	 */
-	public Map<Joint, Double> getJointAngles(){
-		return this.jointAngles;
-	}
-	public void setJointAngles(Map<Joint,Double> jointAngles){
-		this.jointAngles = jointAngles;
-	}
-
-	/**
-	 * Returns globalized position of agent from his relative position. 
+	 * Returns globalized position of object from his relative position. 
 	 *
 	 * @param relative
 	 * @return
@@ -217,22 +248,11 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	public Vector3D relativize(Vector3D global) {
 		return global.subtract(position).rotateOverX(-rotationX).rotateOverZ(-rotationZ).rotateOverY(-rotationY);
 	}
-	public Vector3D rotateRelativeVector(Vector3D vector){
-		return vector.rotateOverY(rotationY).rotateOverZ(rotationZ).rotateOverX(rotationX);
-	}
-	
-	public Vector3D relativizeVector(Vector3D global){
-		return global.rotateOverX(-rotationX).rotateOverZ(-rotationZ).rotateOverY(-rotationY);
-	}
-	
-	public Vector3D forwardDirection() {
-		return rotateRelativeVector(Vector3D.Y_AXIS);
-	}
-	
-	public Vector3D upDirection() {
-		return rotateRelativeVector(Vector3D.Z_AXIS);
-	}
 
+	//player and side identification added by Androids
+	/* (non-Javadoc)
+	 * @see sk.fiit.jim.agent.parsing.ParsedDataObserver#processNewServerMessage(sk.fiit.jim.agent.parsing.ParsedData)
+	 */
 	public void processNewServerMessage(ParsedData data){
 		if (data.PLAYER_ID != null && data.PLAYER_ID != 0)
 			AgentInfo.playerId = data.PLAYER_ID;
@@ -240,60 +260,29 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 			AgentInfo.hasAssignedSide = true;
 			AgentInfo.side = data.OUR_SIDE_IS_LEFT ? Side.LEFT : Side.RIGHT;
 		}
-//		data.agentsJoints = setJointAbout();
+                
+		// Added by Roman Moravcik, Giment09
+                // According to values and server settings, if sides change at half time, side is changed.
+                if (HALF_TIME_CHANGE_SIDES && !sidesChanged && data.GAME_TIME >= HALF_TIME) {
+                    sidesChanged = true;
+                    AgentInfo.side = AgentInfo.side == Side.RIGHT ? Side.LEFT : Side.RIGHT;
+                    System.out.println("Sides changed at half time");
+                 }
+        		     
 		lastDataReceived = data;
-//		data.agentsJoints = setJointAbout();
-		//TODO:replace data with lastDataReceived - before receive lastdata set joint from AgentJointPositionClaculator
-		
-//		setJointAbout();
-		Map<Joint, Double> tempJoint = AgentJointPositionCalculator.getInstance().updateJointAbout(data.agentsJoints);
-		for (Entry<Joint, Double> record : tempJoint.entrySet())
-			data.agentsJoints.put(record.getKey(), record.getValue());
-		
+		//getPosition(data);
 		updateJointPositions(data);
-//		AgentJointPositionCalculator.getInstance().getJointPosition();
 		adjustRotationsFor(data.gyroscope);
-		adjustPositionFor(data.accelerometer);
-		updatePureBodyAcceleration(data);
-		
 		updateRotations(data);
+		updatePureBodyAcceleration(data);
 		updatePosition(data);
-		updateBodyPartsPositions2();
-		updateCenterOfMass();
-		updateFeetForce(data);
-		updateZeroMomentPoint();
-//		updateSpeedX(data);
-		if (data.fixedObjects.size() > 0)
-			lastTimeFlagSeen = data.SIMULATION_TIME;
+		//Log.log(LogType.OTHER, position.toString());
 	}
 
 	private void updateJointPositions(ParsedData data){
 		for (Entry<Joint, Double> record : data.agentsJoints.entrySet())
-			this.jointAngles.put(record.getKey(), record.getValue());		
-//		Map<Joint, Double> tempJoint = setJointAbout();
-//		
-//		for (Entry<Joint, Double> record : tempJoint.entrySet())
-//			data.agentsJoints.put(record.getKey(), record.getValue());
-				
+			this.jointAngles.put(record.getKey(), record.getValue());
 	}
-	
-	public void setJointAbout(){
-		if(!fromTF){
-			AgentJointPositionCalculator.getInstance().footStabilization(null,getForceVectors(),getZeroMomentPoint());
-			Correction cor = new Correction();
-			cor.setRAE2(jointAngles.get(Joint.RAE2));
-			cor.setLAE2(jointAngles.get(Joint.LAE2));
-			AgentJointPositionCalculator.getInstance().handStabilization(cor,getForceVectors(),getZeroMomentPoint());
-		}
-//		return AgentJointPositionCalculator.getInstance().updateJointAbout(jointAngles);
-	}
-
-	public void setFromTF(boolean formTF){
-		this.fromTF = formTF;
-	}
-
-	
-	
 	
 	/*
 	 * Methods calculate vector moves around vectors and axis. The calculations
@@ -376,17 +365,6 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 		
 		Log.log(AGENT_MODEL, "Pure body acceleration: [%.5f,%.5f,%.5f]", pureBodyAcceleration.getX() ,pureBodyAcceleration.getY(),pureBodyAcceleration.getZ());
 	}
-	
-	
-	private void adjustPositionFor(Vector3D accelerometer){
-		lastAccelerometer = accelerometer;
-		if (accelerometer == null || Settings.getBoolean("ignoreAccelerometer")) return;
-		position = Vector3D.cartesian(
-			position.getX() - accelerometer.getX()*TIME_STEP, //TODO acceleration is not velocity - incorrect - skontrolovat, ale asi je to len zle nazvane
-			position.getY() - accelerometer.getY()*TIME_STEP,
-			position.getZ() - (accelerometer.getZ() - Settings.getDouble("gravityAcceleration"))*TIME_STEP
-		);
-	}
 
 	private void adjustRotationsFor(Vector3D gyroscope){
 		if (gyroscope == null)
@@ -408,216 +386,9 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	}
 	
 	private void updatePosition(ParsedData data){
-		new AgentPositionCalculator(this).updatePosition(data);
+		AgentPositionCalculator.updatePosition(data);
 	}
 	
-	//do not delete yet
-	@SuppressWarnings("unused")
-	@Deprecated
-	private void updateBodyPartsPositions() {
-		BodyPart.computeRelativePositionsToCamera(jointAngles, bodyPartRelPositions);
-		//Log.log(LogType.AGENT_MODEL, "============================================");
-		for (BodyPart bodyPart: bodyPartRelPositions.keySet()) {
-			Vector3D relPosition = bodyPartRelPositions.get(bodyPart);
-			Vector3D absPosition = globalize(relPosition);
-			bodyPartAbsPositions.put(bodyPart, absPosition);
-			/*if (bodyPart == BodyPart.LFOOT || bodyPart == BodyPart.RFOOT){
-				Log.log(LogType.AGENT_MODEL, bodyPart + " relativna: " + relPosition);
-				Log.log(LogType.AGENT_MODEL, bodyPart +" globalna: " + globalize(relPosition));
-			}*/
-		}
-		//lastAccelerometer = rotateRelativeVector(lastAccelerometer); //toto zatial nepotrebujem globalizovane - ak to budem menit, je potrebne zmenit aj onGround
-		lastMomentum = rotateRelativeVector(BodyPart.vectorFromTorsoToCameraCoordinates(lastAccelerometer, jointAngles.get(Joint.HE1), jointAngles.get(Joint.HE2)));
-		//Log.log(LogType.AGENT_MODEL,  "Hybnost: " + lastMomentum);
-		torsoPosition = bodyPartAbsPositions.get(BodyPart.TORSO);
-	}
-	
-	// absolutne pozicie koncatin su reltivne ku torzu, ale zarovnane podla osi X,Y,Z ihriska
-	private void updateBodyPartsPositions2() {
-		BodyPart.computeRelativePositionsToTorso(jointAngles, bodyPartRelPositions);
-		//Log.log(LogType.AGENT_MODEL, "============================================");
-		double minZ = Double.POSITIVE_INFINITY;
-		for (BodyPart bodyPart: bodyPartRelPositions.keySet()) {
-			Vector3D relPosition = bodyPartRelPositions.get(bodyPart);
-			Vector3D absPosition = rotateRelativeVector(relPosition);
-			bodyPartAbsPositions.put(bodyPart, absPosition);
-			if (absPosition.getZ() < minZ)
-				minZ = absPosition.getZ();
-			//Log.log(LogType.AGENT_MODEL, bodyPart + ": " + relPosition);
-		}
-		for (BodyPart bodyPart: bodyPartAbsPositions.keySet()) {
-			Vector3D absPosition = bodyPartAbsPositions.get(bodyPart);
-			Vector3D normalizedAbsPosition = Vector3D.cartesian(absPosition.getX(), absPosition.getY(), absPosition.getZ() - minZ);
-			bodyPartAbsPositions.put(bodyPart, normalizedAbsPosition);
-		}
-		//Log.log(LogType.AGENT_MODEL,  "Akcelerometer: " + lastAccelerometer);
-		//Log.log(LogType.AGENT_MODEL,  "Akcelerometer globalizovany: " + globalize(lastAccelerometer));
-		lastMomentum = rotateRelativeVector(lastAccelerometer);
-		//Log.log(LogType.AGENT_MODEL,  "Hybnost: " + lastMomentum);
-		torsoPosition = bodyPartAbsPositions.get(BodyPart.TORSO);
-	}
-
-	private void updateCenterOfMass() {
-		centerOfMass = Vector3D.ZERO_VECTOR;
-		double totalMass = 0;
-		for (BodyPart bodyPart: bodyPartAbsPositions.keySet()) {
-			Vector3D absPosition = bodyPartRelPositions.get(bodyPart); // abspositions
-			centerOfMass = centerOfMass.add(absPosition.multiply(bodyPart.getMass())); 
-			totalMass += bodyPart.getMass();
-		}
-		centerOfMass = centerOfMass.divide(totalMass);
-		
-	}
-	
-	private void updateFeetForce(ParsedData data) {
-		if (data.forceReceptor != null) {
-			leftFootOnGround = data.forceReceptor.leftFootForce != null;
-			rightFootOnGround = data.forceReceptor.rightFootForce != null;
-//			forceReceptor = data.forceReceptor;
-			 rFootFR = data.forceReceptor.rightFootForce;
-			 lFootFR = data.forceReceptor.leftFootForce;
-			 rPointFR = data.forceReceptor.rightFootPoint;
-			 lPointFR = data.forceReceptor.leftFootPoint;
-			
-		} else leftFootOnGround = rightFootOnGround = false;
-	}
-	
-	public Vector3D[] getForceVectors(){
-		Vector3D[] vec = {rFootFR,rPointFR,lFootFR,lPointFR};
-		return vec;
-	}
-	
-	private void updateZeroMomentPoint() {
-		double x, y, z = 0;	//, g = Settings.getDouble("gravityAcceleration");
-		Vector3D center = centerOfMass; //torsoPosition // TODO accelerometer is relative to torsoPosition, not centerOfMass
-		x = -1 * (center.getX() - (center.getZ() * lastAccelerometer.getX())/( lastMomentum.getZ() )); // because accelerometer set value with g
-		y = -1 * (center.getY() - (center.getZ() * lastAccelerometer.getY())/( lastMomentum.getZ() )); //+ g);
-		zeroMomentPoint = Vector3D.cartesian(x, y, z);
-		zmpHistory.add(zeroMomentPoint);
-		while (zmpHistory.size() > MAX_HISTORY_SIZE){
-			zmpHistory.remove(0);
-		}
-		if(zmpHistory.size()>= ACCUMULATOR_STEPS){
-			Vector3D akum = Vector3D.ZERO_VECTOR;
-			for (int i = 0; i < ACCUMULATOR_STEPS; i++){
-				int ri = zmpHistory.size() - 1 - i;
-				akum = akum.add(zmpHistory.get(ri));
-			}			
-			zeroMomentPoint = akum.divide(ACCUMULATOR_STEPS);
-		}
-//		Log.log(LogType.AGENT_MODEL, "ZMP: " + zeroMomentPoint);
-//		logger.log(Level.INFO, "ZMP> " + zeroMomentPoint);
-		
-	}
-	
-	private void updateSpeedX(ParsedData data){
-		double speedX, walkTime = data.GAME_TIME;
-		if (data.playMode != PlayMode.PLAY_ON)
-			startPositionX = getPosition().getX();
-		speedX = abs(startPositionX - getPosition().getX()) / walkTime * 100; // meters to centimeters in seconds
-		Log.log(LogType.AGENT_MODEL, "Dosahovana priemerna rychlost je: %.2f cm/s", speedX);
-//		Log.log(LogType.AGENT_MODEL, "Dlzka trvania chodze: %.2f", data.GAME_TIME);
-//		System.out.println(speedX);	
-	}
-//	@Override
-//	public void footStabilization(Double[] correction, Double[] sideCorrection){
-//		Vector3D zmp = zeroMomentPoint;
-//		if(correction == null || sideCorrection == null){
-////			 correction = -0.25;
-////			 sideCorrection = 0.01;
-//			correction[0] =correction[1] = 50.0;
-//			sideCorrection[0] = sideCorrection[1] = 10.0;
-//		}else{
-//			
-//		}
-////		Vector3D rFootFR = (getForceReceptor().rightFootForce == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().rightFootForce;
-////		Vector3D lFootFR = (getForceReceptor().leftFootForce == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().leftFootForce;
-////		Vector3D rPointFR = (getForceReceptor().rightFootPoint == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().rightFootPoint;
-////		Vector3D lPointFR = (getForceReceptor().leftFootPoint == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().leftFootPoint;
-//		Vector3D rFootFR = Vector3D.ZERO_VECTOR;
-//		Vector3D lFootFR = Vector3D.ZERO_VECTOR;
-//		Vector3D rPointFR = Vector3D.ZERO_VECTOR;
-//		Vector3D lPointFR = Vector3D.ZERO_VECTOR;
-////		Vector3D rFootFR = this.rFootFR;
-////		Vector3D lFootFR = this.lFootFR;
-////		Vector3D rPointFR = this.rPointFR;
-////		Vector3D lPointFR = this.lPointFR;
-//		setInitUpdateJoint();
-//		if(rFootFR.getZ() > 0){
-//			if(Math.abs(rPointFR.getX())>=FOOT_ONGROUND_POSITOIN){
-//				double rle5 = correction[1] * (rPointFR.getY() > 0 ? 1.0 : -1.0);
-//				updatetJoint.remove(Joint.RLE5);
-//				updatetJoint.put(Joint.RLE5, 00.0+rle5);
-//			}
-//			if(Math.abs(rPointFR.getY())>=SIDE_FOOT_ONGORUND_POSITION){
-//				double rle6 = sideCorrection[1] * (rPointFR.getX() > 0 ? 1.0 : -1.0);
-//				updatetJoint.remove(Joint.RLE6);
-//				updatetJoint.put(Joint.RLE6, -0.0+rle6);
-//			}
-//			if(Math.abs(zmp.getY())>0.3){
-//				updatetJoint.remove(Joint.RLE3);
-//				updatetJoint.remove(Joint.RLE2);
-//				updatetJoint.put(Joint.RLE3, 1.0);
-//				updatetJoint.put(Joint.RLE2, 0.3);
-//				
-//			}
-//			
-//		}else if(lFootFR.getZ() > 0){
-//			if(Math.abs(lPointFR.getX())>=FOOT_ONGROUND_POSITOIN){
-//				double lle5 = correction[0] * (lPointFR.getY() > 0 ? 1.0 : -1.0);
-//				updatetJoint.remove(Joint.LLE5);
-//				updatetJoint.put(Joint.LLE5, 00.0+lle5);
-//			}
-//			if(Math.abs(lPointFR.getY())>=SIDE_FOOT_ONGORUND_POSITION){
-//				double lle6 = sideCorrection[0] * (lPointFR.getX() > 0 ? 1.0 : -1.0);
-//				updatetJoint.remove(Joint.LLE6);
-//				updatetJoint.put(Joint.LLE6, 0.0+lle6);
-//			}
-//			if(Math.abs(zmp.getY())>0.3){
-//				updatetJoint.remove(Joint.LLE3);
-//				updatetJoint.remove(Joint.LLE2);
-//				updatetJoint.put(Joint.LLE3, 1.0);
-//				updatetJoint.put(Joint.LLE2, 0.3);
-//				
-//			}
-//		}
-////		}else{
-////			updatetJoint.remove(Joint.RLE5);
-////			updatetJoint.put(Joint.RLE5, 00.0);
-////			updatetJoint.remove(Joint.RLE6);
-////			updatetJoint.put(Joint.RLE6, -0.0);
-////			updatetJoint.remove(Joint.LLE5);
-////			updatetJoint.put(Joint.LLE5, 00.0);
-////			updatetJoint.remove(Joint.LLE6);
-////			updatetJoint.put(Joint.LLE6, 0.0);
-////		}
-//		
-//	}
-//	@Override
-//	public void handStabilization(){
-//		Vector3D rFootFR =Vector3D.ZERO_VECTOR; 
-////				(getForceReceptor().rightFootForce == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().rightFootForce;
-//		Vector3D lFootFR = Vector3D.ZERO_VECTOR;
-////		(getForceReceptor().leftFootForce == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().leftFootForce;
-////		Vector3D rPointFR = (getForceReceptor().rightFootPoint == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().rightFootPoint;
-////		Vector3D lPointFR = (getForceReceptor().leftFootPoint == null) ? Vector3D.ZERO_VECTOR : getForceReceptor().leftFootPoint;
-//		
-//		double rollX = rFootFR.getX() + lFootFR.getX();
-//		double pitchY = rFootFR.getY() + lFootFR.getY(); 
-//		
-//		double rae2 =  getLastDataReceived().agentsJoints.get(Joint.RAE2) - rollX*2;
-//		double lae2 =  getLastDataReceived().agentsJoints.get(Joint.LAE2) - rollX*2;
-//		
-//		rae2 += Math.abs(rollX)<3 ? 1.5 : 0;
-//		lae2 += Math.abs(rollX)<3 ? 1.5 : 0;
-//		
-//		updatetJoint.remove(Joint.RAE2);
-//		updatetJoint.remove(Joint.LAE2);
-//		updatetJoint.put(Joint.RAE2, rae2);
-//		updatetJoint.put(Joint.LAE2, lae2);
-//	}
-
-
 	//---------------------QUERIES, GETTERS AND SETTERS-------------------
 	/**
 	 * Returns true if agent is standing, false otherwise. 
@@ -635,17 +406,14 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	public boolean isStanding(ParsedData data){
 		return data.accelerometer.getZ() > 7.0;
 	}
-//------------------------------------------------------------------------------
-// Zaciatok kodu, ktory tim 17 nema v kode
-//--------------------------------------------------------------------------------	
-	
+
 	//TEST WTF/////////////////////
 	public boolean falled(){
-		if(f){
-			return f;	
+		if(falled){
+			return falled;	
 		}else{
 			if(isOnGround()){
-				f = true;
+				falled = true;
 				return true;
 			}
 			return false;
@@ -653,40 +421,40 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	}
 	
 	public void gotUp(){
-		f = false;
+		falled = false;
 	}
 	
-	public boolean f(){
-		return f;
+	public boolean isFallen(){
+		return falled;
 	}
 	//TEST WTF/////////////////////
 	
-//------------------------------------------------------------------------------
-// Koniec kodu, ktory tim 17 nema v kode
-//--------------------------------------------------------------------------------	
 	/**
 	 * Returns true if agent is on ground, false otherwise. 
 	 *
 	 * @return
 	 */
 	public boolean isOnGround(){
-		if (lastDataReceived.accelerometer != null)
-			return isOnGroundJudgedByAccelerometer();
-		return Angles.angleDiff(rotationX, 0.0) > (Math.PI / 4.0) || Angles.angleDiff(rotationY, 0.0) > (Math.PI / 4.0);
-//		return Math.abs(lastDataReceived.accelerometer.getY()) > 9.3; 
- 	}
-	
+		if (lastDataReceived.accelerometer != null){
+			double z = Math.abs(lastDataReceived.accelerometer.getZ());
+			return (z < Settings.getDouble("gravityAcceleration") / 2.0) && (Angles.angleDiff(rotationX, 0.0) > (Math.PI / 4.0) || Angles.angleDiff(rotationY, 0.0) > (Math.PI / 4.0));
+		}
+		return Angles.angleDiff(rotationX, 0.0) > (Math.PI / 4.0) || Angles.angleDiff(rotationY, 0.0) > (Math.PI / 4.0);			 
+  	}
+	/* content of method was copied to isOnGround() 
 	private boolean isOnGroundJudgedByAccelerometer(){
 		double z = Math.abs(lastDataReceived.accelerometer.getZ());
 		return z < Settings.getDouble("gravityAcceleration") / 2.0;
 	}
+	*/
+	
 	/**
 	 * Returns true if agent is lying on back(na chrbte), false otherwise. 
 	 *
 	 * @return
 	 */
 	public boolean isLyingOnBack(){
-		return isOnGround() && (lastDataReceived.accelerometer.getY() > 9.3) ;
+		return isOnGround() && (lastDataReceived.accelerometer.getY() > 9.3);
 	}
 	/**
 	 * Returns true if agent is lying on belly(na bruchu), false otherwise. 
@@ -694,8 +462,8 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	 * @return
 	 */
 	public boolean isLyingOnBelly(){
-		return isOnGround() && !isLyingOnBack();
-	}	
+		return isOnGround() && (lastDataReceived.accelerometer.getY() < -9.3);
+	}
 	
 	/**
 	 * Returns agents rotation by axis X. 
@@ -731,10 +499,10 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 		return position;
 	}
 	
-	public Vector3D getZeroMomentPoint() {
-		return zeroMomentPoint;
+	public Vector3D getPureBodyAcceleration(){
+		return pureBodyAcceleration;
 	}
-
+	
 	public void setPosition(Vector3D position){
 		this.position = position;
 	}
@@ -763,9 +531,7 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	public double getLastTimeFlagSeen(){
  		return lastTimeFlagSeen;
  	}
-//	public ForceReceptor getForceReceptor(){
-//		return forceReceptor;
-//	}
+	
 	//added by team17
 	//vracia predikciu buduceho modelu hraca vypocitanu na zaklade anotacie k pohybu
 	/**
@@ -828,14 +594,4 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 		newModel.setPosition(newModel.position.add(avgPosChange));
 		return newModel;
 	}
-	
-	public Map<BodyPart, Vector3D> getBodyPartAbsPositions()
-    {
-        return bodyPartAbsPositions;
-    }
-	
-	public Map<BodyPart, Vector3D> getBodyPartRelPositions()
-    {
-        return bodyPartRelPositions;
-    }
 }

@@ -3,10 +3,7 @@
  */
 package sk.fiit.jim.agent.skills;
 
-import sk.fiit.jim.Settings;
-import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.models.WorldModel;
-import sk.fiit.robocup.library.init.Script;
 
 /**
  * 

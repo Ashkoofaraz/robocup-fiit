@@ -96,7 +96,7 @@ public abstract class AgentMonitorMessage {
 			}
 		}		
 	}
-	// tu mam uhly klbov v model, do agent data pridat getJointAngles - hashMap 
+
 	public static class WorldModel extends AgentMonitorMessage {
 		// WorldModel objekt este nieje v classpath - zakomentovane aby sa nerozbila funkcionalita
 		public sk.fiit.jim.agent.models.WorldModel model = null;
@@ -126,7 +126,6 @@ public abstract class AgentMonitorMessage {
 		}
 		
 		AgentMonitorMessage.WorldModel message = new WorldModel(unusedtokens, deserialized);
-//		logger.log(Level.INFO,message.toString());
 		return message;
 	}
 	

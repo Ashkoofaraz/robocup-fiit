@@ -1,7 +1,6 @@
 package sk.fiit.testframework.ui;
 
 import java.awt.BorderLayout;
-import java.awt.CheckboxGroup;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -10,10 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Enumeration;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -28,23 +23,18 @@ import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
@@ -53,31 +43,17 @@ import javax.swing.text.DefaultCaret;
 import sk.fiit.robocup.library.geometry.Circle;
 import sk.fiit.robocup.library.geometry.Point3D;
 import sk.fiit.robocup.library.geometry.Vector2;
-import sk.fiit.testframework.agenttrainer.AgentMoveReader;
-import sk.fiit.testframework.agenttrainer.AgentMoveWriter;
-import sk.fiit.testframework.agenttrainer.models.AgentMove;
 import sk.fiit.testframework.annotator.Annotator;
 import sk.fiit.testframework.communication.agent.AgentJim;
 import sk.fiit.testframework.communication.agent.AgentManager;
 import sk.fiit.testframework.communication.agent.IAgentManagerListener;
 import sk.fiit.testframework.communication.robocupserver.RobocupServer;
 import sk.fiit.testframework.communication.robocupserver.RobocupServerAddress;
-import sk.fiit.testframework.ga.CrossoverType;
-import sk.fiit.testframework.ga.GeneticAlgorithm;
-import sk.fiit.testframework.ga.SelectionType;
-import sk.fiit.testframework.ga.parameters.ParameterCrossover;
-import sk.fiit.testframework.ga.parameters.ParameterGA;
-import sk.fiit.testframework.ga.parameters.ParameterMutation;
-import sk.fiit.testframework.ga.parameters.ParameterSelection;
-import sk.fiit.testframework.ga.simulation.AlgorithmType;
-import sk.fiit.testframework.ga.simulation.EnvironmentSetting;
-import sk.fiit.testframework.ga.simulation.TestTypeParameter;
 import sk.fiit.testframework.init.ImplementationFactory;
 import sk.fiit.testframework.monitor.AgentMonitor;
 import sk.fiit.testframework.monitor.AgentMonitorMessage;
 import sk.fiit.testframework.monitor.IAgentMonitorListener;
 import sk.fiit.testframework.monitor.RobocupMonitor;
-import sk.fiit.testframework.parsing.models.PlayMode;
 import sk.fiit.testframework.trainer.testsuite.TestCaseResult;
 import sk.fiit.testframework.ui.TestCaseList.TestHolder;
 import sk.fiit.testframework.worldrepresentation.ISimulationStateObserver;
@@ -143,7 +119,7 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 	private JButton btnAgentMonitor;
 	private JComboBox comboTestCase;
 	private JTextField txtPlanName;
-	private JLabel jLabelPlanName;
+	private JLabel jLabel8;
 	private JButton btnRemoveAgent;
 	private JButton btnReloadXml;
 	private JButton btnReplan;
@@ -161,8 +137,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 	private JPanel monitoringSidebar;
 	private JPanel panelAgent;
 	private JPanel tabManageAgents;
-	
-	
 	private JPanel panelBall;
 	private JScrollPane scrollLogArea;
 	private JScrollPane scrollLogLevel;
@@ -191,81 +165,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 	private JTextField txtAnnotY;
 	private JLabel jLabel7;
 	private JPanel panelAddAgent;
-	
-	//pridane na GA
-	private JPanel tabEvolutionAlgorithm;
-	private JPanel panelGA;
-	private JLabel jLabelPopulation;
-	private JTextField jTFPopulation;
-	private JTextField jTFGeneration;
-	private JLabel jLabelGeneration;
-	private JPanel panelSimulation;
-	private JLabel jLabelPlayerPosition;
-	private JTextField jTFPlayerPosition;
-	private JLabel jLabelBallPosition;
-	private JTextField jTFBallPosition;
-	private JRadioButton btnKick;
-	private JRadioButton btnAuto;
-	private JRadioButton btnWalk;
-	private JLabel jLabelPenalize;
-	private JRadioButton btnYes;
-	private JRadioButton btnNo;
-	private JLabel jLabelMinDistanceKick;
-	private JTextField jTFDistance;
-	private JLabel jLabelMaxAngleDiversion;
-	private JTextField jTFMaxAngleDiversion;
-	private JLabel jLabelLenghtWalk;
-	private JTextField jTFLenghtWalk;
-	private JLabel jLabelPickMove;
-	private JTextField jTFPickMove;
-	private JButton btnPickMove;
-	private JLabel jLabelSaveMove;
-	private JTextField jTFSaveMove;
-	private JButton btnStart;
-	private JButton btnStop;
-	private String moveName;
-	private JLabel jLabelMaxTimeOnMove;
-	private JTextField jTFTimeOnMove;
-
-	private JLabel jLabelPMut;
-	private JSpinner spPMut;
-	private JLabel jLabelNumberTests;
-	private JSpinner spNumberOfTest;
-	private JLabel jLabelRangeMutation;
-	private JSpinner spRangeMut;
-	private JCheckBox chBHE1;
-	private JCheckBox chBHE2;
-	private JCheckBox chBRLE1;
-	private JCheckBox chBRLE2;
-	private JCheckBox chBRLE3;
-	private JCheckBox chBRLE5;
-	private JCheckBox chBRLE4;
-	private JCheckBox chBRLE6;
-	private JCheckBox chBLLE1;
-	private JCheckBox chBLLE2;
-	private JCheckBox chBLLE3;
-	private JCheckBox chBLLE4;
-	private JCheckBox chBLLE5;
-	private JCheckBox chBLLE6;
-	private JCheckBox chBRAE1;
-	private JCheckBox chBRAE2;
-	private JCheckBox chBRAE3;
-	private JCheckBox chBRAE4;
-	private JCheckBox chBLAE1;
-	private JCheckBox chBLAE2;
-	private JCheckBox chBLAE3;
-	private JCheckBox chBLAE4;
-	private CheckboxGroup chBGroupJoint;
-	private JRadioButton btnOnePointCrossover;
-	private JRadioButton btnTwoPointCrossover;
-	private JRadioButton btnMore;
-	private JSpinner spMore;
-	private JRadioButton btnTournamentSelection;
-	private JRadioButton btnRuletteSelection;
-	private JRadioButton btnGeneticAlgorithm;
-	private JRadioButton btnGeneticProgramming;
-	private JRadioButton btnBoth;
-	
 
 	public MainFrame(RobocupServerAddress robocupAddress) {
 		this.serverAddress = robocupAddress;
@@ -426,7 +325,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 			}
 		});
 		
-				
 		//listens for additions to the agents' output and updates the text area
 		//as necessary
 		AgentManager.getManager().addAgentManagerListener(new IAgentManagerListener() {
@@ -441,68 +339,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 				}
 			}
 		});
-
-		//===== Evolution Algorithm tab =====
-		btnPickMove.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				btnPickMoveClicked(evt);				
-			}
-		});
-		
-		btnStart.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent evt) {			
-				btnStartClicked(evt);
-			}
-		});
-		btnMore.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				btnCrossClicked(evt);
-				
-			}
-		});
-		btnOnePointCrossover.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				btnCrossClicked(evt);
-				
-			}
-		});
-		btnTwoPointCrossover.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				btnCrossClicked(evt);
-				
-			}
-		});
-		btnGeneticProgramming.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				btnStabilizationClicked(evt);
-				
-			}
-		});
-		btnGeneticAlgorithm.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				btnCreateMoveClicked(evt);
-				
-			}
-		});
-		
-		btnStop.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent evt) {			
-				btnStopClicked(evt);
-			}
-		});						
 		
 		//===== Annotations tab =====
 		btnAnnotate.addActionListener(new ActionListener() {
@@ -512,236 +348,7 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 			}
 		});
 	}
-	//================= GA tab ============
-	protected void btnPickMoveClicked(ActionEvent evt){
-		JFileChooser fc = new JFileChooser();
-		fc.showOpenDialog(this);		
-		File file = fc.getSelectedFile();		
-		jTFPickMove.setText(file.getAbsolutePath());//getName());//		
-		jTFPickMove.disable();
-		Date date = new Date();
-    	DateFormat df = new SimpleDateFormat("HH_mm_ss");
-		String dir = file.getName().substring(0,file.getName().indexOf("."));
-		jTFSaveMove.setText(file.getParentFile().toString()+"fromGA" + "\\" + dir + "_" + df.format(date));
-		jTFSaveMove.disable();
-		moveName = dir;//file.getName(); 
-		
-		
-	}
-	protected void btnCrossClicked(ActionEvent evt){
-		if(btnMore.isSelected()){
-			spMore.setEnabled(true);
-		}
-		else{
-			spMore.setEnabled(false);
-		}
-	}
-	
-	protected void btnStabilizationClicked(ActionEvent evt){
-		if(btnGeneticProgramming.isSelected()){
-			btnTwoPointCrossover.setEnabled(false);
-			btnMore.setEnabled(false);
-			spMore.setEnabled(false);
-			spRangeMut.setEnabled(false);
-			spPMut.setEnabled(false);
-		}
-	}
-	protected void btnCreateMoveClicked(ActionEvent evt){
-		if(btnGeneticAlgorithm.isSelected()){
-			btnTwoPointCrossover.setEnabled(true);
-			btnMore.setEnabled(true);
-			spRangeMut.setEnabled(true);
-			spPMut.setEnabled(true);
-		}
-	}
-	
-	protected void btnStartClicked(ActionEvent evt){
-		/*String team = "Jimmer";//comboTeam.getSelectedItem().toString();
-		int uniform = AgentManager.getManager().getFreeUniform(team);
-		waitingForAgent = true;
-		awaitedAgent = uniform + team;*/
-		addAgent();
-		try {
-			Thread.sleep(15000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		AgentJim agent = (AgentJim)comboAgentControl.getSelectedItem();
-		
-		//set param for GA and simulation
-		ParameterGA paramGA = new ParameterGA();		
-		paramGA.setGeneration(Integer.parseInt(jTFGeneration.getText()));
-		paramGA.setPopulation(Integer.parseInt(jTFPopulation.getText()));
-		paramGA.setSource(jTFPickMove.getText());
-		paramGA.setMoveName(moveName);
-		paramGA.setDestination(jTFSaveMove.getText());
-		
-		ParameterMutation paramMut = new ParameterMutation();
-		paramMut.setPercentOfMutation(Integer.parseInt(spPMut.getValue().toString()));
-		paramMut.setRangeMutation(Integer.parseInt(spRangeMut.getValue().toString()));
-		if(chBHE1.isSelected()){
-			paramMut.addJoint(chBHE1.getLabel());
-		}
-		if(chBHE2.isSelected()){
-			paramMut.addJoint(chBHE2.getLabel());
-		}
-		if(chBLAE1.isSelected()){
-			paramMut.addJoint(chBLAE1.getLabel());
-		}
-		if(chBLAE2.isSelected()){
-			paramMut.addJoint(chBLAE2.getLabel());
-		}
-		if(chBLAE3.isSelected()){
-			paramMut.addJoint(chBLAE3.getLabel());
-		}
-		if(chBLAE4.isSelected()){
-			paramMut.addJoint(chBLAE4.getLabel());
-		}
-		if(chBRAE1.isSelected()){
-			paramMut.addJoint(chBRAE1.getLabel());
-		}
-		if(chBRAE2.isSelected()){
-			paramMut.addJoint(chBRAE2.getLabel());
-		}
-		if(chBRAE3.isSelected()){
-			paramMut.addJoint(chBRAE3.getLabel());
-		}
-		if(chBRAE4.isSelected()){
-			paramMut.addJoint(chBRAE4.getLabel());
-		}
-		if(chBRLE1.isSelected()){
-			paramMut.addJoint(chBRLE1.getLabel());
-		}
-		if(chBRLE2.isSelected()){
-			paramMut.addJoint(chBRLE2.getLabel());
-		}
-		if(chBRLE3.isSelected()){
-			paramMut.addJoint(chBRLE3.getLabel());
-		}
-		if(chBRLE4.isSelected()){
-			paramMut.addJoint(chBRLE4.getLabel());
-		}
-		if(chBRLE5.isSelected()){
-			paramMut.addJoint(chBRLE5.getLabel());
-		}
-		if(chBRLE6.isSelected()){
-			paramMut.addJoint(chBRLE6.getLabel());
-		}
-		if(chBLLE1.isSelected()){
-			paramMut.addJoint(chBLLE1.getLabel());
-		}
-		if(chBLLE2.isSelected()){
-			paramMut.addJoint(chBLLE2.getLabel());
-		}
-		if(chBLLE3.isSelected()){
-			paramMut.addJoint(chBLLE3.getLabel());
-		}
-		if(chBLLE4.isSelected()){
-			paramMut.addJoint(chBLLE4.getLabel());
-		}
-		if(chBLLE5.isSelected()){
-			paramMut.addJoint(chBLLE5.getLabel());
-		}
-		if(chBLLE6.isSelected()){
-			paramMut.addJoint(chBLLE6.getLabel());
-		}
-		paramGA.setParamMut(paramMut);
-		CrossoverType type=CrossoverType.OnePoint;
-		int crossPoint=1;
-		if(btnOnePointCrossover.isSelected()){			
-			type = CrossoverType.OnePoint;
-			crossPoint=1;
-		}else if(btnTwoPointCrossover.isSelected()){			
-			type=CrossoverType.TwoPoint;
-			crossPoint=2;
-		}else if(btnMore.isSelected()){
-			
-			type = CrossoverType.MorePoint;
-			crossPoint = Integer.parseInt(spMore.getValue().toString());
-		}
-		ParameterCrossover paramCross = new ParameterCrossover(type, crossPoint);
-		paramGA.setParamCross(paramCross);		
-		SelectionType selection=null;
-		if(btnTournamentSelection.isSelected()){
-			selection = SelectionType.Tournament;
-		}
-		if(btnRuletteSelection.isSelected()){
-			selection = SelectionType.Rulette;
-		}
-		ParameterSelection paramSelection = new ParameterSelection(selection);
-		paramGA.setParamSel(paramSelection);
-		EnvironmentSetting envSetting = new EnvironmentSetting();
-		envSetting.setBallPosition(jTFBallPosition.getText());
-		envSetting.setPlayerPosition(jTFPlayerPosition.getText());
-		
-		AlgorithmType algType = new AlgorithmType();
-		if(btnGeneticAlgorithm.isSelected()){
-			algType.setGeneticAlgorithm(true);
-			algType.setGeneticPrograming(false);
-		}else if(btnGeneticProgramming.isSelected()){
-			algType.setGeneticAlgorithm(false);
-			algType.setGeneticPrograming(true);
-		}else if(btnBoth.isSelected()){
-			algType.setGeneticAlgorithm(true);
-			algType.setGeneticPrograming(true);
-		}
-		
-		TestTypeParameter ttParam = new TestTypeParameter();
-		ttParam.setLenghtWalk(Double.parseDouble(jTFLenghtWalk.getText()));
-		ttParam.setMaxAngleDiversion(Integer.parseInt(jTFMaxAngleDiversion.getText()));
-		ttParam.setMinKickDistance(Double.parseDouble(jTFDistance.getText()));
-		ttParam.setMaxTimeOnMove(Double.parseDouble(jTFTimeOnMove.getText()));
-		ttParam.setNumberTestOnMove(Integer.parseInt(spNumberOfTest.getValue().toString()));
-		if(btnYes.isSelected()){
-			ttParam.setPenalize(true);
-		}
-		else{
-			ttParam.setPenalize(false);
-		}
-		if(btnKick.isSelected()){
-			ttParam.setMoveType("kick");
-		}
-		if(btnWalk.isSelected()){
-			ttParam.setMoveType("walk");
-		}
-		if(btnAuto.isSelected()){
-			ttParam.setMoveType("automatic");
-		}		
-		
-		
-		
-		AgentMoveReader read = new AgentMoveReader();
-		AgentMoveWriter write = new AgentMoveWriter();
-		try {
-			AgentMove move = read.read(jTFPickMove.getText());		
-			GeneticAlgorithm ga = GeneticAlgorithm.getInstance(move,paramGA,agent,envSetting,ttParam, algType);
-			ga.doGA();
-			
-	
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
-	}
-	protected void btnStopClicked(ActionEvent evt){
-						
-		try {
-			RobocupServer.getServerInstance().setPlayMode(PlayMode.BeforeKickOff);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		finally{
-			btnStart.enable();
-			btnStop.disable();
-		}
-		
-	}
-	
-	
+
 	protected void btnApplyGraphicalClicked(ActionEvent evt) {
 		int interval = Integer.parseInt(txtUpdateInterval.getText());
 		gameView.setUpdateInterval(interval);
@@ -800,9 +407,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 	}
 
 	protected void btnAddAgentClicked(ActionEvent evt) {
-		addAgent();
-	}
-	private void addAgent(){
 		String team = comboTeam.getSelectedItem().toString();
 		int uniform = AgentManager.getManager().getFreeUniform(team);
 		waitingForAgent = true;
@@ -1164,9 +768,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 					.addContainerGap(63, Short.MAX_VALUE));
 			}
 		}
-		
-		// panel manage agents
-		
 		{
 			tabManageAgents = new JPanel();
 			GroupLayout tabManageAgentsLayout = new GroupLayout((JComponent)tabManageAgents);
@@ -1185,8 +786,8 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 				{
 					ComboBoxModel comboTeamModel = 
 						new DefaultComboBoxModel(
-								new String[] { "ANDROIDS", "Team2", "JA" });
-					comboTeamModel.setSelectedItem("JA");
+								new String[] { "ANDROIDS", "Team2" });
+					comboTeamModel.setSelectedItem("ANDROIDS");
 					comboTeam = new JComboBox();
 					panelAddAgent.add(comboTeam);
 					comboTeam.setModel(comboTeamModel);
@@ -1236,8 +837,8 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 					btnAgentMonitor.setText("Monitor");
 				}
 				{
-					jLabelPlanName = new JLabel();
-					jLabelPlanName.setText("Plan name");
+					jLabel8 = new JLabel();
+					jLabel8.setText("Plan name");
 				}
 				{
 					txtPlanName = new JTextField();
@@ -1266,7 +867,7 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 					        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					        .addComponent(btnRemoveAgent, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE))
 					    .addGroup(GroupLayout.Alignment.LEADING, panelAgentControlLayout.createSequentialGroup()
-					        .addComponent(jLabelPlanName, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
+					        .addComponent(jLabel8, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
 					        .addComponent(txtPlanName, 0, 274, Short.MAX_VALUE))
 					    .addComponent(comboAgentControl, GroupLayout.Alignment.LEADING, 0, 339, Short.MAX_VALUE))
 					.addContainerGap());
@@ -1281,7 +882,7 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addGroup(panelAgentControlLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
 					    .addComponent(txtPlanName, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-					    .addComponent(jLabelPlanName, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
+					    .addComponent(jLabel8, GroupLayout.Alignment.BASELINE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
 					.addComponent(btnAgentMonitor, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
 					.addGap(0, 8, Short.MAX_VALUE));
@@ -1306,504 +907,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver, UserI
 				.addComponent(panelAgentOut, 0, 217, Short.MAX_VALUE)
 				.addContainerGap());
 		}
-		
-		//evolucny algoritmus priprava prostredia
-		{
-			tabEvolutionAlgorithm = new JPanel();
-			GroupLayout tabEvolutionAlgorithmLayout = new GroupLayout((JComponent)tabEvolutionAlgorithm);
-			tabEvolutionAlgorithm.setLayout(tabEvolutionAlgorithmLayout);
-			tabbedPane.addTab("Evolution Algorithm", null, tabEvolutionAlgorithm,null);
-			{	
-				// UI for setting GA
-				panelGA = new JPanel();
-				GroupLayout panelGALayout = new GroupLayout((JComponent)panelGA);
-				panelGA.setBorder(BorderFactory.createTitledBorder("Genethic Algorithm"));
-				panelGA.setLayout(panelGALayout);
-				{
-					jLabelPopulation = new JLabel();
-					panelGA.add(jLabelPopulation);
-					jLabelPopulation.setText("Size of population");
-					{
-						 jTFPopulation = new JTextField();
-						 jTFPopulation.setText("50");
-					}
-				
-					jLabelGeneration = new JLabel();
-					panelGA.add(jLabelGeneration);
-					jLabelGeneration.setText("Number of generation");
-					{
-						jTFGeneration = new JTextField();
-						jTFGeneration.setText("50");
-					}
-					//select move for GA
-					jLabelPickMove = new JLabel();
-					panelGA.add(jLabelPickMove);
-					jLabelPickMove.setText("Pick move");
-					{
-						jTFPickMove = new JTextField();					
-						btnPickMove = new JButton();
-						btnPickMove.setText("Pick Move");
-						
-					}
-					//select folder for save move
-					jLabelSaveMove = new JLabel();
-					panelGA.add(jLabelSaveMove);
-					jLabelSaveMove.setText("Save move");
-					{
-						jTFSaveMove = new JTextField();						
-					}
-					
-					jLabelPMut = new JLabel();
-					panelGA.add(jLabelPMut);
-					jLabelPMut.setText("Percent of mutation");
-					{
-						SpinnerModel model = new SpinnerNumberModel(20,0,100,10);						
-						spPMut = new JSpinner(model);
-					}
-					jLabelRangeMutation = new JLabel();
-					panelGA.add(jLabelRangeMutation);
-					jLabelRangeMutation.setText("Mutation join about[%]");
-					{
-						SpinnerModel model = new SpinnerNumberModel(20,1,50,1);						
-						spRangeMut = new JSpinner(model);
-					}
-					{						
-						btnOnePointCrossover = new JRadioButton("One Point Crossover");
-						btnTwoPointCrossover = new JRadioButton("Two Point Crossover");
-						btnMore = new JRadioButton("More Point Crossover");
-						{
-							SpinnerModel model = new SpinnerNumberModel(2,2,10,1);						
-							spMore = new JSpinner(model);
-							spMore.setEnabled(false);
-						}						
-						ButtonGroup testGroup = new ButtonGroup();
-						testGroup.add(btnOnePointCrossover);
-						testGroup.add(btnTwoPointCrossover);
-						testGroup.add(btnMore);
-						btnOnePointCrossover.setSelected(true);
-					}
-					{
-						btnTournamentSelection = new JRadioButton("Tournament");
-						btnRuletteSelection = new JRadioButton("Rulette");
-						{
-							ButtonGroup testGroup = new ButtonGroup();
-							testGroup.add(btnTournamentSelection);
-							testGroup.add(btnRuletteSelection);
-							btnTournamentSelection.setSelected(true);
-						}
-					}
-					
-					//select joint 
-					{						
-						chBHE1 = new JCheckBox("HE1", true);
-						chBHE2 = new JCheckBox("HE2", true);
-						
-						chBRLE1 = new JCheckBox("RLE1", true);
-						chBRLE2 = new JCheckBox("RLE2", true);
-						chBRLE3 = new JCheckBox("RLE3", true);
-						chBRLE4 = new JCheckBox("RLE4", true);
-						chBRLE5 = new JCheckBox("RLE5", true);
-						chBRLE6 = new JCheckBox("RLE6", true);
-						
-						chBLLE1 = new JCheckBox("LLE1", true);
-						chBLLE2 = new JCheckBox("LLE2", true);
-						chBLLE3 = new JCheckBox("LLE3", true);
-						chBLLE4 = new JCheckBox("LLE4", true);
-						chBLLE5 = new JCheckBox("LLE5", true);
-						chBLLE6 = new JCheckBox("LLE6", true);
-						
-						chBRAE1 = new JCheckBox("RAE1", true);
-						chBRAE2 = new JCheckBox("RAE2", true);
-						chBRAE3 = new JCheckBox("RAE3", true);
-						chBRAE4 = new JCheckBox("RAE4", true);
-						
-						chBLAE1 = new JCheckBox("LAE1", true);
-						chBLAE2 = new JCheckBox("LAE2", true);
-						chBLAE3 = new JCheckBox("LAE3", true);
-						chBLAE4 = new JCheckBox("LAE4", true);
-					}
-				}
-				/*panelGALayout.setHorizontalGroup(panelGALayout.createSequentialGroup()
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(jLabelPopulation)
-								.addComponent(jLabelGeneration)
-								.addComponent(jLabelPickMove)
-								.addComponent(jLabelSaveMove)
-								.addComponent(jLabelMutate))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(jTFPopulation)
-								.addComponent(jTFGeneration)
-								.addGroup(panelGALayout.createSequentialGroup()
-									.addComponent(jTFPickMove)
-									.addComponent(btnPickMove))
-								.addGroup(panelGALayout.createSequentialGroup()
-									.addComponent(jTFSaveMove)
-									)
-								));*/
-				panelGALayout.setHorizontalGroup(panelGALayout.createSequentialGroup()
-						.addGroup(panelGALayout.createSequentialGroup()
-								.addGroup(panelGALayout.createParallelGroup()
-								.addComponent(jLabelPopulation)
-								.addComponent(jLabelGeneration)
-								.addComponent(jLabelPickMove)
-								.addComponent(jLabelSaveMove)
-								.addComponent(jLabelPMut)
-								.addComponent(jLabelRangeMutation)
-								.addComponent(btnOnePointCrossover)								
-								.addComponent(btnMore)
-								.addComponent(btnTournamentSelection)
-								.addComponent(chBHE1)								
-								.addComponent(chBLAE1)
-								.addComponent(chBLAE2)
-								.addComponent(chBLAE3)
-								.addComponent(chBLAE4)								
-								.addComponent(chBLLE1)
-								.addComponent(chBLLE2)
-								.addComponent(chBLLE3)
-								.addComponent(chBLLE4)
-								.addComponent(chBLLE5)
-								.addComponent(chBLLE6))
-								)
-						.addGroup(panelGALayout.createSequentialGroup()
-								.addGroup(panelGALayout.createParallelGroup()										
-									.addComponent(jTFPopulation)
-									.addComponent(jTFGeneration)
-									.addGroup(panelGALayout.createSequentialGroup()
-											.addComponent(jTFPickMove)
-											.addComponent(btnPickMove))
-									.addComponent(jTFSaveMove)									
-									.addComponent(spPMut)
-									.addComponent(spRangeMut)
-									.addComponent(btnTwoPointCrossover)
-									.addComponent(spMore)
-									.addComponent(btnRuletteSelection)
-									.addComponent(chBHE2)
-									.addComponent(chBRAE1)
-									.addComponent(chBRAE2)
-									.addComponent(chBRAE3)
-									.addComponent(chBRAE4)									
-									.addComponent(chBRLE1)
-									.addComponent(chBRLE2)
-									.addComponent(chBRLE3)
-									.addComponent(chBRLE4)
-									.addComponent(chBRLE5)
-									.addComponent(chBRLE6)))
-						);
-				
-				panelGALayout.setVerticalGroup(panelGALayout.createSequentialGroup()
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabelPopulation)
-								.addComponent(jTFPopulation))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabelGeneration)
-								.addComponent(jTFGeneration))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabelPickMove)
-								.addComponent(jTFPickMove)
-								.addComponent(btnPickMove))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabelSaveMove)
-								.addComponent(jTFSaveMove))						
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabelPMut)
-								.addComponent(spPMut))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(jLabelRangeMutation)
-								.addComponent(spRangeMut))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(btnOnePointCrossover)
-								.addComponent(btnTwoPointCrossover))						
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(btnMore)
-								.addComponent(spMore))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(btnTournamentSelection)
-								.addComponent(btnRuletteSelection))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBHE1)
-								.addComponent(chBHE2))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLAE1)
-								.addComponent(chBRAE1))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLAE2)
-								.addComponent(chBRAE2))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLAE3)
-								.addComponent(chBRAE3))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLAE4)
-								.addComponent(chBRAE4))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLLE1)
-								.addComponent(chBRLE1))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLLE2)
-								.addComponent(chBRLE2))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLLE3)
-								.addComponent(chBRLE3))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLLE4)
-								.addComponent(chBRLE4))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLLE5)
-								.addComponent(chBRLE5))
-						.addGroup(panelGALayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addComponent(chBLLE6)
-								.addComponent(chBRLE6))
-								);
-				
-				
-				{
-					//UI for setting test
-					panelSimulation = new JPanel();
-					GroupLayout panelSimLayout = new GroupLayout((JComponent)panelSimulation);
-					panelSimulation.setBorder(BorderFactory.createTitledBorder("Simulation"));
-					panelSimulation.setLayout(panelSimLayout);
-					JPanel panelEnvironmentSetting = new JPanel();
-					JPanel panelTestType = new JPanel();
-					JPanel panelTTParam = new JPanel(); // panel for test type parameter's
-					JPanel panelAlgorithm = new JPanel();
-					{
-						GroupLayout panelEnviromentSettingLayout = new GroupLayout((JComponent)panelEnvironmentSetting);
-						panelEnvironmentSetting.setBorder(BorderFactory.createTitledBorder("Environment Setting"));
-						panelEnvironmentSetting.setLayout(panelEnviromentSettingLayout);
-						{
-							jLabelPlayerPosition = new JLabel();
-							panelEnvironmentSetting.add(jLabelPlayerPosition);
-							jLabelPlayerPosition.setText("Player start position [x:y:z]");
-							{
-								jTFPlayerPosition = new JTextField();
-								jTFPlayerPosition.setText("-5:0:0.4");
-							}
-							jLabelBallPosition = new JLabel();
-							panelEnvironmentSetting.add(jLabelBallPosition);
-							jLabelBallPosition.setText("Ball position [x:y:z]");
-							{
-								jTFBallPosition = new JTextField();
-								jTFBallPosition.setText("0:2:0.4");
-							}
-						}
-						//add to Environment setting
-						panelEnviromentSettingLayout.setHorizontalGroup(panelEnviromentSettingLayout.createSequentialGroup()
-								.addGroup(panelEnviromentSettingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addComponent(jLabelPlayerPosition)
-										.addComponent(jLabelBallPosition))
-								.addGroup(panelEnviromentSettingLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addComponent(jTFPlayerPosition)
-										.addComponent(jTFBallPosition)));
-						
-						panelEnviromentSettingLayout.setVerticalGroup(panelEnviromentSettingLayout.createSequentialGroup()
-								.addGroup(panelEnviromentSettingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelPlayerPosition)
-										.addComponent(jTFPlayerPosition))
-								.addGroup(panelEnviromentSettingLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelBallPosition)
-										.addComponent(jTFBallPosition)));
-						
-						GroupLayout panelTestTypeLayout = new GroupLayout((JComponent)panelTestType);
-						panelTestType.setBorder(BorderFactory.createTitledBorder("Test Type"));
-						panelTestType.setLayout(panelTestTypeLayout);
-						{
-							btnKick = new JRadioButton("Kick test");
-							btnWalk = new JRadioButton("Walk test");
-							btnAuto = new JRadioButton("AutoSelect test");
-							ButtonGroup testGroup = new ButtonGroup();
-							testGroup.add(btnKick);
-							testGroup.add(btnWalk);
-							testGroup.add(btnAuto);
-							btnAuto.setSelected(true);
-						}
-						
-						//add to test type
-						panelTestTypeLayout.setHorizontalGroup(panelTestTypeLayout.createSequentialGroup()
-								.addGroup(panelTestTypeLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addComponent(btnKick)
-										.addComponent(btnWalk)
-										.addComponent(btnAuto)));
-						
-						panelTestTypeLayout.setVerticalGroup(panelTestTypeLayout.createSequentialGroup()								
-										.addComponent(btnKick)					
-										.addComponent(btnWalk)
-										.addComponent(btnAuto));
-						
-						//algorithm type
-						GroupLayout panelAlgorithmLayout = new GroupLayout((JComponent)panelAlgorithm);
-						panelAlgorithm.setBorder(BorderFactory.createTitledBorder("Algorithm type"));
-						panelAlgorithm.setLayout(panelAlgorithmLayout);
-						{
-							btnGeneticAlgorithm = new JRadioButton("Create new move");
-							btnGeneticProgramming = new JRadioButton("Create stabilization equation");
-//							btnBoth = new JRadioButton("Both");
-							ButtonGroup algorithmGroup = new ButtonGroup();
-							algorithmGroup.add(btnGeneticAlgorithm);
-							algorithmGroup.add(btnGeneticProgramming);
-//							algorithmGroup.add(btnBoth);
-							btnGeneticAlgorithm.setSelected(true);
-						}
-						
-						//add to test type
-						panelAlgorithmLayout.setHorizontalGroup(panelAlgorithmLayout.createSequentialGroup()
-								.addGroup(panelAlgorithmLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-										.addComponent(btnGeneticAlgorithm)
-										.addComponent(btnGeneticProgramming)
-//										.addComponent(btnBoth)
-										));
-						
-						panelAlgorithmLayout.setVerticalGroup(panelAlgorithmLayout.createSequentialGroup()								
-										.addComponent(btnGeneticAlgorithm)					
-										.addComponent(btnGeneticProgramming)
-//										.addComponent(btnBoth)
-										);
-						
-						//test parameter
-						GroupLayout panelTTParameterLayput = new GroupLayout((JComponent)panelTTParam);
-						panelTTParam.setBorder(BorderFactory.createTitledBorder("Test type parameter's"));
-						panelTTParam.setLayout(panelTTParameterLayput);
-						{
-							jLabelPenalize = new JLabel();
-							panelTTParam.add(jLabelPenalize);
-							jLabelPenalize.setText("Penalize");
-							{
-								btnYes = new JRadioButton("yes");
-								btnNo = new JRadioButton("no");
-								ButtonGroup penalizeGroup = new ButtonGroup();
-								penalizeGroup.add(btnYes);
-								penalizeGroup.add(btnNo);
-								btnYes.setSelected(true);
-							}
-							jLabelMinDistanceKick = new JLabel();
-							panelTTParam.add(jLabelMinDistanceKick);
-							jLabelMinDistanceKick.setText("Minimum kick distance [m]");
-							{
-								jTFDistance = new JTextField();
-								jTFDistance.setText("5");
-							}
-							jLabelMaxAngleDiversion = new JLabel();
-							panelTTParam.add(jLabelMaxAngleDiversion);
-							jLabelMaxAngleDiversion.setText("Maximum of angle diversion [°]");
-							{
-								jTFMaxAngleDiversion = new JTextField();
-								jTFMaxAngleDiversion.setText("5");
-							}
-							jLabelLenghtWalk = new JLabel();
-							panelTTParam.add(jLabelLenghtWalk);
-							jLabelLenghtWalk.setText("Lenght of the walking [m]");
-							{
-								jTFLenghtWalk = new JTextField();
-								jTFLenghtWalk.setText("3");
-							}
-							jLabelMaxTimeOnMove = new JLabel();
-							panelTTParam.add(jLabelMaxTimeOnMove);
-							jLabelMaxTimeOnMove.setText("Max time on move [s]");
-							{
-								jTFTimeOnMove = new JTextField();
-								jTFTimeOnMove.setText("20");
-							}						
-							jLabelNumberTests = new JLabel();
-							panelTTParam.add(jLabelNumberTests);
-							jLabelNumberTests.setText("Number of test on move");
-							{
-								SpinnerModel model = new SpinnerNumberModel(2,1,3,1);						
-								spNumberOfTest = new JSpinner(model);
-							}
-							
-						}
-						//add to test type param										
-						panelTTParameterLayput.setHorizontalGroup(panelTTParameterLayput.createSequentialGroup()
-								.addGroup(panelTTParameterLayput.createSequentialGroup()
-										.addGroup(panelTTParameterLayput.createParallelGroup()
-										.addComponent(jLabelPenalize)
-										.addComponent(jLabelMinDistanceKick)
-										.addComponent(jLabelMaxAngleDiversion)
-										.addComponent(jLabelLenghtWalk)
-										.addComponent(jLabelMaxTimeOnMove)
-										.addComponent(jLabelNumberTests))
-										)
-								.addGroup(panelTTParameterLayput.createSequentialGroup()
-										.addGroup(panelTTParameterLayput.createParallelGroup()
-												.addGroup(panelTTParameterLayput.createSequentialGroup()
-												.addComponent(btnYes)
-												.addComponent(btnNo))
-									.addComponent(jTFDistance)
-									.addComponent(jTFMaxAngleDiversion)
-									.addComponent(jTFLenghtWalk)
-									.addComponent(jTFTimeOnMove)
-									.addComponent(spNumberOfTest)))
-								);
-						
-						panelTTParameterLayput.setVerticalGroup(panelTTParameterLayput.createSequentialGroup()
-								.addGroup(panelTTParameterLayput.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelPenalize)
-										.addComponent(btnYes)
-										.addComponent(btnNo))
-								.addGroup(panelTTParameterLayput.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelMinDistanceKick)
-										.addComponent(jTFDistance))
-								.addGroup(panelTTParameterLayput.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelMaxAngleDiversion)
-										.addComponent(jTFMaxAngleDiversion))
-								.addGroup(panelTTParameterLayput.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelLenghtWalk)
-										.addComponent(jTFLenghtWalk))
-								.addGroup(panelTTParameterLayput.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelMaxTimeOnMove)
-										.addComponent(jTFTimeOnMove))
-								.addGroup(panelTTParameterLayput.createParallelGroup(GroupLayout.Alignment.BASELINE)
-										.addComponent(jLabelNumberTests)
-										.addComponent(spNumberOfTest))
-								);
-						
-					}
-					//add to simulation card
-					panelSimLayout.setHorizontalGroup(panelSimLayout.createSequentialGroup()
-							.addGroup(panelSimLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(panelEnvironmentSetting)
-								.addComponent(panelAlgorithm))
-								//.addGroup(panelSimLayout.createSequentialGroup()
-										.addGroup(panelSimLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-								.addComponent(panelTestType)
-								.addComponent(panelTTParam)));
-					
-					panelSimLayout.setVerticalGroup(panelSimLayout.createSequentialGroup()
-							.addGroup(panelSimLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-								.addGroup(panelSimLayout.createSequentialGroup()
-									.addComponent(panelEnvironmentSetting)
-									.addComponent(panelAlgorithm))
-							.addGroup(panelSimLayout.createSequentialGroup()
-								.addComponent(panelTestType)
-								.addComponent(panelTTParam))));
-				}
-			
-				btnStart = new JButton();
-				btnStart.setText("Start simulation");
-				btnStop = new JButton();
-				btnStop.setText("Stop simulation");
-			}
-			//pridanie na velku kartu
-			tabEvolutionAlgorithmLayout.setHorizontalGroup(tabEvolutionAlgorithmLayout.createSequentialGroup()					
-					.addGroup(tabEvolutionAlgorithmLayout.createParallelGroup(GroupLayout.Alignment.CENTER)
-							.addGroup(tabEvolutionAlgorithmLayout.createSequentialGroup()
-									.addComponent(panelGA)
-									.addComponent(panelSimulation))
-					
-							.addComponent(btnStart)
-							.addComponent(btnStop)));
-			
-			tabEvolutionAlgorithmLayout.setVerticalGroup(tabEvolutionAlgorithmLayout.createSequentialGroup()
-					.addGroup(tabEvolutionAlgorithmLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-							.addComponent(panelGA)
-							.addComponent(panelSimulation))
-							.addComponent(btnStart)
-							.addComponent(btnStop)
-							);
-			
-			
-			
-		}
-				
-				
 
 		JPanel tabAnnotations = new JPanel();
 		GroupLayout gl_tabAnnotations = new GroupLayout(

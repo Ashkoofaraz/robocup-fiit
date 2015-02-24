@@ -3,6 +3,8 @@ package sk.fiit.jim.agent.trajectory;
 import java.util.LinkedList;
 
 import static java.lang.Math.*;
+import sk.fiit.jim.agent.models.EnvironmentModel;
+import sk.fiit.jim.agent.models.EnvironmentModel.Version;
 
 import sk.fiit.jim.agent.models.Player;
 import sk.fiit.jim.agent.models.WorldModel;
@@ -29,7 +31,7 @@ public class Obstacles {
 	 * |  |---|  |  /
 	 * ----------- /
 	 */
-	public static final double HALF_FIELD_LENGTH = 10.5;
+	public static final double HALF_FIELD_LENGTH = (EnvironmentModel.version == Version.VERSION_0_6_7 ? 15 : 10.5);
 	/**
 	 * Half field width.
 	 * 
@@ -47,10 +49,11 @@ public class Obstacles {
 	 *  |  |---|  |
 	 *  -----------
 	 */
-	public static final double HALF_FIELD_WIDTH = 7;
+	public static final double HALF_FIELD_WIDTH = 10;
 	/**
 	 * Radius where it is possible the robot can touch something by its body.
 	 */
+        // FIXME: Nova verzia ma v nastaveniach Agent Radius 0.4. Je otazne z coho je tato hodnota 0.2 urcena.
 	public static final double ROBOT_RADIUS = 0.2; //metre
 	/**
 	 * Distance by which agent calculates how far from obstacle

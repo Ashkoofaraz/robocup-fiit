@@ -1,7 +1,6 @@
 package sk.fiit.jim.init;
 
 import java.io.File;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import sk.fiit.jim.Settings;
@@ -10,8 +9,8 @@ import sk.fiit.jim.agent.communication.Communication;
 import sk.fiit.jim.agent.server.TFTPServer;
 import sk.fiit.jim.agent.server.TFTPServer.ServerMode;
 import sk.fiit.jim.annotation.data.AnnotationManager;
-import sk.fiit.jim.code_review.UnderConstruction;
-import sk.fiit.jim.gui.ReplanWindow;
+import sk.fiit.jim.garbage.code_review.UnderConstruction;
+import sk.fiit.jim.gui.OldReplanWindow;
 
 /**
  * TestFrameworkMain.java
@@ -50,11 +49,9 @@ public class TestFrameworkMain {
 		Settings.setCommandLineOverrides();
 		
 		if (Settings.getBoolean("runGui"))
-			new ReplanWindow().makeVisible();
+			new OldReplanWindow().makeVisible();
 		
 		
-		ScriptBoot.boot();
-
 		// PARSE ARGUMENTS
 		
 		int argument_pointer = 0;

@@ -12,11 +12,9 @@ import java.util.List;
 
 import sk.fiit.testframework.trainer.testsuite.testcases.tournament.KickAccuracy;
 import sk.fiit.testframework.trainer.testsuite.testcases.tournament.KickDistance;
-import sk.fiit.testframework.trainer.testsuite.testcases.tournament.KickDistanceGA;
 import sk.fiit.testframework.trainer.testsuite.testcases.tournament.StandUp;
 import sk.fiit.testframework.trainer.testsuite.testcases.tournament.TurnAround;
 import sk.fiit.testframework.trainer.testsuite.testcases.tournament.WalkFast;
-import sk.fiit.testframework.trainer.testsuite.testcases.tournament.WalkMove;
 import sk.fiit.testframework.trainer.testsuite.testcases.tournament.WalkStable;
 
 
@@ -33,8 +31,6 @@ public class TestCaseList {
 		testCaseList.add(new TestHolder("Otocenie", 				new TurnAround()));
 		testCaseList.add(new TestHolder("Kracanie - rychle", 		new WalkFast()));
 		testCaseList.add(new TestHolder("Kracanie - stabilne", 		new WalkStable()));
-		testCaseList.add(new TestHolder("Kop 100x", 		new KickDistanceGA()));
-		testCaseList.add(new TestHolder("Walk 100x", 		new WalkMove()));
 	}
 	
 	public static class TestHolder {

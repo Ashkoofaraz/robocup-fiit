@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import sk.fiit.jim.log.Log;
+import sk.fiit.jim.log.LogType;
+
 /**
  *  Manages low skills loaded from XML files in the moves directory.
  *  Each low skill only has one instance that is reused every time that this low
@@ -43,6 +46,7 @@ public final class LowSkills{
 	 * @return
 	 */
 	public static LowSkill get(String name){
+		Log.debug(LogType.LOW_SKILL, "Chosen skill:" + name );
 		return skills.get(name);
 	}
 	

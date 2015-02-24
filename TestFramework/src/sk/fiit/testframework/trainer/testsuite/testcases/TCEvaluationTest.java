@@ -10,7 +10,6 @@ import java.util.Random;
 
 import sk.fiit.robocup.library.annotations.UnderConstruction;
 import sk.fiit.robocup.library.geometry.Point3D;
-import sk.fiit.testframework.communication.robocupserver.RobocupServerAddress;
 import sk.fiit.testframework.trainer.testsuite.TestCase;
 import sk.fiit.testframework.trainer.testsuite.TestCaseResult;
 import sk.fiit.testframework.worldrepresentation.models.SimulationState;

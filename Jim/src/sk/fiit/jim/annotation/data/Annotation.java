@@ -35,7 +35,7 @@ public class Annotation {
 	/**
 	 * True if ball's position is changed by executing move. False if it doesn't.
 	 */
-	boolean b_mov = false; //pohne sa nasledkom vykonania pohybu lopta ?
+		boolean b_mov = false; //pohne sa nasledkom vykonania pohybu lopta ?
 	/**
 	 * Value of distance in direction of every axis by which ball changes its position by executing move.
 	 */
@@ -69,6 +69,39 @@ public class Annotation {
 	private Values ballMoveDistance = new Values();
 	private boolean maxPos = false;
 	private Vector3 maxBallDistancePosition = new Vector3();
+	
+	/**
+	 * Walk speed in m/s.
+	 */
+	double walkSpeed;
+	/**
+	 * minimum distance from target to perform move in meters.
+	 */
+	double minDistance;
+	/**
+	 * Variance of the kick
+	 */
+	double variance;
+	/**
+	 * Kick deviation
+	 */
+	Values kickDeviation = new Values(); 
+	/**
+	 * Time needed to perform kick
+	 */
+	double kickTime;
+	/**
+	 * Percentage of successful kick
+	 */
+	double kickSuccessfulness;
+	/**
+	 *  Distance of the kick
+	 */
+	double kickDistance;
+	/**
+	 * Agent position before kick
+	 */
+	AgentPosition agentPosition = new AgentPosition(); 
 	
 	
 	public void setId(String id) {
@@ -133,6 +166,50 @@ public class Annotation {
 		this.checksum = checksum;
 	}
 	
+	public void setBallMoveDistance(Values ballMoveDistance) {
+		this.ballMoveDistance = ballMoveDistance;
+	}
+	
+	public void setMaxBallDistancePosition(Vector3 maxBallDistancePosition) {
+		this.maxBallDistancePosition = maxBallDistancePosition;
+	}
+	
+	public void setWalkSpeed(double walkSpeed){
+		this.walkSpeed = walkSpeed;
+	}
+	
+	public void setMinDistance(double minDistance){
+		this.minDistance = minDistance;
+	}
+	
+	public void setVariance(double kickVariance){
+		this.variance = kickVariance;
+	}
+	
+	public void setKickDeviation(Values deviation){
+		this.kickDeviation = deviation;
+	}
+	
+	public void setKickTime(double time){
+		this.kickTime = time;
+	}
+	
+	public void setKickSuccessfulness(double successPercentage){
+		this.kickSuccessfulness = successPercentage;
+	}
+	
+	public void setKickDistance(double distance){
+		this.kickDistance = distance;
+	}
+	
+	public void setAgentPosition(AgentPosition position){
+		this.agentPosition = position;
+	}
+	
+	public void setMaxPos(boolean maxPos) {
+		this.maxPos = maxPos;
+	}
+	
 	//--------------------------------
 	
 	public String getId() {
@@ -194,32 +271,48 @@ public class Annotation {
 	public String getChecksum(){
 		return this.checksum;
 	}
-	
-	
-	public void setBallMoveDistance(Values ballMoveDistance) {
-		this.ballMoveDistance = ballMoveDistance;
-	}
-
+		
 	public Values getBallMoveDistance() {
 		return ballMoveDistance;
 	}
-
-	public void setMaxBallDistancePosition(Vector3 maxBallDistancePosition) {
-		this.maxBallDistancePosition = maxBallDistancePosition;
-	}
-
+	
 	public Vector3 getMaxBallDistancePosition() {
 		return maxBallDistancePosition;
 	}
-	
-	
+		
 	public boolean isMaxPos() {
 		return maxPos;
 	}
-
-	public void setMaxPos(boolean maxPos) {
-		this.maxPos = maxPos;
+	
+	public double getWalkSpeed(){
+		return walkSpeed;
 	}
 	
+	public double getMinDistance(){
+		return minDistance;
+	}
 	
+	public double getVariance(){
+		return this.variance;
+	}
+	
+	public Values getKickDeviation(){
+		return this.kickDeviation;
+	}
+	
+	public double getKickTime(){
+		return this.kickTime;
+	}
+	
+	public double getKickSuccessfulness(){
+		return this.kickSuccessfulness;
+	}
+	
+	public double getKickDistance(){
+		return this.kickDistance;
+	}
+	
+	public AgentPosition getAgentPosition(){
+		return this.agentPosition;
+	}
 }

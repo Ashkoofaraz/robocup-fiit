@@ -112,7 +112,7 @@ public class AgentMonitorThread extends Thread {
 					    	}
 					    } catch (ClassNotFoundException e) {
 					    	// ked bude WorldModel v class path tak odkomentovat tuto chybu !
-							logger.log(Level.WARNING,"ERROR while reading from socket, reading data - cannot read object", e);
+//							logger.log(Level.WARNING,"ERROR while reading from socket, reading data - cannot read object", e);
 						} 
 					    
 					    firstLine = null;
@@ -137,7 +137,6 @@ public class AgentMonitorThread extends Thread {
 			logger.log(Level.WARNING,"ERROR while reading from socket, reading data - cannot create sha1", e);
 		} finally {
 			server.removeAgentThread(uniform, team, this);
-			server.addAgentThread(uniform, team, this);
 		}
 		logger.fine("Agent DISconnected " + socket.getInetAddress().getHostName() + ":" + socket.getPort());
 		AgentMonitorMessage message = new AgentMonitorMessage() {};

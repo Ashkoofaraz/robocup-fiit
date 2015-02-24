@@ -3,9 +3,11 @@ package sk.fiit.jim.agent.models;
 import java.util.Map.Entry;
 
 import static sk.fiit.jim.log.LogType.AGENT_MODEL;
+import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.parsing.ParsedData;
 import sk.fiit.jim.log.Log;
 import sk.fiit.robocup.library.geometry.Vector3D;
+
 
 /**
  *  AgentPositionCalculator.java
@@ -22,15 +24,20 @@ import sk.fiit.robocup.library.geometry.Vector3D;
  *@author	Androids
  */
 public class AgentPositionCalculator{
-	private final AgentModel agent;
+	private static final AgentModel agent = AgentModel.getInstance();
+	private static int badPositionCounter = 0;
+	public static final int BAD_POSITION_KOEF = 1;
+	public static final int MAX_BAD_POSITIONS = 10;
+	public static final boolean USING_REGRESSION = false;
+	public static final int MAX_LAST_POSITIONS = 21;
 
-	/**
-	 * Sets current AgentModel.
-	 * @param agent
-	 */
-	public AgentPositionCalculator(AgentModel agent){
-		this.agent = agent;
-	}
+//	/**
+//	 * Sets current AgentModel.
+//	 * @param agent
+//	 */
+//	public AgentPositionCalculator(AgentModel agent){
+//		this.agent = agent;
+//	}
 	
 	/**
 	 * Updates agent's position in current AgentModel from
@@ -39,10 +46,16 @@ public class AgentPositionCalculator{
 	 *
 	 * @param data
 	 */
-	public void updatePosition(ParsedData data){
+	public static void updatePosition(ParsedData data){
 		if(data.fixedObjects == null || data.fixedObjects.size() < 1) {
 			return;
 		}
+		agent.lastTimeFlagSeen = data.SIMULATION_TIME;
+		
+		//High skill Beam should be setting agent position
+		if (EnvironmentModel.beamablePlayMode()) {
+			return;
+		}	
 		
 		Vector3D accumulator = Vector3D.cartesian(0.0, 0.0, 0.0);
 		
@@ -54,20 +67,37 @@ public class AgentPositionCalculator{
 			accumulator = accumulator.add(ourPosition);
 		}
 		Vector3D pos = accumulator.divide(data.fixedObjects.size());
-		if (Math.abs(pos.getXYDistanceFrom(agent.position)) < 1) {
+		
+		//AgentInfo.logState(String.format("fObj = %d, absDist = %.2f, pos= [ %.2f, %.2f, %.2f]", 
+		//		data.fixedObjects.size(), Math.abs(pos.getXYDistanceFrom(agent.position)), pos.getX(), pos.getY(), pos.getZ()));
+	
+		if ( ! USING_REGRESSION){		
+			if ( (Math.abs(pos.getXYDistanceFrom(agent.position)) < BAD_POSITION_KOEF) || (badPositionCounter == MAX_BAD_POSITIONS) ){
+					agent.position = pos;
+					badPositionCounter = 0;	
+			}
+			else {
+				badPositionCounter++;
+			}
+		}
+		//REGRESIA ...VYZERA TO TAK ZE NEFUNGUJE
+		else if (USING_REGRESSION){
 			agent.position = pos;
+			agent.lastPositions.add(pos);
+			
+			//toto neviem preco tu bolo
+			//if (agent.position.subtract(agent.lastPositions.))
+			
+			if (agent.lastPositions.size() == MAX_LAST_POSITIONS) {
+				agent.lastPositions.remove();
+			}
+			regress();
 		}
 		
-//		agent.lastPositions.add(agent.position);
-//		if (agent.position.subtract(agent.lastPositions.))
-//		if (agent.lastPositions.size() == 21) {
-//			agent.lastPositions.remove();
-//		}
-//		this.Regress();
 		Log.log(AGENT_MODEL, "My position: [%.2f,%.2f,%.2f]", agent.position.getX(), agent.position.getY(), agent.position.getZ());
 	}
 	
-	public void regress() {
+	public static void regress() {
 		int MAXN = 1000;
         //pocitanie regresie pre X
 		int n = 0;

@@ -1,16 +1,17 @@
 package sk.fiit.jim.annotation.gui;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.xml.sax.SAXException;
 
-import sk.fiit.jim.annotation.data.*;
+import sk.fiit.jim.annotation.data.Annotation;
+import sk.fiit.jim.annotation.data.MoveValidator;
+import sk.fiit.jim.annotation.data.XMLParser;
 
 @SuppressWarnings("serial")
 public class Window extends javax.swing.JFrame {

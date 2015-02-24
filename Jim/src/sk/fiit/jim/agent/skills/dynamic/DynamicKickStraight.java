@@ -9,8 +9,6 @@ import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phase;
-import sk.fiit.jim.agent.moves.Phases;
-import sk.fiit.jim.agent.skills.DynamicSkill;
 
 /**
  * DynamicKickStraight.java
@@ -51,11 +49,11 @@ public abstract class DynamicKickStraight extends DynamicSkill {
 		LowSkill baseSkill = null;
 		if(side.equals("right"))
 		{
-			baseSkill = LowSkills.get("kick_right_normal_stand");
+			baseSkill = LowSkills.get("kick_right_normal");
 		}
 		else
 		{
-			baseSkill = LowSkills.get("kick_left_normal_stand");
+			baseSkill = LowSkills.get("kick_left_normal");
 		}
 		
 		return getPhasesForSkill(baseSkill);		

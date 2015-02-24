@@ -1,16 +1,14 @@
 package sk.fiit.jim.agent.models.prediction;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
 import sk.fiit.jim.agent.models.AgentModel;
-import sk.fiit.jim.agent.models.DynamicObject;
 import sk.fiit.jim.agent.models.EnvironmentModel;
 import sk.fiit.jim.agent.models.Player;
 import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.parsing.ParsedData;
 import sk.fiit.jim.agent.parsing.ParsedDataObserver;
-import sk.fiit.jim.annotation.data.AnnotationManager;
-import sk.fiit.jim.code_review.Problem;
 import sk.fiit.robocup.library.geometry.Vector3D;
 
 /**

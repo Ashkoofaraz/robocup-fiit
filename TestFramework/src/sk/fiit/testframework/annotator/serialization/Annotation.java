@@ -1,8 +1,5 @@
 package sk.fiit.testframework.annotator.serialization;
 
-import java.io.File;
-import java.util.Arrays;
-
 import sk.fiit.robocup.library.geometry.Vector3;
 
 /** 

@@ -15,7 +15,7 @@ public class Parser{
 	String message;
 	private static List<ParsedDataObserver> observers = new ArrayList<ParsedDataObserver>();
 	
-	//called in dependencies.rb
+	//was called in dependencies.rb, since migration to Java it is called in Main
 	public static synchronized void subscribe(ParsedDataObserver observer){
 		observers.add(observer);
 	}

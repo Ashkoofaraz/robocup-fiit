@@ -34,10 +34,6 @@ import java.io.PrintStream;
 import java.net.SocketTimeoutException;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.logging.Logger;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
 
 import org.apache.commons.net.io.FromNetASCIIOutputStream;
 import org.apache.commons.net.io.ToNetASCIIInputStream;
@@ -49,13 +45,6 @@ import org.apache.commons.net.tftp.TFTPPacket;
 import org.apache.commons.net.tftp.TFTPPacketException;
 import org.apache.commons.net.tftp.TFTPReadRequestPacket;
 import org.apache.commons.net.tftp.TFTPWriteRequestPacket;
-import org.xml.sax.SAXException;
-
-import sk.fiit.jim.Settings;
-import sk.fiit.jim.agent.Planner;
-import sk.fiit.jim.init.ScriptBoot;
-import sk.fiit.jim.init.SkillsFromXmlLoader;
-import sk.fiit.robocup.library.init.Script;
 
 /**
  * A fully multi-threaded tftp server. Can handle multiple clients at the same time. Implements RFC
@@ -752,12 +741,6 @@ public class TFTPServer implements Runnable
                             // end of stream signal - The tranfer is complete.
                             bos.close();
                             
-                            if (baos != null) {
-                           		String script = baos.toString();
-                           		Script rubyScript = Script.createScript(script);
-                           		rubyScript.execute();
-                            }
-
                             // But my ack may be lost - so listen to see if I
                             // need to resend the ack.
                             for (int i = 0; i < maxTimeoutRetries_; i++)

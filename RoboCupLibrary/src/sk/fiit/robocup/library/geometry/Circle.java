@@ -6,7 +6,6 @@
  */
 package sk.fiit.robocup.library.geometry;
 
-import java.util.List;
 
 
 /**

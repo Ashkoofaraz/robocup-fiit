@@ -1,6 +1,5 @@
 package sk.fiit.jim.agent.models;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import sk.fiit.jim.Settings;
 import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.Side;
 import sk.fiit.jim.agent.communication.testframework.Message;
@@ -46,9 +46,13 @@ public class WorldModel implements ParsedDataObserver, Serializable {
 	private Map<Integer, Player> teamPlayers = new HashMap<Integer, Player>();
 	private Map<Integer, Player> opponentPlayers = new HashMap<Integer, Player>();
 	
+	private WorldModel(){
+		
+	}
+	// private constructor because of Singleton
 	public WorldModel(AgentModel model){
 		this.agentModel = model;
-		Log.setPattern("fixtures/test_log.txt");
+		Log.setPattern(Settings.getString("Jim_root_path") + "/fixtures/test_log.txt");
 		try {
 			Log.setOutput("FILE");
 		} catch (FileNotFoundException e) {
@@ -57,6 +61,7 @@ public class WorldModel implements ParsedDataObserver, Serializable {
 		}
 	}
 	
+	
 	/**
 	 * Returns WorldModel static instance to work with it. 
 	 *
@@ -64,6 +69,13 @@ public class WorldModel implements ParsedDataObserver, Serializable {
 	 */
 	public static WorldModel getInstance(){
 		return instance;
+	}
+	
+	
+	
+	
+	public boolean isSeeBall(){
+		return this.getBall().notSeenLongTime() < 5;
 	}
 	
 	//added by Androids
@@ -173,6 +185,7 @@ public class WorldModel implements ParsedDataObserver, Serializable {
 	 */
 	public void calculateBallPosition(ParsedData data){
 		returnBallRelativePosition(data.ballRelativePosition, data.SIMULATION_TIME);
+
 		Log.log(LogType.WORLD_MODEL, "Player IDs are not implemented yet!!!");
 	}
 	
@@ -185,6 +198,7 @@ public class WorldModel implements ParsedDataObserver, Serializable {
 	 */
 	public void returnBallRelativePosition(Vector3D ballRelativePosition, double simulationTime) {
 		ball.setRelativePosition(ballRelativePosition, simulationTime);
+			
 		Vector3D absolutePosition = agentModel.globalize(ballRelativePosition);
 		ball.setPosition(absolutePosition, simulationTime);
 	}
@@ -220,6 +234,25 @@ public class WorldModel implements ParsedDataObserver, Serializable {
 	public List<Player> getTeamPlayers() {
 		return new ArrayList<Player>(teamPlayers.values());
 	}
+
+    /** --------------------------------------------------------- */
+    /**
+     * @author Matej Badal <matejbadal@gmail.com>
+     * @year 2013/2014
+     * @team RFC Megatroll
+     */
+    public Player getMyself() {
+        Player player = new Player(WorldModel.instance, true, AgentInfo.playerId);
+        return player;
+    }
+
+    public List<Player> getAllTeamPLayers() {
+        List<Player> list = new ArrayList(teamPlayers.values());
+        list.add(this.getMyself());
+        return list;
+    }
+    /** --------------------------------------------------------- */
+
 	/**
 	 * Returns list of oppontent players - players with same team as agent's team is. 
 	 *
@@ -228,6 +261,19 @@ public class WorldModel implements ParsedDataObserver, Serializable {
 	//added by Androids
 	public ArrayList<Player> getOpponentPlayers() {
 		return new ArrayList<Player>(opponentPlayers.values());
+	}
+	/**
+	 * Set from list of oppontent players to this.opponentPlayers. 
+	 * 
+	 * @author Samuel Benkovic
+	 * @return
+	 */
+	public void  AddOpponentPlayers(Player newOpponent) {
+		this.opponentPlayers.put(4, newOpponent);
+	}
+	
+	public void  AddTeamPlayers(Player Teammate) {
+		this.teamPlayers.put(4, Teammate);
 	}
 	
 	//added by team17

@@ -6,8 +6,6 @@
  */
 package sk.fiit.testframework.trainer.testsuite;
 
-import sk.fiit.testframework.ga.Fitness;
-
 /**
  * TODO: Replace with a brief purpose of class / interface.
  * 
@@ -17,6 +15,5 @@ import sk.fiit.testframework.ga.Fitness;
 public interface ITestCaseObserver {
 
 	public void testFinished(TestCaseResult result);
-	
 	
 }

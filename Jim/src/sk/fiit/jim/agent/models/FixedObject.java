@@ -30,6 +30,7 @@ public enum FixedObject{
 	
 	/*
 	 * The playground size is the same for 0.6.3 and 0.6.4 versions.
+         *  Version 0.6.7 has totally different dimensions.
 	 */
 	/**
 	 * Returns absolute position of fixed object. 
@@ -37,10 +38,31 @@ public enum FixedObject{
 	 * @return
 	 */
 	public Vector3D getAbsolutePosition(){
-		Map<FixedObject, Vector3D> mapping = EnvironmentModel.version == Version.VERSION_0_6_2 ? positions_0_6_2 : positions_0_6_5;
+            Map<FixedObject, Vector3D> position;
+            if (EnvironmentModel.version == Version.VERSION_0_6_2)
+                position = positions_0_6_2;
+            else if (EnvironmentModel.version == Version.VERSION_0_6_7)
+                position = positions_0_6_7;
+            else
+                position = positions_0_6_5;
+            
+		Map<FixedObject, Vector3D> mapping = position;
 		return mapping.get(this);
 	}
 	
+        @SuppressWarnings("serial")
+	private static Map<FixedObject, Vector3D> positions_0_6_7 = new HashMap<FixedObject, Vector3D>(){{
+		put(OUR_LOWER_CORNER, Vector3D.cartesian(-15, -10.0, 0));
+		put(OUR_UPPER_CORNER, Vector3D.cartesian(-15, 10.0, 0));
+		put(OUR_UPPER_POST, Vector3D.cartesian(-15, 1.0, 0.8));
+		put(OUR_LOWER_POST, Vector3D.cartesian(-15, -1.0, 0.8));
+		
+		put(THEIR_LOWER_CORNER, Vector3D.cartesian(15, -10, 0));
+		put(THEIR_UPPER_CORNER, Vector3D.cartesian(15, 10, 0));
+		put(THEIR_UPPER_POST, Vector3D.cartesian(15, 1.0, 0.8));
+		put(THEIR_LOWER_POST, Vector3D.cartesian(15, -1.0, 0.8));
+	}};
+        
 	@SuppressWarnings("serial")
 	private static Map<FixedObject, Vector3D> positions_0_6_5 = new HashMap<FixedObject, Vector3D>(){{
 		put(OUR_LOWER_CORNER, Vector3D.cartesian(-10.5, -7.0, 0));

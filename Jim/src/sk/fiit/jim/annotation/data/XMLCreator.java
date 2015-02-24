@@ -16,7 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import sk.fiit.robocup.library.geometry.Circle;
-import sk.fiit.robocup.library.geometry.Vector3;
 
 /**
  * 
@@ -92,11 +91,86 @@ public class XMLCreator {
 		name.appendChild(d.createTextNode(annotation.getName()));
 		root.appendChild(name);
 		
+		// popis kopu
+		if((annotation.kickDistance != 0 || annotation.kickSuccessfulness != 0)){
+		Element kickDescription = d.createElement("kickDescription");
+		root.appendChild(kickDescription);
+		
+			// rozptyl kopu
+			Element variance = d.createElement("variance");
+			variance.appendChild(d.createTextNode(Double.toString(annotation.variance)));
+			kickDescription.appendChild(variance);
+			
+			// uhol kopu minimalny, maximalny, priemerny
+			Element deviation = d.createElement("kickDescription");
+			kickDescription.appendChild(deviation);
+			
+				Element min = d.createElement("min");
+				min.appendChild(d.createTextNode(Double.toString(annotation.getKickDeviation().getMin())));
+				deviation.appendChild(min);
+			
+				Element max = d.createElement("max");
+				max.appendChild(d.createTextNode(Double.toString(annotation.getKickDeviation().getMax())));
+				deviation.appendChild(max);
+			
+				Element avg = d.createElement("avg");
+				avg.appendChild(d.createTextNode(Double.toString(annotation.getKickDeviation().getAvg())));
+				deviation.appendChild(avg);
+						
+			// cas potrebny na vykonanie kopu
+			Element kickTime = d.createElement("kickTime");
+			kickTime.appendChild(d.createTextNode(Double.toString(annotation.kickTime)));
+			kickDescription.appendChild(kickTime);
+			
+			// uspesnost kopu
+			Element kickSuccessfulness = d.createElement("kickSuccessfulness");
+			kickSuccessfulness.appendChild(d.createTextNode(Double.toString(annotation.kickSuccessfulness)));
+			kickDescription.appendChild(kickSuccessfulness);
+			
+			// dlzka kopu
+			Element kickDistance = d.createElement("kickDistance");
+			kickDistance.appendChild(d.createTextNode(Double.toString(annotation.kickDistance)));
+			kickDescription.appendChild(kickDistance);
+			
+			// pozicia hraca voci lopte pred kopom
+			Element agentPosition = d.createElement("agentPosition");
+			kickDescription.appendChild(agentPosition);
+						
+				Element minX = d.createElement("x-min");
+				minX.appendChild(d.createTextNode(Double.toString(annotation.getAgentPosition().getMinX())));
+				agentPosition.appendChild(minX);
+						
+				Element maxX = d.createElement("x-max");
+				maxX.appendChild(d.createTextNode(Double.toString(annotation.getAgentPosition().getMaxX())));
+				agentPosition.appendChild(maxX);
+				
+				Element minY = d.createElement("y-min");
+				minY.appendChild(d.createTextNode(Double.toString(annotation.getAgentPosition().getMinY())));
+				agentPosition.appendChild(minY);
+						
+				Element maxY = d.createElement("y-max");
+				maxY.appendChild(d.createTextNode(Double.toString(annotation.getAgentPosition().getMaxY())));
+				agentPosition.appendChild(maxY);
+		}
+		
 		// popis pohybu
 		Element description = d.createElement("description");
 		root.appendChild(description);
 		
-		
+		// rychlost pohybu (nepovinny element)
+		if((annotation.walkSpeed != 0)){
+			Element speed = d.createElement("speed");
+			speed.appendChild(d.createTextNode(Double.toString(annotation.walkSpeed)));
+			description.appendChild(speed);
+		}
+				
+		// minimalna vzdialenost od ciela potrebna na vykonanie pohybu (nepovinny element)
+		if((annotation.minDistance != 0)){
+			Element min_distance = d.createElement("min_distance");
+			min_distance.appendChild(d.createTextNode(Double.toString(annotation.minDistance)));
+			description.appendChild(min_distance);
+		}
+				
 		// doba vykonavania pohybu
 		Element duration = d.createElement("duration");
 		description.appendChild(duration);

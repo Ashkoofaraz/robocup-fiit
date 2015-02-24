@@ -3,6 +3,8 @@ package sk.fiit.jim.agent.models;
 import java.util.HashMap;
 import java.util.Map;
 
+import sk.fiit.jim.agent.AgentInfo;
+import sk.fiit.jim.agent.Side;
 import sk.fiit.jim.agent.parsing.ParsedData;
 import sk.fiit.jim.agent.parsing.ParsedDataObserver;
 
@@ -17,7 +19,11 @@ import sk.fiit.jim.agent.parsing.ParsedDataObserver;
  *@Title	Jim
  *@author	marosurbanec
  *@author	Androids
+ * 
+ * Support for server vserion 0.6.7 added by Gitmen09.
+ * @author Roman Moravcik
  */
+
 public class EnvironmentModel implements ParsedDataObserver{
 	private static EnvironmentModel instance = new EnvironmentModel();
 	
@@ -141,17 +147,19 @@ public class EnvironmentModel implements ParsedDataObserver{
 	 * 
 	 *  EnvironmentModel.java
 	 *  
-	 *  Version of server. Current version is VERSION_0_6_5.
+	 *  Version of server. Current version is VERSION_0_6_7.
 	 *  Possible values:
+         *  VERSION_0_6_7,
 	 *  VERSION_0_6_5,
-	 *	VERSION_0_6_4,
-	 *	VERSION_0_6_3,
-	 *	VERSION_0_6_2;
+	 *  VERSION_0_6_4,
+	 *  VERSION_0_6_3,
+	 *  VERSION_0_6_2;
 	 *  
 	 *@Title        Jim
 	 *@author       $Author: ??? $
 	 */
 	public static enum Version {
+                VERSION_0_6_7,
 		VERSION_0_6_5,
 		VERSION_0_6_4,
 		VERSION_0_6_3,
@@ -165,7 +173,7 @@ public class EnvironmentModel implements ParsedDataObserver{
 		GOAL_LEFT,
 		GOAL_RIGHT,
 		KICK_OFF_LEFT,
-		KICK_OFF_RIGHT;
+		KICK_OFF_RIGHT
 	}
 	
 	//added by high5
@@ -179,20 +187,29 @@ public class EnvironmentModel implements ParsedDataObserver{
 				return true;
 			}
 		}
+		if (AgentInfo.side == Side.RIGHT && PlayMode.KICK_OFF_LEFT.name().equals(PLAY_MODE.name())){
+			return true;
+		}
+		if (AgentInfo.side == Side.LEFT && PlayMode.KICK_OFF_RIGHT.name().equals(PLAY_MODE.name())){
+			return true;
+		}
 		return false;
 	}
 	
 	public String getPlayModeString() {
 		return PLAY_MODE.name();
 	}
+	public PlayMode getPlayMode() {
+		return PLAY_MODE;
+	}
 	
 	public static boolean isKickOffLeftPlayMode() {
-		return PLAY_MODE.name().equals(Beamable.KICK_OFF_LEFT.name());
+		return PLAY_MODE.name().equals(PlayMode.KICK_OFF_LEFT.name());
 	}
 	
 	public static boolean isKickOffPlayMode() {
-		return PLAY_MODE.name().equals(Beamable.KICK_OFF_LEFT.name()) 
-				|| PLAY_MODE.name().equals(Beamable.KICK_OFF_RIGHT.name());
+		return PLAY_MODE.name().equals(PlayMode.KICK_OFF_LEFT.name()) 
+				|| PLAY_MODE.name().equals(PlayMode.KICK_OFF_RIGHT.name());
 	}
 	
 	public static boolean isBeforeKickOffPlayMode() {

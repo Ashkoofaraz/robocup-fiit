@@ -3,6 +3,13 @@ package sk.fiit.jim;
 import java.util.HashMap;
 import java.util.Map;
 
+import sk.fiit.jim.agent.AgentInfo;
+import sk.fiit.jim.agent.communication.Communication;
+import sk.fiit.jim.agent.models.EnvironmentModel;
+import sk.fiit.jim.decision.situation.SituationList;
+import sk.fiit.jim.decision.strategy.StrategyList;
+import sk.fiit.jim.decision.tactic.TacticList;
+import sk.fiit.jim.garbage.plan.PlanTactic;
 import sk.fiit.robocup.library.review.ReviewOk;
 
 /**
@@ -46,9 +53,50 @@ public final class Settings{
 		settings.put("gravityAcceleration", 9.81);
 		settings.put("maximumAngularChangePerQuantum", 7.0);
 		settings.put("ignoreAccelerometer", false);
+		
+		EnvironmentModel.version = EnvironmentModel.Version.VERSION_0_6_7;
+		AgentInfo.team = "GitTrolls";
+		//AgentInfo.playerId = 3;
+		
+		settings.put("runTFTPserver", true);
+		settings.put("TestFramework_monitor_enable", true);
+		settings.put("TestFramework_monitor_port", 8000);
+		//settings.put("TestFramework_monitor_address", "192.168.1.44");
+		settings.put("TestFramework_monitor_address", "127.0.0.1");
 		settings.put("Tftp_enable", false);
+		settings.put("Tftp_port", 3073);
+		//TODO - this is only temporary
+
+        //root path for Jim project
+        settings.put("Jim_root_path", "");
+        
+        settings.put("debugTactic", true); // must be true or false
+        settings.put("debuggingTacticName", "DefaultTactic"); // is used only when debugTactic is set to true
+
+        //TODO is this needed, since setting file was rewriten from Ruby to Java?
+		Settings.setCommandLineOverrides();
+		
+		if (Settings.hasKey("team") ) {
+			AgentInfo.team = Settings.getString("team");
+		}
+		
+		if (Settings.hasKey("uniform") ) {
+			AgentInfo.playerId = Settings.getInt("uniform");
+		}
+		
+		settings.put("Planner", PlanTactic.class.getSimpleName());
+		
+		//Communication.instance.server_ip = "192.168.1.13";
+		Communication.getInstance().setServerIp("127.0.0.1");
+		Communication.getInstance().setPort(3100);
 	}
 	
+	public static void initDecisionObjects() {
+		SituationList.initializeAllSituations();
+		StrategyList.initializeAllStrategies();
+		TacticList.initializeAllTactics();
+	}
+
 	/**
 	 * Sets Object value of Map element with specified key
 	 *

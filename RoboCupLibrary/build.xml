@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- WARNING: Eclipse auto-generated file.
+              Any modifications will be overwritten.
+              To include a user specific buildfile here, simply create one in the same
+              directory with the processing instruction <?eclipse.ant.import?>
+              as the first entry and export the buildfile again. -->
+<project name="RoboCupLibrary" basedir="." default="build-RoboCupLibrary">
+	<property name="Jim.location" value="../Jim" />
+	<property name="TestFramework.location" value="../TestFramework" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="bin" value="bin" />
+	<property name="release" value="release" />
+
+	<path id="RoboCupLibrary.classpath">
+		<pathelement location="bin" />
+		<pathelement location="lib/bsf.jar" />
+		<pathelement location="lib/junit.jar" />
+		<pathelement location="lib/hamcrest-all-1.3.0RC1.jar" />
+		<pathelement location="lib/jeval.jar" />
+	</path>
+
+	<target name="init">
+		<mkdir dir="${bin}" />
+		<mkdir dir="${release}" />
+		<copy includeemptydirs="false" todir="${bin}">
+			<fileset dir="src">
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="clean">
+		<delete dir="${bin}" />
+		<delete dir="${release}" />
+	</target>
+
+	<target name="cleanall" depends="clean" />
+
+	<target name="compile-RoboCupLibrary" depends="compile-subprojects,compile-project" />
+
+	<target name="compile-subprojects" />
+
+	<target name="compile-project" depends="init">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="${bin}" includeantruntime="false">
+			<src path="src" />
+			<classpath refid="RoboCupLibrary.classpath" />
+		</javac>
+	</target>
+
+	<target name="compile-refprojects" description="Build all projects which reference this project. Useful to propagate changes.">
+		<ant antfile="compile-RoboCupLibrary.xml" dir="${Jim.location}" inheritAll="false" target="clean" />
+		<ant antfile="compile-RoboCupLibrary.xml" dir="${Jim.location}" inheritAll="false" target="compile-RoboCupLibrary">
+			<propertyset>
+				<propertyref name="compile-RoboCupLibrary.compiler" />
+			</propertyset>
+		</ant>
+		<ant antfile="compile-RoboCupLibrary.xml" dir="${TestFramework.location}" inheritAll="false" target="clean" />
+		<ant antfile="compile-RoboCupLibrary.xml" dir="${TestFramework.location}" inheritAll="false" target="compile-RoboCupLibrary">
+			<propertyset>
+				<propertyref name="compile-RoboCupLibrary.compiler" />
+			</propertyset>
+		</ant>
+	</target>
+
+	<target name="build-RoboCupLibrary" depends="compile-RoboCupLibrary">
+		<jar destfile="${release}/roboCupLibrary.jar" basedir="${bin}"/>
+	</target>
+</project>

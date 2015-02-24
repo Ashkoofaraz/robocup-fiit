@@ -1,23 +1,7 @@
 package sk.fiit.jim.tests;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPathExpressionException;
-
-import org.xml.sax.SAXException;
-
-import sk.fiit.jim.agent.Planner;
-import sk.fiit.jim.agent.communication.Communication;
-import sk.fiit.jim.init.ScriptBoot;
-import sk.fiit.jim.init.SkillsFromXmlLoader;
 //import sk.fiit.testframework.trainer.testsuite.TestCase;
-import sk.fiit.robocup.library.init.Script;
+
 
 /**
  *  TestJim.java

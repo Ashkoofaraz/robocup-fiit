@@ -8,34 +8,37 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.WindowConstants;
 
 import sk.fiit.robocup.library.geometry.Circle;
 import sk.fiit.robocup.library.geometry.Point3D;
 import sk.fiit.robocup.library.geometry.Vector2;
+import sk.fiit.testframework.annotator.Annotator;
 import sk.fiit.testframework.communication.agent.AgentData;
 import sk.fiit.testframework.communication.agent.AgentJim;
 import sk.fiit.testframework.communication.agent.AgentJim.TeamSide;
 import sk.fiit.testframework.communication.robocupserver.RobocupServer;
 import sk.fiit.testframework.communication.robocupserver.RobocupServerAddress;
-import sk.fiit.testframework.init.Implementation;
-import sk.fiit.testframework.init.ImplementationFactory;
-import sk.fiit.testframework.monitor.AgentMonitorMessage;
-import sk.fiit.testframework.monitor.IAgentMonitorListener;
 import sk.fiit.testframework.monitor.RobocupMonitor;
-import sk.fiit.testframework.trainer.testsuite.TestCase;
 import sk.fiit.testframework.trainer.testsuite.TestCaseResult;
-import sk.fiit.testframework.trainer.testsuite.testcases.WalkTestCase;
 import sk.fiit.testframework.ui.MeasurableInformation;
 import sk.fiit.testframework.ui.MonitorGUI;
 import sk.fiit.testframework.ui.TestCaseList;
-import sk.fiit.testframework.ui.UserInterface;
 import sk.fiit.testframework.ui.TestCaseList.TestHolder;
+import sk.fiit.testframework.ui.UserInterface;
 import sk.fiit.testframework.worldrepresentation.ISimulationStateObserver;
 import sk.fiit.testframework.worldrepresentation.models.SimulationState;
-import sk.fiit.testframework.annotator.*;
-
-import java.util.*;
 
 
 /**

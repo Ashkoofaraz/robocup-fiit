@@ -19,10 +19,8 @@ import org.xml.sax.SAXException;
 
 import sk.fiit.jim.log.Log;
 import sk.fiit.jim.log.LogType;
-
 import sk.fiit.robocup.library.geometry.Circle;
 import sk.fiit.robocup.library.geometry.Vector2;
-import sk.fiit.robocup.library.geometry.Vector3;
 
 public class XMLParser {
 
@@ -49,6 +47,64 @@ public class XMLParser {
 		
 		// element name
 		annotation.name = d.getElementsByTagName("name").item(0).getTextContent();
+		
+		if(d.getElementsByTagName("kickDescription").getLength() > 0){
+			// element variance 
+			annotation.setVariance (new Double(d.getElementsByTagName("variance").item(0).getTextContent()));
+			
+			// element deviation
+			NodeList kickDeviation = d.getElementsByTagName("deviation").item(0).getChildNodes();
+			for(int i=0; i<kickDeviation.getLength(); i++){
+				if(kickDeviation.item(i).getNodeName().compareTo("min") == 0){
+					annotation.kickDeviation.setMin(new Double(kickDeviation.item(i).getTextContent()));
+				}	
+				
+				if(kickDeviation.item(i).getNodeName().compareTo("max") == 0){
+					annotation.duration.setMax(new Double(kickDeviation.item(i).getTextContent()));
+				}	
+				
+				if(kickDeviation.item(i).getNodeName().compareTo("avg") == 0){
+					annotation.duration.setAvg(new Double(kickDeviation.item(i).getTextContent()));
+				}
+			}
+					
+			// element kickTime 
+			annotation.setKickTime (new Double(d.getElementsByTagName("kickTime").item(0).getTextContent()));
+			// element kickSuccessfulness 										
+			annotation.setKickSuccessfulness (new Double(d.getElementsByTagName("kickSuccessfulness").item(0).getTextContent()));
+			// element kickDistance 
+			annotation.setKickDistance (new Double(d.getElementsByTagName("kickDistance").item(0).getTextContent()));
+			
+			// element agentPosition
+			NodeList agentPosition = d.getElementsByTagName("agentPosition").item(0).getChildNodes();
+			for(int i=0; i<agentPosition.getLength(); i++){
+				if(agentPosition.item(i).getNodeName().compareTo("x-min") == 0){
+					annotation.agentPosition.setMinX(new Double(agentPosition.item(i).getTextContent()));
+				}	
+				
+				if(agentPosition.item(i).getNodeName().compareTo("x-max") == 0){
+					annotation.agentPosition.setMaxX(new Double(agentPosition.item(i).getTextContent()));
+				}	
+				
+				if(agentPosition.item(i).getNodeName().compareTo("y-min") == 0){
+					annotation.agentPosition.setMinY(new Double(agentPosition.item(i).getTextContent()));
+				}	
+				
+				if(agentPosition.item(i).getNodeName().compareTo("y-max") == 0){
+					annotation.agentPosition.setMaxY(new Double(agentPosition.item(i).getTextContent()));
+				}				
+
+			}
+		}
+		
+		// element speed 
+		if(d.getElementsByTagName("speed").getLength() > 0){
+			annotation.setWalkSpeed(new Double(d.getElementsByTagName("speed").item(0).getTextContent()));
+		}		
+		// element min_distance
+		if(d.getElementsByTagName("min_distance").getLength() > 0){
+			annotation.setMinDistance(new Double(d.getElementsByTagName("min_distance").item(0).getTextContent()));
+		}
 		
 		// element duration
 		NodeList duration = d.getElementsByTagName("duration").item(0).getChildNodes();

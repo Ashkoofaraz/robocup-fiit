@@ -5,6 +5,7 @@ import sk.fiit.jim.agent.models.EnvironmentModel;
 import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.models.Player;
 import sk.fiit.robocup.library.geometry.Vector3D;
+
 import java.io.IOException;  
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.logging.FileHandler;  
 import java.util.logging.Logger;  
 import java.util.logging.SimpleFormatter; 
+import sk.fiit.jim.agent.models.EnvironmentModel.Version;
 
 
 /**
@@ -41,6 +43,8 @@ public class AgentInfo{
 	private HashMap<Integer, playerState> opponentsStates = new HashMap<Integer, playerState>(); 
 	private HashMap<Integer, playerState> teammatesStates = new HashMap<Integer, playerState>(); 
 	
+	private AgentInfo(){		
+	}
 	/**
 	 * Team of the agent
 	 */
@@ -52,6 +56,7 @@ public class AgentInfo{
 	/**
 	 * Side where agent has his own net
 	 */
+	//Todo #Bug(Agent's goal is allways left, also during second period) #Solver() #Priority() | xmarkech 2013-12-10T20:38:13.4560000Z
 	public static Side side = Side.LEFT;
 	/**
 	 * Whether the player's side was already assigned by the server
@@ -97,7 +102,7 @@ public class AgentInfo{
 	 * |  |---|  |  /
 	 * ----------- /
 	 */
-	public static final double HALF_FIELD_WIDTH = 10.5;
+	public static final double HALF_FIELD_WIDTH = (EnvironmentModel.version == Version.VERSION_0_6_7 ? 15 : 10.5);
 	/**
 	 * 
 	 */
@@ -117,7 +122,6 @@ public class AgentInfo{
 	 * 
 	 */
 	public static final double CONTROL_DISTANCE = 0.2;
-
 	
 	/**
 	 * Returns instance of agentInfo we can set attributes of. 
@@ -278,7 +282,7 @@ public class AgentInfo{
 	}
 	
 //-------------------------------------------------------------------------------------------
-// Zaciatok pridaného kodu zo suboru tim 17
+// Zaciatok pridanï¿½ho kodu zo suboru tim 17
 	public int lastBallPositiontoAgent(){
 		Vector3D ballPosition = WorldModel.getInstance().getBall().getRelativePosition();
 	//	setWhereIsBall(whereIsTarget(ballPosition));
@@ -291,7 +295,7 @@ public class AgentInfo{
 			}
 			
 	}	
-// Koniec pridaného kodu zo suboru tim 17
+// Koniec pridanï¿½ho kodu zo suboru tim 17
 //-------------------------------------------------------------------------------------------
 	//added by xpassakp
 		/** check relative orientation of goal to agent
@@ -766,7 +770,7 @@ public class AgentInfo{
 		}
 	}
 	/**
-	 * Method calculating specified player´s state for specified team. If Z-axis value of seen player is
+	 * Method calculating specified playerï¿½s state for specified team. If Z-axis value of seen player is
 	 * less than STANDING_LIMIT, player's state is set to lying. Otherwise 
 	 * it is set to standing. 
 	 *
@@ -835,4 +839,42 @@ public class AgentInfo{
 		AgentModel me = AgentModel.getInstance();
 		System.out.println(me.getLastDataReceived());
 	}
+
+//-----------Added  3.12.2013 by Igorko.Homola@gmail.com team 4 (team project RFC MEGATROLL 2013)----
+// Return octan where is situated ball (1L,1R,2L,2R,3L,3R,4L,4R)
+	public String getoctanBallPosition (){
+		WorldModel worldModel = WorldModel.getInstance();
+		String octan = null ;
+			if ((worldModel.getBall().getPosition().getX() < -7.5) && (worldModel.getBall().getPosition().getY() >= 0)){
+				octan = "1L";
+			}
+			else if ((worldModel.getBall().getPosition().getX() < -7.5) && (worldModel.getBall().getPosition().getY() < 0)){
+				octan = "1R";
+			}
+			else if ((worldModel.getBall().getPosition().getX() <= 0) && (worldModel.getBall().getPosition().getX() >= -7.5) && (worldModel.getBall().getPosition().getY() >= 0)){
+				octan = "2L";
+			}
+			else if ((worldModel.getBall().getPosition().getX() <= 0) && (worldModel.getBall().getPosition().getX() >= -7.5) && (worldModel.getBall().getPosition().getY() < 0)){
+				octan = "2R";
+			}
+			else if ((worldModel.getBall().getPosition().getX() > 0) && (worldModel.getBall().getPosition().getX() <= 7.5) && (worldModel.getBall().getPosition().getY() >= 0)){
+				octan = "3L";
+			}
+			else if ((worldModel.getBall().getPosition().getX() > 0) && (worldModel.getBall().getPosition().getX() <= 7.5) && (worldModel.getBall().getPosition().getY() < 0)){
+				octan = "3R";
+			}
+			else if ((worldModel.getBall().getPosition().getX() > 7.5) && (worldModel.getBall().getPosition().getY() >= 0)){
+				octan = "4L";
+			}
+			else if ((worldModel.getBall().getPosition().getX() > 7.5) && (worldModel.getBall().getPosition().getY() < 0)){
+				octan = "4R";
+			}
+	return octan;
+	}
+	
+	public static boolean isballLongUnseen(double gap){
+		return (EnvironmentModel.SIMULATION_TIME - WorldModel.getInstance().getBall().getLastTimeSeen()) > gap;
+	}
 }
+
+

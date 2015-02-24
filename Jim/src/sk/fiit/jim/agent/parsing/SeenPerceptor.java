@@ -21,7 +21,7 @@ import sk.fiit.robocup.library.geometry.Vector3D;
  *  Encapsulate data retrieve from seen perceptor into SeenPerceptroData class
  *  
  *@Title        Jim
- *@author       Author: Ondrej Jurèák
+ *@author       Author: Ondrej Jur??k
  */
 public class SeenPerceptor {
 	
