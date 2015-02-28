@@ -2,8 +2,10 @@ package sk.fiit.jim.agent.models;
 
 import static sk.fiit.jim.agent.models.EnvironmentModel.TIME_STEP;
 import static sk.fiit.jim.log.LogType.AGENT_MODEL;
+import static java.lang.Math.*;
 
 import java.io.Serializable;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +16,9 @@ import java.util.Queue;
 import sk.fiit.jim.Settings;
 import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.Side;
+import sk.fiit.jim.agent.models.EnvironmentModel.PlayMode;
 import sk.fiit.jim.agent.moves.Joint;
+import sk.fiit.jim.agent.parsing.ForceReceptor;
 import sk.fiit.jim.agent.parsing.ParsedData;
 import sk.fiit.jim.agent.parsing.ParsedDataObserver;
 import sk.fiit.jim.annotation.data.Annotation;
@@ -45,6 +49,7 @@ import sk.fiit.robocup.library.geometry.Vector3D;
  *@Title        Jim
  *@author       $Author: Jojo $
  */
+// FIXME vela zakomentovaneho
 public class AgentModel implements ParsedDataObserver, Serializable{
 	
 	private boolean falled = false;
@@ -100,7 +105,26 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	public static Side side = Side.LEFT;
 	protected double lastTimeFlagSeen = 0.0;
 	
-
+	// These params are used by Zero Moment Point and are taken from Hudec 2012
+	private static int MAX_HISTORY_SIZE = 1000;
+    private static int ACCUMULATOR_STEPS = 5;
+    Vector3D centerOfMass = Vector3D.ZERO_VECTOR;
+    private Vector3D lastAccelerometer = null;
+    private Vector3D lastMomentum = null;
+    Vector3D zeroMomentPoint = Vector3D.ZERO_VECTOR;
+    private List<Vector3D> zmpHistory = new LinkedList<Vector3D>();
+    Vector3D torsoPosition = Vector3D.ZERO_VECTOR;
+    private int fallCount = 0;
+    private Map<BodyPart, Vector3D> bodyPartRelPositions = new EnumMap<BodyPart, Vector3D>(
+            BodyPart.class);
+    private Map<BodyPart, Vector3D> bodyPartAbsPositions = new EnumMap<BodyPart, Vector3D>(
+            BodyPart.class);
+    boolean leftFootOnGround = false;
+    boolean rightFootOnGround = false;
+    ForceReceptor forceReceptor = new ForceReceptor();
+    private PositionChangeGuardian positionFilter;
+    double startPositionX = 0;
+    // End of the params for Zero Moment Point
 	
 	public AgentModel(){
 		for (Joint joint : Joint.values())
@@ -277,8 +301,18 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 		updatePureBodyAcceleration(data);
 		updatePosition(data);
 		//Log.log(LogType.OTHER, position.toString());
+		
+		// Following methods are used for Zero moment point
+	    updateBodyPartsPositions2();
+	    updateCenterOfMass();
+//	    updateFeetForce(data);
+//	    updateZeroMomentPoint();
+//	    updateSpeedX(data);
+	    if (data.fixedObjects.size() > 0)
+	        lastTimeFlagSeen = data.SIMULATION_TIME;
+	    // End zero moment point
 	}
-
+	
 	private void updateJointPositions(ParsedData data){
 		for (Entry<Joint, Double> record : data.agentsJoints.entrySet())
 			this.jointAngles.put(record.getKey(), record.getValue());
@@ -429,18 +463,13 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 	}
 	//TEST WTF/////////////////////
 	
-	/**
-	 * Returns true if agent is on ground, false otherwise. 
-	 *
-	 * @return
-	 */
-	public boolean isOnGround(){
-		if (lastDataReceived.accelerometer != null){
-			double z = Math.abs(lastDataReceived.accelerometer.getZ());
-			return (z < Settings.getDouble("gravityAcceleration") / 2.0) && (Angles.angleDiff(rotationX, 0.0) > (Math.PI / 4.0) || Angles.angleDiff(rotationY, 0.0) > (Math.PI / 4.0));
-		}
-		return Angles.angleDiff(rotationX, 0.0) > (Math.PI / 4.0) || Angles.angleDiff(rotationY, 0.0) > (Math.PI / 4.0);			 
-  	}
+//	public boolean isOnGround(){
+//		if (lastDataReceived.accelerometer != null){
+//			double z = Math.abs(lastDataReceived.accelerometer.getZ());
+//			return (z < Settings.getDouble("gravityAcceleration") / 2.0) && (Angles.angleDiff(rotationX, 0.0) > (Math.PI / 4.0) || Angles.angleDiff(rotationY, 0.0) > (Math.PI / 4.0));
+//		}
+//		return Angles.angleDiff(rotationX, 0.0) > (Math.PI / 4.0) || Angles.angleDiff(rotationY, 0.0) > (Math.PI / 4.0);			 
+//  	}
 	/* content of method was copied to isOnGround() 
 	private boolean isOnGroundJudgedByAccelerometer(){
 		double z = Math.abs(lastDataReceived.accelerometer.getZ());
@@ -594,4 +623,247 @@ public class AgentModel implements ParsedDataObserver, Serializable{
 		newModel.setPosition(newModel.position.add(avgPosChange));
 		return newModel;
 	}
+	
+	/**
+     * Updates Zero moment point of the player
+     * 
+     * @author Jan Hudec
+     * @author Metod Rybar
+     *
+     */
+    private void updateZeroMomentPoint() {
+        double x, y, z = 0; // , g = Settings.getDouble("gravityAcceleration");
+        Vector3D center = centerOfMass; // torsoPosition // TODO accelerometer
+                                        // is relative to torsoPosition, not
+                                        // centerOfMass
+        x = -1
+                * (center.getX() - (center.getZ() * lastAccelerometer.getX())
+                        / (lastMomentum.getZ())); // because accelerometer set
+                                                    // value with g
+        y = -1
+                * (center.getY() - (center.getZ() * lastAccelerometer.getY())
+                        / (lastMomentum.getZ())); // + g);
+        zeroMomentPoint = Vector3D.cartesian(x, y, z);
+        zmpHistory.add(zeroMomentPoint);
+        while (zmpHistory.size() > MAX_HISTORY_SIZE) {
+            zmpHistory.remove(0);
+        }
+        if (zmpHistory.size() >= ACCUMULATOR_STEPS) {
+            Vector3D akum = Vector3D.ZERO_VECTOR;
+            for (int i = 0; i < ACCUMULATOR_STEPS; i++) {
+                int ri = zmpHistory.size() - 1 - i;
+                akum = akum.add(zmpHistory.get(ri));
+            }
+            zeroMomentPoint = akum.divide(ACCUMULATOR_STEPS);
+        }
+//        LOG.log(LogType.AGENT_MODEL, "ZMP: " + zeroMomentPoint);
+    }
+
+    /**
+     * Updates center of mass of the player
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     *
+     */
+    private void updateCenterOfMass() {
+        centerOfMass = Vector3D.ZERO_VECTOR;
+        double totalMass = 0;
+        for (BodyPart bodyPart : bodyPartAbsPositions.keySet()) {
+            Vector3D absPosition = bodyPartRelPositions.get(bodyPart); // abspositions
+            centerOfMass = centerOfMass.add(absPosition.multiply(bodyPart
+                    .getMass()));
+            totalMass += bodyPart.getMass();
+        }
+        centerOfMass = centerOfMass.divide(totalMass);
+//        LOG.log(LogType.AGENT_MODEL, "COM: " + centerOfMass);
+    }
+
+    /**
+     * Absolute position of body parts are relative to the body, but are
+     * straighten to the axis of the playing-field
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     *
+     */
+    private void updateBodyPartsPositions2() {
+        BodyPart.computeRelativePositionsToTorso(jointAngles,
+                bodyPartRelPositions);
+        double minZ = Double.POSITIVE_INFINITY;
+        for (BodyPart bodyPart : bodyPartRelPositions.keySet()) {
+            Vector3D relPosition = bodyPartRelPositions.get(bodyPart);
+            Vector3D absPosition = rotateRelativeVector(relPosition);
+            bodyPartAbsPositions.put(bodyPart, absPosition);
+            if (absPosition.getZ() < minZ)
+                minZ = absPosition.getZ();
+//            LOG.log(LogType.AGENT_MODEL, bodyPart + ": " + relPosition);
+        }
+        for (BodyPart bodyPart : bodyPartAbsPositions.keySet()) {
+            Vector3D absPosition = bodyPartAbsPositions.get(bodyPart);
+            Vector3D normalizedAbsPosition = Vector3D.cartesian(
+                    absPosition.getX(), absPosition.getY(), absPosition.getZ()
+                            - minZ);
+            bodyPartAbsPositions.put(bodyPart, normalizedAbsPosition);
+        }
+//        LOG.log(LogType.AGENT_MODEL, "Akcelerometer: " + lastAccelerometer);
+//        LOG.log(LogType.AGENT_MODEL, "Akcelerometer globalizovany: "
+//                + globalize(lastAccelerometer));
+//        lastMomentum = rotateRelativeVector(lastAccelerometer);
+//        LOG.log(LogType.AGENT_MODEL, "Hybnost: " + lastMomentum);
+        torsoPosition = bodyPartAbsPositions.get(BodyPart.TORSO);
+    }
+
+    /**
+     * Checks if player is lying on the groud with accelerometer
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return true if is lying, false if not
+     *
+     */
+    private boolean isOnGroundJudgedByAccelerometer() {
+        double z = abs(lastAccelerometer.getZ());
+        return z < Settings.getDouble("gravityAcceleration") / 2.0;
+    }
+
+    /**
+     * Updates force for feets
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @param data
+     *            - parsed data from server
+     *
+     */
+    private void updateFeetForce(ParsedData data) {
+        if (data.forceReceptor != null) {
+            leftFootOnGround = data.forceReceptor.leftFootForce != null;
+            rightFootOnGround = data.forceReceptor.rightFootForce != null;
+            forceReceptor = data.forceReceptor;
+        } else
+            leftFootOnGround = rightFootOnGround = false;
+    }
+
+    /**
+     * Returns current ZMP
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return zeroMomentPoint
+     *
+     */
+    public Vector3D getZeroMomentPoint() {
+        return zeroMomentPoint;
+    }
+
+    /**
+     * Returns current force resistence perceptor
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return forceReceptor
+     *
+     */
+    public ForceReceptor getForceReceptor() {
+        return forceReceptor;
+    }
+
+    /**
+     * Returns latest parsed data
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return lastDataReceived lateset parsed data from server
+     *
+     */
+    public ParsedData getParsedData() {
+        return lastDataReceived;
+    }
+
+    /**
+     * Returns relativized vector
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return relativized vector
+     *
+     */
+    public Vector3D relativizeVector(Vector3D global) {
+        return global.rotateOverX(-rotationX).rotateOverZ(-rotationZ)
+                .rotateOverY(-rotationY);
+    }
+    
+//  @Problem("Accelerometer axes are rotated as the robot moves")
+    private void adjustPositionFor(Vector3D accelerometer){
+        lastAccelerometer = accelerometer;
+        if (accelerometer == null || Settings.getBoolean("ignoreAccelerometer")) return;
+        position = Vector3D.cartesian(
+            position.getX() - accelerometer.getX()*TIME_STEP, //TODO acceleration is not velocity - incorrect - skontrolovat, ale asi je to len zle nazvane
+            position.getY() - accelerometer.getY()*TIME_STEP,
+            position.getZ() - (accelerometer.getZ() - Settings.getDouble("gravityAcceleration"))*TIME_STEP
+        );
+    }
+    
+    //TODO
+    private void updateSpeedX(ParsedData data){
+        double speedX, walkTime = data.GAME_TIME;
+        if (data.playMode != PlayMode.PLAY_ON)
+            startPositionX = getPosition().getX();
+        speedX = abs(startPositionX - getPosition().getX()) / walkTime * 100; // meters to centimeters in seconds
+//      Log.log(LogType.AGENT_MODEL, "Dosahovana priemerna rychlost je: %.2f cm/s", speedX);
+        //Log.log(LogType.AGENT_MODEL, "Dlzka trvania chodze: %.2f", data.GAME_TIME);
+    }
+    
+    /**
+     * Rotate all axis of vector. Globalise vector
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @param vec
+     *            - vector to be rotated
+     * @return rotated vector
+     *
+     */
+    public Vector3D rotateRelativeVector(Vector3D vec) {
+        return vec.rotateOverY(rotationY).rotateOverZ(rotationZ)
+                .rotateOverX(rotationX);
+    }
+    
+    /**
+     * Calculates if agent is on the ground
+     * 
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return true if peak of perceptors exceeded
+     */
+    public boolean isOnGround() {
+//        LOG.log(LogType.AGENT_MODEL,
+//                "------------------Hodnota Akcelerometra: %.2f"
+//                        + lastAccelerometer);
+        boolean currentResult = false;
+
+        if (lastAccelerometer != null) {
+            currentResult = isOnGroundJudgedByAccelerometer();
+        } else {
+            currentResult = Angles.angleDiff(rotationX, 0.0) > (PI / 4.0)
+                    || Angles.angleDiff(rotationY, 0.0) > (PI / 4.0);
+        }
+        if (currentResult) {
+            fallCount++;
+        } else
+            fallCount = 0;
+        return (fallCount > 5); // number represents count of peak in preceptors
+    }
+    
+    public Map<BodyPart, Vector3D> getBodyPartAbsPositions()
+    {
+        return bodyPartAbsPositions;
+    }
+    
+    public Map<BodyPart, Vector3D> getBodyPartRelPositions()
+    {
+        return bodyPartRelPositions;
+    }
+
 }

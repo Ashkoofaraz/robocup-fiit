@@ -21,6 +21,10 @@ public class Vector3D implements Serializable {
 
 	public static final Vector3D ZERO_VECTOR = Vector3D.cartesian(0, 0, 0);
 	
+	public static final Vector3D X_AXIS = Vector3D.cartesian(1, 0, 0);
+    public static final Vector3D Y_AXIS = Vector3D.cartesian(0, 1, 0);
+    public static final Vector3D Z_AXIS = Vector3D.cartesian(0, 0, 1);
+    
 	private double x;
 	private double y;
 	private double z;
@@ -208,7 +212,7 @@ public class Vector3D implements Serializable {
 	
 	@Override
 	public String toString(){
-		return String.format("x, y,z: [%.2f, %.2f, %.2f] r, phi, theta: [%.2f, %.2f, %.2f]", 
+		return String.format("x, y,z: [%.3f, %.3f, %.3f] r, phi, theta: [%.3f, %.3f, %.3f]", 
 					x, y, z, r, phi, theta);
 //		return String.format("x, y,z: [%.2f, %.2f, %.2f]", 
 //					x, y, z);
@@ -237,4 +241,76 @@ public class Vector3D implements Serializable {
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
+	
+	/**
+     * Return normalized vector
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return normalized vector
+     *
+     */
+    public Vector3D normalize() {
+        return getR() != 0 ? divide(getR()) : ZERO_VECTOR;
+    }
+    
+    /**
+     * Return rotated vector
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return rotated vector
+     *
+     */
+    public Vector3D rotateOver(Vector3D axis, double angleInRad) {
+        if (angleInRad == 0)
+            return this;
+
+        axis = axis.normalize();
+        double sin_a = sin(angleInRad);
+        double cos_a = cos(angleInRad);
+        double one_minus_cos_a = 1 - cos_a;
+        double x2 = axis.getX() * axis.getX();
+        double y2 = axis.getY() * axis.getY();
+        double z2 = axis.getZ() * axis.getZ();
+        double xy = axis.getX() * axis.getY();
+        double yz = axis.getY() * axis.getZ();
+        double xz = axis.getX() * axis.getZ();
+
+        double[][] matrix = new double[3][3];
+
+        matrix[0][0] = x2 * one_minus_cos_a + cos_a;
+        matrix[0][1] = xy * one_minus_cos_a - axis.getZ() * sin_a;
+        matrix[0][2] = xz * one_minus_cos_a + axis.getY() * sin_a;
+
+        matrix[1][0] = xz * one_minus_cos_a + axis.getZ() * sin_a;
+        matrix[1][1] = y2 * one_minus_cos_a + cos_a;
+        matrix[1][2] = yz * one_minus_cos_a - axis.getX() * sin_a;
+
+        matrix[2][0] = xz * one_minus_cos_a - axis.getY() * sin_a;
+        matrix[2][1] = yz * one_minus_cos_a + axis.getX() * sin_a;
+        matrix[2][2] = z2 * one_minus_cos_a + cos_a;
+
+        double newX = this.getX() * matrix[0][0] + this.getY() * matrix[1][0]
+                + this.getZ() * matrix[2][0];
+        double newY = this.getX() * matrix[0][1] + this.getY() * matrix[1][1]
+                + this.getZ() * matrix[2][1];
+        double newZ = this.getX() * matrix[0][2] + this.getY() * matrix[1][2]
+                + this.getZ() * matrix[2][2];
+
+        return cartesian(newX, newY, newZ);
+    }
+    
+    /**
+     * Return flattened vector
+     *
+     * @author Jan Hudec
+     * @author Metod Rybar
+     * @return flattened vector
+     *
+     */
+    public Vector3D flatten(){
+        return cartesian(x, y, 0.0);
+    }
+    
 }
