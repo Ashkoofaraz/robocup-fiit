@@ -98,7 +98,9 @@ public class LowSkill{
 	 * finalization is executed.  
 	 *
 	 */
-	public void step() {		
+	public void step() {
+	    System.out.println(activePhase);
+	    
 		if (activePhase == null)
 			setNewActivePhase(initialPhase);
 

@@ -5,6 +5,7 @@ import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.communication.testframework.Message;
 import sk.fiit.jim.agent.communication.testframework.TestFrameworkCommunication;
 import sk.fiit.jim.agent.models.AgentModel;
+import sk.fiit.jim.agent.models.BodyPart;
 import sk.fiit.jim.agent.models.EnvironmentModel;
 import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.moves.LowSkill;
@@ -95,8 +96,18 @@ public abstract class HighSkill implements IHighSkill {
 	public final void execute() throws Exception {
 		Log.debug(HIGH_SKILL, "Currently executing: %s", currentSkill);
 		
+		AgentModel model = AgentModel.getInstance();
+		
 		switch (state) {
 		case INITIAL_STATE:
+		    System.out.println(state);
+            System.out.println("torso abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO) );
+            System.out.println("torso rel pos:" +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
+            System.out.println("left foot abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.LFOOT) );
+            System.out.println("left foot rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
+            System.out.println("left hand abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.LLOWERARM) );
+            System.out.println("left hand rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
+	        
 			//get a low skill from the specific high skill (usually a ruby script)
 			currentSkill = pickLowSkill();
 			//if none is returned, we're done
@@ -112,6 +123,14 @@ public abstract class HighSkill implements IHighSkill {
 			break;
 			
 		case EXECUTING_STATE:
+		    System.out.println(state);
+            System.out.println("torso abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO) );
+            System.out.println("torso rel pos:" +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
+            System.out.println("left foot abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.LFOOT) );
+            System.out.println("left foot rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
+            System.out.println("left hand abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.LLOWERARM) );
+            System.out.println("left hand rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
+            
 			if (currentSkill.canFinalize() && !isStoppedHighSkill()) {
 				// this happens when a phase with isFinal==true has ended
 				// (so that the current low skill can now be finalized if we
@@ -160,6 +179,13 @@ public abstract class HighSkill implements IHighSkill {
 			break;
 			
 		case FINALIZING_STATE:
+		    System.out.println(state);
+            System.out.println("torso abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO) );
+            System.out.println("torso rel pos:" +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
+            System.out.println("left foot abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.LFOOT) );
+            System.out.println("left foot rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
+            System.out.println("left hand abs pos.: " + model.getBodyPartAbsPositions().get(BodyPart.LLOWERARM) );
+            System.out.println("left hand rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
 			//if the finalization phase has come to an end
 			if (currentSkill.canFinalize()) {
 				//if there's a next skill, start executing it
