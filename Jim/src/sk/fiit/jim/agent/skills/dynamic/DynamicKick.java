@@ -25,13 +25,13 @@ public class DynamicKick extends DynamicMove{
 	
 	@Override
 	public LowSkill pickLowSkill() {
-	    System.out.println("position: " +AgentModel.getInstance().getPosition());
+//	    System.out.println("position: " +AgentModel.getInstance().getPosition());
 	    System.out.println("LLE1 Angle: " +AgentModel.getInstance().getJointAngle(Joint.LLE1));
-//		Tuple la = createSequenceLeftArm();
-		Tuple la = createSequenceLeftLeg();
+		Tuple la = createSequenceLeftArm();
+//		Tuple la = createSequenceLeftLeg();
 				
-//		LowSkill ls = createDynamicMove("leftArm", la.points, la.orientations);
-		LowSkill ls = createDynamicMove("leftLeg", la.points, la.orientations);
+		LowSkill ls = createDynamicMove("leftArm", la.points, la.orientations);
+//		LowSkill ls = createDynamicMove("leftLeg", la.points, la.orientations);
 		return ls;
 	}
 

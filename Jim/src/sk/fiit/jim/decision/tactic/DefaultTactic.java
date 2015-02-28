@@ -53,7 +53,7 @@ public class DefaultTactic extends Tactic {
 		if (planner.getNumberOfPlannedHighSkills() == 0){
 			
 			// write here your highskill
-			planner.addHighskillToQueue(new DynamicKick());
+			planner.addHighskillToQueue(new DynamicKick2());
 			AgentInfo.logState("DefaultTactic - DefaultHighSkill");
 		}
 	}

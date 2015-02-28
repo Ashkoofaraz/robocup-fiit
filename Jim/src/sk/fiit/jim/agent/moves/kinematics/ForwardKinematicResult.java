@@ -12,7 +12,7 @@ import sk.fiit.robocup.library.geometry.Point3D;
  * @author Pidanic
  *
  */
-class ForwardKinematicResult
+public class ForwardKinematicResult
 {
     private double px;
 

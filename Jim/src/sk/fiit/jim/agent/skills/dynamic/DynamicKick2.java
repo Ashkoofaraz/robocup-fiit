@@ -6,10 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import sk.fiit.jim.agent.models.AgentModel;
+import sk.fiit.jim.agent.models.BodyPart;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phase;
+import sk.fiit.jim.agent.moves.kinematics.ForwardKinematicResult;
+import sk.fiit.jim.agent.moves.kinematics.Kinematics;
 import sk.fiit.jim.agent.moves.kinematics.Orientation;
 import sk.fiit.jim.agent.skills.dynamic.DynamicKick.Tuple;
 import sk.fiit.robocup.library.geometry.Point3D;
@@ -36,6 +40,8 @@ public class DynamicKick2 extends DynamicMove{
 	 */
 	public LowSkill createDynamicKick(String side)
 	{			
+	    AgentModel model = AgentModel.getInstance();
+	    
 		List<Phase> phases = getBaseSkillPhases(side);
 	    
 		String ui = UUID.randomUUID().toString();
@@ -105,9 +111,14 @@ public class DynamicKick2 extends DynamicMove{
 //		Point3D point6 = new Point3D(0, 150.0, -200.0);
 //		Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
 	    
-	    Point3D point6 = new Point3D(0.0, 55.0, -385.0);
-      Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
+//	  Point3D point6 = new Point3D(0.0, 55.0, -385.0);
+//      Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
 
+   // prednozenie s pokrcenym kolenom
+      ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, 0, 0, Math.PI/2, 0, 0));
+      Point3D point6 = frk.getEndPoint();
+      Orientation orientation6 = frk.getOrientation();
+      
 		List<Point3D> points = new ArrayList<>();
 		List<Orientation> orientations = new ArrayList<>();
 //		points.add(point1);
@@ -175,12 +186,12 @@ public class DynamicKick2 extends DynamicMove{
 	private void alterKickPhases(List<Phase> phases, String side) 
     {
         Tuple t = createSequenceLeftLeg();
-      List<Phase> newPhases = getPhasesForSkill(createDynamicMove("rightLeg", t.points, t.orientations));
+      List<Phase> newPhases = getPhasesForSkill(createDynamicMove("leftLeg", t.points, t.orientations));
 
         List<Phase> alteredPhases = new ArrayList<>();
         Map<Joint, Double> result = new HashMap<>();
-        result.put(Joint.LLE1, -50.0);
-        alteredPhases.add(createPhase(300, result ));
+//        result.put(Joint.LLE1, -50.0);
+//        alteredPhases.add(createPhase(300, result ));
         
         alteredPhases.addAll(newPhases);
         

@@ -84,8 +84,13 @@ public class IkMain
 //        br.flush();
 //        br.close();
         
-        Point3D point6 = new Point3D(0.0, 55.0, -385.0);
-        Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
-        System.out.println(Kinematics.getInstance().getInverseLeftLeg(point6, orientation6));
+        // prednozenie s pokrcenym kolenom
+        ForwardKinematicResult fkr = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, 0, Math.PI/4, 0, 0, 0));
+        System.out.println(fkr);
+//        Point3D point6 = new Point3D(-21.21, 55.0, -305.92);
+//        Orientation orientation6 = Orientation.fromDegrees(0.0, 0.79, 0.0);
+//        System.out.println(Kinematics.getInstance().getInverseLeftLeg(point6, orientation6));
+        System.out.println(Kinematics.getInstance().getInverseLeftLeg(fkr.getEndPoint(), fkr.getOrientation()));
+        
     }
 }
