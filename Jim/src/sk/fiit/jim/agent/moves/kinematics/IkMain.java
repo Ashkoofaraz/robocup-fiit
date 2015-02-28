@@ -61,27 +61,31 @@ public class IkMain
         // System.out.println(KinematicUtils.validateArcsinArccosRange(-0.99999));
         // System.out.println(Math.toDegrees(0.01));
 
-        BufferedWriter br = new BufferedWriter(new FileWriter(new File("left_arm_points.txt")));
-        Kinematics kin = Kinematics.getInstance();
-        for (int le1 = (int) Joint.LAE1.getLow(); le1 <= (int) Joint.LAE1.getUp(); le1++)
-        {
-            for (int le2 = (int) Joint.LAE2.getLow(); le2 <= (int) Joint.LAE2.getUp(); le2++)
-            {
-                for (int le3 = (int) Joint.LAE3.getLow(); le3 <= (int) Joint.LAE3.getUp(); le3++)
-                {
-                    for (int le4 = (int) Joint.LAE4.getLow(); le4 <= (int) Joint.LAE4.getUp(); le4++)
-                    {
-                        br.append(new ForwardKinematicResult(kin.getForwardLeftHand(Math.toRadians(le1),
-                                Math.toRadians(le2), Math.toRadians(le3), Math.toRadians(le4))).toString() + '\n');
-                        // System.out.println(new
-                        // ForwardKinematicResult(kin.getForwardLeftHand(Math.toRadians(le1),
-                        // Math.toRadians(le2), Math.toRadians(le3),
-                        // Math.toRadians(le4))));
-                    }
-                }
-            }
-        }
-        br.flush();
-        br.close();
+//        BufferedWriter br = new BufferedWriter(new FileWriter(new File("left_arm_points.txt")));
+//        Kinematics kin = Kinematics.getInstance();
+//        for (int le1 = (int) Joint.LAE1.getLow(); le1 <= (int) Joint.LAE1.getUp(); le1++)
+//        {
+//            for (int le2 = (int) Joint.LAE2.getLow(); le2 <= (int) Joint.LAE2.getUp(); le2++)
+//            {
+//                for (int le3 = (int) Joint.LAE3.getLow(); le3 <= (int) Joint.LAE3.getUp(); le3++)
+//                {
+//                    for (int le4 = (int) Joint.LAE4.getLow(); le4 <= (int) Joint.LAE4.getUp(); le4++)
+//                    {
+//                        br.append(new ForwardKinematicResult(kin.getForwardLeftHand(Math.toRadians(le1),
+//                                Math.toRadians(le2), Math.toRadians(le3), Math.toRadians(le4))).toString() + '\n');
+//                        // System.out.println(new
+//                        // ForwardKinematicResult(kin.getForwardLeftHand(Math.toRadians(le1),
+//                        // Math.toRadians(le2), Math.toRadians(le3),
+//                        // Math.toRadians(le4))));
+//                    }
+//                }
+//            }
+//        }
+//        br.flush();
+//        br.close();
+        
+        Point3D point6 = new Point3D(0.0, 55.0, -385.0);
+        Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
+        System.out.println(Kinematics.getInstance().getInverseLeftLeg(point6, orientation6));
     }
 }

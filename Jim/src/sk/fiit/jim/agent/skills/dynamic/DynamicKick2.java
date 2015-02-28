@@ -70,18 +70,18 @@ public class DynamicKick2 extends DynamicMove{
 	 * Vytvara kop
 	 * Poradie faz je dolezite, budu na seba nadvazovat v poradi ako su pridane do zoznamu
 	 */
-	private void alterKickPhases(List<Phase> phases, String side) 
-	{
-		Tuple t = createSequenceRightArm();
-//		List<Phase> alteredPhases = getPhasesForSkill(createDynamicMove("rightArm", t.points, t.orientations));
-
-		List<Phase> alteredPhases = new ArrayList<>();
-		Map<Joint, Double> result = new HashMap<>();
-		result.put(Joint.LLE1, -50.0);
-        alteredPhases.add(createPhase(300, result ));
-		phases.remove(3);
-		phases.addAll(3, alteredPhases);			
-	}
+//	private void alterKickPhases(List<Phase> phases, String side) 
+//	{
+//		Tuple t = createSequenceRightArm();
+////		List<Phase> alteredPhases = getPhasesForSkill(createDynamicMove("rightArm", t.points, t.orientations));
+//
+//		List<Phase> alteredPhases = new ArrayList<>();
+//		Map<Joint, Double> result = new HashMap<>();
+//		result.put(Joint.LLE1, -50.0);
+//        alteredPhases.add(createPhase(300, result ));
+//		phases.remove(3);
+//		phases.addAll(3, alteredPhases);			
+//	}
 	
 	private Tuple createSequenceLeftLeg() {
 //		Point3D point1 = new Point3D(0.0, 55.0, -385.0);
@@ -105,7 +105,7 @@ public class DynamicKick2 extends DynamicMove{
 //		Point3D point6 = new Point3D(0, 150.0, -200.0);
 //		Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
 	    
-	    Point3D point6 = new Point3D(0, 150.0, -200.0);
+	    Point3D point6 = new Point3D(0.0, 55.0, -385.0);
       Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
 
 		List<Point3D> points = new ArrayList<>();
@@ -172,16 +172,19 @@ public class DynamicKick2 extends DynamicMove{
     }
 	
 	// TODO tu mam upraveny Mestanikov pohyb tak, ze dvihne nohu.
-//	private void alterKickPhases(List<Phase> phases, String side) 
-//    {
-//        Tuple t = createSequenceRightArm();
-////      List<Phase> alteredPhases = getPhasesForSkill(createDynamicMove("rightArm", t.points, t.orientations));
-//
-//        List<Phase> alteredPhases = new ArrayList<>();
-//        Map<Joint, Double> result = new HashMap<>();
-//        result.put(Joint.LLE1, -50.0);
-//        alteredPhases.add(createPhase(300, result ));
-//        phases.remove(3);
-//        phases.addAll(3, alteredPhases);            
-//    }
+	private void alterKickPhases(List<Phase> phases, String side) 
+    {
+        Tuple t = createSequenceLeftLeg();
+      List<Phase> newPhases = getPhasesForSkill(createDynamicMove("rightLeg", t.points, t.orientations));
+
+        List<Phase> alteredPhases = new ArrayList<>();
+        Map<Joint, Double> result = new HashMap<>();
+        result.put(Joint.LLE1, -50.0);
+        alteredPhases.add(createPhase(300, result ));
+        
+        alteredPhases.addAll(newPhases);
+        
+        phases.remove(3);
+        phases.addAll(3, alteredPhases);            
+    }
 }

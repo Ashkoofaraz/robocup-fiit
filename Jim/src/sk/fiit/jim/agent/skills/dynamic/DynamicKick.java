@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import sk.fiit.jim.agent.AgentInfo;
+import sk.fiit.jim.agent.models.AgentModel;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.kinematics.Orientation;
@@ -23,11 +25,13 @@ public class DynamicKick extends DynamicMove{
 	
 	@Override
 	public LowSkill pickLowSkill() {
-		Tuple la = createSequenceLeftArm();
-		//Tuple la = createSequenceLeftLeg();
+	    System.out.println("position: " +AgentModel.getInstance().getPosition());
+	    System.out.println("LLE1 Angle: " +AgentModel.getInstance().getJointAngle(Joint.LLE1));
+//		Tuple la = createSequenceLeftArm();
+		Tuple la = createSequenceLeftLeg();
 				
-		LowSkill ls = createDynamicMove("leftArm", la.points, la.orientations);
-		//LowSkill ls = createDynamicMove("leftLeg", la.points, la.orientations);
+//		LowSkill ls = createDynamicMove("leftArm", la.points, la.orientations);
+		LowSkill ls = createDynamicMove("leftLeg", la.points, la.orientations);
 		return ls;
 	}
 
@@ -80,31 +84,31 @@ public class DynamicKick extends DynamicMove{
 		Point3D point1 = new Point3D(0.0, 55.0, -385.0);
 		Orientation orientation1 = Orientation.fromRadians(0.0, 0.0, 0.0);
 
-		Point3D point2 = new Point3D(0, 245, -305);
-		Orientation orientation2 = Orientation.fromRadians(0.0, 0.0, 0.0);
-
-		Point3D point3 = new Point3D(190, 55, -305);
-		Orientation orientation3 = Orientation.fromDegrees(0, 90, 45);
-
-		Point3D point4 = new Point3D(188, 74, -303);
-		Orientation orientation4 = Orientation.fromRadians(0.39, -0.79, 0);
-
-		Point3D point5 = new Point3D(234.85, 55.00, -199.85);
-		Orientation orientation5 = Orientation.fromRadians(-0.18, -1.57, 0.18);
+//		Point3D point2 = new Point3D(0, 245, -305);
+//		Orientation orientation2 = Orientation.fromRadians(0.0, 0.0, 0.0);
+//
+//		Point3D point3 = new Point3D(190, 55, -305);
+//		Orientation orientation3 = Orientation.fromDegrees(0, 90, 45);
+//
+//		Point3D point4 = new Point3D(188, 74, -303);
+//		Orientation orientation4 = Orientation.fromRadians(0.39, -0.79, 0);
+//
+//		Point3D point5 = new Point3D(234.85, 55.00, -199.85);
+//		Orientation orientation5 = Orientation.fromRadians(-0.18, -1.57, 0.18);
 
 		List<Point3D> points = new ArrayList<>();
 		List<Orientation> orientations = new ArrayList<>();
 		points.add(point1);
-		points.add(point2);
-		points.add(point3);
-		points.add(point4);
-		points.add(point5);
+//		points.add(point2);
+//		points.add(point3);
+//		points.add(point4);
+//		points.add(point5);
 
 		orientations.add(orientation1);
-		orientations.add(orientation2);
-		orientations.add(orientation3);
-		orientations.add(orientation4);
-		orientations.add(orientation5);
+//		orientations.add(orientation2);
+//		orientations.add(orientation3);
+//		orientations.add(orientation4);
+//		orientations.add(orientation5);
 
 		Tuple retVal = new Tuple();
 		retVal.points = points;

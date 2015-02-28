@@ -11,6 +11,7 @@ import sk.fiit.jim.agent.highskill.Turn;
 import sk.fiit.jim.agent.highskill.move.MovementHighSkill.MovementSpeedEnum;
 import sk.fiit.jim.agent.highskill.runner.HighSkillPlanner;
 import sk.fiit.jim.agent.highskill.runner.HighSkillRunner;
+import sk.fiit.jim.agent.skills.dynamic.DynamicKick;
 import sk.fiit.jim.agent.skills.dynamic.DynamicKick2;
 import sk.fiit.robocup.library.geometry.Vector3D;
 
@@ -52,7 +53,7 @@ public class DefaultTactic extends Tactic {
 		if (planner.getNumberOfPlannedHighSkills() == 0){
 			
 			// write here your highskill
-			planner.addHighskillToQueue(new DynamicKick2());
+			planner.addHighskillToQueue(new DynamicKick());
 			AgentInfo.logState("DefaultTactic - DefaultHighSkill");
 		}
 	}
