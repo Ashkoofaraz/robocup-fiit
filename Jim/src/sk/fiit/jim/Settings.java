@@ -55,7 +55,7 @@ public final class Settings{
 		settings.put("ignoreAccelerometer", false);
 		
 		EnvironmentModel.version = EnvironmentModel.Version.VERSION_0_6_7;
-		AgentInfo.team = "GitTrolls";
+		AgentInfo.team = "PP";
 		//AgentInfo.playerId = 3;
 		
 		settings.put("runTFTPserver", true);
