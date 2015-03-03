@@ -52,8 +52,8 @@ final class KinematicUtils
      */
     static boolean validateJointRangeInRadians(Joint joint, double angle)
     {
-        return !Double.isNaN(angle) && angle >= Math.toRadians(joint.getLow())
-                && angle <= Math.toRadians(joint.getUp());
+        return !Double.isNaN(angle) && angle + EPSILON >= Math.toRadians(joint.getLow())
+                && angle -EPSILON <= Math.toRadians(joint.getUp());
     }
 
     /**
