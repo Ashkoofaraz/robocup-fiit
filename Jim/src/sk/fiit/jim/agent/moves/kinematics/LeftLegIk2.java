@@ -13,10 +13,8 @@ import static sk.fiit.jim.agent.moves.kinematics.SimsparkConstants.TIBIA_LENGHT;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.robocup.library.geometry.Point3D;
