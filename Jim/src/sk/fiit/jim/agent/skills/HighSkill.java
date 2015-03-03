@@ -274,11 +274,13 @@ public abstract class HighSkill implements IHighSkill {
 	private static void logState(HighSkillState state) {
 	    System.out.println(state);
 	    AgentModel model = AgentModel.getInstance();
+	    System.out.println("Player pos: " + model.getPosition());
+	    System.out.println("Ball: " + WorldModel.getInstance().getBall().getPosition());
         System.out.println("torso abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO) );
-        System.out.println("torso rel pos:" +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
+        System.out.println("torso rel pos: " +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
         System.out.println("left foot abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LFOOT) );
-        System.out.println("left foot rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
+        System.out.println("left foot rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
         System.out.println("left hand abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LLOWERARM) );
-        System.out.println("left hand rel pos:" + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
+        System.out.println("left hand rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
 	}
 }

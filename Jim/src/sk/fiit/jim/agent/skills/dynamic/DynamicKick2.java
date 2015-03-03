@@ -115,9 +115,15 @@ public class DynamicKick2 extends DynamicMove{
 //      Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
 
    // prednozenie s pokrcenym kolenom
-      ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, 0, 0, Math.PI/2, 0, 0));
+      ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/2, 0, 0));
+      System.out.println(frk.getEndPoint() + " " + frk.getOrientation());
       Point3D point6 = frk.getEndPoint();
       Orientation orientation6 = frk.getOrientation();
+      
+      ForwardKinematicResult frk2 = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/4, 0, 0));
+      System.out.println(frk2.getEndPoint() + " " + frk.getOrientation());
+      Point3D point7 = frk2.getEndPoint();
+      Orientation orientation7 = frk2.getOrientation();
       
 		List<Point3D> points = new ArrayList<>();
 		List<Orientation> orientations = new ArrayList<>();
@@ -127,6 +133,7 @@ public class DynamicKick2 extends DynamicMove{
 //		points.add(point4);
 //		points.add(point5);
 		points.add(point6);
+		points.add(point7);
 
 //		orientations.add(orientation1);
 //		orientations.add(orientation2);
@@ -134,6 +141,7 @@ public class DynamicKick2 extends DynamicMove{
 //		orientations.add(orientation4);
 //		orientations.add(orientation5);
 		orientations.add(orientation6);
+		orientations.add(orientation7);
 
 		Tuple retVal = new Tuple();
 		retVal.points = points;
@@ -195,7 +203,7 @@ public class DynamicKick2 extends DynamicMove{
         
         alteredPhases.addAll(newPhases);
         
-        phases.remove(3);
-        phases.addAll(3, alteredPhases);            
+        phases.remove(4);
+        phases.addAll(4, alteredPhases);            
     }
 }

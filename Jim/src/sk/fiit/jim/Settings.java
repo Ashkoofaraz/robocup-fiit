@@ -56,7 +56,7 @@ public final class Settings{
 		
 		EnvironmentModel.version = EnvironmentModel.Version.VERSION_0_6_7;
 		AgentInfo.team = "PP";
-		//AgentInfo.playerId = 3;
+//		AgentInfo.playerId = 3;
 		
 		settings.put("runTFTPserver", true);
 		settings.put("TestFramework_monitor_enable", true);

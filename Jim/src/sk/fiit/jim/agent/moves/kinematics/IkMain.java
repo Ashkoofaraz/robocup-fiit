@@ -16,6 +16,8 @@ import sk.fiit.robocup.library.geometry.Point3D;
  */
 public class IkMain
 {
+    private static final Point3D TORSO_DEFAULT_ABS_POSITION = new Point3D(0, 0, 385);
+    
     private static final Point3D DEF_LEFT_ARM = new Point3D(195, 98, 75); // predpazena
 
     private static final Point3D DEF_RIGHT_ARM = new Point3D(195, -98, 75); // predpazena
@@ -84,13 +86,11 @@ public class IkMain
 //        br.flush();
 //        br.close();
         
-        // prednozenie s pokrcenym kolenom
-        ForwardKinematicResult fkr = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, 0, Math.PI/4, 0, 0, 0));
-        System.out.println(fkr);
-//        Point3D point6 = new Point3D(-21.21, 55.0, -305.92);
-//        Orientation orientation6 = Orientation.fromDegrees(0.0, 0.79, 0.0);
-//        System.out.println(Kinematics.getInstance().getInverseLeftLeg(point6, orientation6));
-        System.out.println(Kinematics.getInstance().getInverseLeftLeg(fkr.getEndPoint(), fkr.getOrientation()));
+        ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/4, 0, 0));
+        System.out.println(frk.getEndPoint() + " " + frk.getOrientation());
+        Point3D point6 = frk.getEndPoint();
+        Orientation orientation6 = frk.getOrientation();
+        System.out.println(Kinematics.getInstance().getInverseLeftLeg(point6, orientation6));
         
     }
 }

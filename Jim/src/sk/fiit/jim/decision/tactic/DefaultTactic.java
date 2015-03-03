@@ -11,9 +11,13 @@ import sk.fiit.jim.agent.highskill.Turn;
 import sk.fiit.jim.agent.highskill.move.MovementHighSkill.MovementSpeedEnum;
 import sk.fiit.jim.agent.highskill.runner.HighSkillPlanner;
 import sk.fiit.jim.agent.highskill.runner.HighSkillRunner;
+import sk.fiit.jim.agent.models.AgentModel;
+import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.skills.dynamic.DynamicKick;
 import sk.fiit.jim.agent.skills.dynamic.DynamicKick2;
+import sk.fiit.robocup.library.geometry.Vector3;
 import sk.fiit.robocup.library.geometry.Vector3D;
+import sk.fiit.robocup.library.geometry.Vector3DTest;
 
 /**
  * 
