@@ -86,7 +86,7 @@ public class IkMain
 //        br.flush();
 //        br.close();
         
-        ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/4, 0, 0));
+        ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(Math.toRadians(-90), Math.toRadians(-25), Math.toRadians(-25), Math.toRadians(-130), Math.toRadians(-45), Math.toRadians(-45)));
         System.out.println(frk.getEndPoint() + " " + frk.getOrientation());
         Point3D point6 = frk.getEndPoint();
         Orientation orientation6 = frk.getOrientation();
