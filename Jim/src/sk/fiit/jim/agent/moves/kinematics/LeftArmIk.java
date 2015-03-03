@@ -77,7 +77,7 @@ class LeftArmIk
         double d = sqrt((sx - T03) * (sx - T03) + (sy - T13) * (sy - T13) + (sz - T23) * (sz - T23));
         double nominator = l3 * l3 + l4 * l4 - d * d;
         double denominator = 2 * l3 * l4;
-        theta4 = -1 * (PI - acos(nominator / denominator));
+        theta4 = -1 * (PI - acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator)));
         return theta4;
     }
 
@@ -87,7 +87,7 @@ class LeftArmIk
         double T11 = T.getValueAt(1, 1);
         double nominator = T13 - l1 - ((l4 * sin(theta4) * T11) / (cos(theta4)));
         double denominator = l3 + l4 * cos(theta4) + l4 * (sin(theta4) * sin(theta4)) / cos(theta4);
-        theta2 = acos(nominator / denominator);
+        theta2 = acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
         // + PI / 2 in result
         return theta2;
     }
@@ -100,7 +100,7 @@ class LeftArmIk
 
     double getTheta3_1()
     {
-        theta3 = -1 * asin(T.getValueAt(1, 2) / (sin(theta2 - PI / 2)));
+        theta3 = -1 * asin(KinematicUtils.validateArcsinArccosRange(T.getValueAt(1, 2) / (sin(theta2 - PI / 2))));
         return theta3;
     }
 
@@ -122,12 +122,12 @@ class LeftArmIk
                     + (cos(theta2 - PI / 2) * cos(theta2 - PI / 2) * sin(-1 * theta3) * sin(-1 * theta3))
                     / (cos(-1 * theta3));
             // +- theta1
-            theta1 = acos(nominator / denominator);
+            theta1 = acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
         }
         else if((abs(theta3) == PI / 2) && theta2 != 0.0)
         {
             // +- theta1
-            theta1 = acos((T.getValueAt(0, 3)) / (cos(theta2 - PI / 2) * sin(-1 * theta3)));
+            theta1 = acos(KinematicUtils.validateArcsinArccosRange((T.getValueAt(0, 3)) / (cos(theta2 - PI / 2) * sin(-1 * theta3))));
         }
         else if((abs(theta3) == PI / 2) && theta2 == 0.0)
         {
@@ -135,7 +135,7 @@ class LeftArmIk
             Matrix T_ = T.mult(Matrix.A_END_LEFT_ARM.inverse());
             double T_13 = T_.getValueAt(1, 3);
             // +- theta1
-            theta1 = acos(T_13 / l3);
+            theta1 = acos(KinematicUtils.validateArcsinArccosRange(T_13 / l3));
         }
         return theta1;
     }
