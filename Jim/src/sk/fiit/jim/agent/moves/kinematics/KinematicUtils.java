@@ -18,7 +18,7 @@ final class KinematicUtils
      * @see Double
      * @see Java Language Specification
      */
-    static final double EPSILON = 0.01;
+    static final double EPSILON = 0.1;
 
     private KinematicUtils()
     {

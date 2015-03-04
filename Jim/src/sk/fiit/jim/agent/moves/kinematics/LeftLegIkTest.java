@@ -7,7 +7,7 @@ import static java.lang.Math.*;
 
 public class LeftLegIkTest
 {
-    private static double EPSILON = 2.0;
+    private static double EPSILON = 4.0;
     
     private static boolean almostEqual(double d1, double d2)
     {
@@ -16,6 +16,8 @@ public class LeftLegIkTest
     
     public static void main(String[] args)
     {
+        long all = 0;
+        long wrong = 0;
         Kinematics kinematics = Kinematics.getInstance();
         for(double t1 = Joint.LLE1.getLow(); t1 <= Joint.LLE1.getUp(); t1++)
         {
@@ -29,13 +31,22 @@ public class LeftLegIkTest
                         {
                             for(double t6 = Joint.LLE6.getLow(); t6 <= Joint.LLE6.getUp(); t6++)
                             {
+                                all++;
                                 ForwardKinematicResult forwKinResult = new ForwardKinematicResult(kinematics.getForwardLeftLeg(toRadians(t1), toRadians(t2), toRadians(t3), toRadians(t4), toRadians(t5), toRadians(t6)));
-//                                ForwardKinematicResult forwKinResult = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/4, 0, 0));
                                 Map<Joint, Double> inverseKinResult = kinematics.getInverseLeftLeg(forwKinResult.getEndPoint(), forwKinResult.getOrientation());
                                 if(inverseKinResult.size() != 6 || !validateJointValues(inverseKinResult, t1, t2, t3, t4, t5, t6))
                                 {
-                                    System.out.println(inverseKinResult);
-                                    System.out.println("theta1: " + t1 + ", theta2: " + t2 + ", theta3: " + t3 + ", theta4: " + t4 + ", theta5: " + t5 + ", theta6: " + t6);
+                                    wrong++;
+//                                    System.out.println(inverseKinResult);
+//                                    System.out.println("theta1: " + t1 + ", theta2: " + t2 + ", theta3: " + t3 + ", theta4: " + t4 + ", theta5: " + t5 + ", theta6: " + t6);
+//                                    if(inverseKinResult.size() == 6) {
+//                                        ForwardKinematicResult validation = new ForwardKinematicResult(
+//                                                kinematics.getForwardLeftLeg(
+//                                                        toRadians(inverseKinResult.get(Joint.LLE1)), toRadians(inverseKinResult.get(Joint.LLE2)), toRadians(inverseKinResult.get(Joint.LLE3)), toRadians(inverseKinResult.get(Joint.LLE4)), toRadians(inverseKinResult.get(Joint.LLE5)), toRadians(inverseKinResult.get(Joint.LLE6))));
+//                                        System.out.println("original: " + forwKinResult.getEndPoint() + " " + forwKinResult.getOrientation());
+//                                        System.out.println("validated: " + validation.getEndPoint() + " " + validation.getOrientation());
+//                                    }
+//                                    System.out.println("----------------------------------------");
                                 }
                             }
                         }
@@ -43,6 +54,8 @@ public class LeftLegIkTest
                 }
             }
         }
+        System.out.println("all: " + all);
+        System.out.println("wrong: " + wrong);
     }
 
     private static boolean validateJointValues(Map<Joint, Double> inverseKinResult, double t1, double t2, double t3,
