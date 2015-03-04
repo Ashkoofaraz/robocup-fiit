@@ -1,8 +1,10 @@
-package sk.fiit.jim.agent.moves.kinematics;
+package sk.fiit.jim.agent.moves.kinematics.test;
 
 import java.util.Map;
 
 import sk.fiit.jim.agent.moves.Joint;
+import sk.fiit.jim.agent.moves.kinematics.ForwardKinematicResult;
+import sk.fiit.jim.agent.moves.kinematics.Kinematics;
 import static java.lang.Math.*;
 
 public class LeftLegIkTest
@@ -37,16 +39,16 @@ public class LeftLegIkTest
                                 if(inverseKinResult.size() != 6 || !validateJointValues(inverseKinResult, t1, t2, t3, t4, t5, t6))
                                 {
                                     wrong++;
-//                                    System.out.println(inverseKinResult);
-//                                    System.out.println("theta1: " + t1 + ", theta2: " + t2 + ", theta3: " + t3 + ", theta4: " + t4 + ", theta5: " + t5 + ", theta6: " + t6);
-//                                    if(inverseKinResult.size() == 6) {
-//                                        ForwardKinematicResult validation = new ForwardKinematicResult(
-//                                                kinematics.getForwardLeftLeg(
-//                                                        toRadians(inverseKinResult.get(Joint.LLE1)), toRadians(inverseKinResult.get(Joint.LLE2)), toRadians(inverseKinResult.get(Joint.LLE3)), toRadians(inverseKinResult.get(Joint.LLE4)), toRadians(inverseKinResult.get(Joint.LLE5)), toRadians(inverseKinResult.get(Joint.LLE6))));
-//                                        System.out.println("original: " + forwKinResult.getEndPoint() + " " + forwKinResult.getOrientation());
-//                                        System.out.println("validated: " + validation.getEndPoint() + " " + validation.getOrientation());
-//                                    }
-//                                    System.out.println("----------------------------------------");
+                                    System.out.println(inverseKinResult);
+                                    System.out.println("theta1: " + t1 + ", theta2: " + t2 + ", theta3: " + t3 + ", theta4: " + t4 + ", theta5: " + t5 + ", theta6: " + t6);
+                                    if(inverseKinResult.size() == 6) {
+                                        ForwardKinematicResult validation = new ForwardKinematicResult(
+                                                kinematics.getForwardLeftLeg(
+                                                        toRadians(inverseKinResult.get(Joint.LLE1)), toRadians(inverseKinResult.get(Joint.LLE2)), toRadians(inverseKinResult.get(Joint.LLE3)), toRadians(inverseKinResult.get(Joint.LLE4)), toRadians(inverseKinResult.get(Joint.LLE5)), toRadians(inverseKinResult.get(Joint.LLE6))));
+                                        System.out.println("original: " + forwKinResult.getEndPoint() + " " + forwKinResult.getOrientation());
+                                        System.out.println("validated: " + validation.getEndPoint() + " " + validation.getOrientation());
+                                    }
+                                    System.out.println("----------------------------------------");
                                 }
                             }
                         }

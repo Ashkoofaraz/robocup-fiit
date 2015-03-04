@@ -1,11 +1,10 @@
-package sk.fiit.jim.agent.moves.kinematics;
+package sk.fiit.jim.agent.moves.kinematics.test;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 
-import sk.fiit.jim.agent.moves.Joint;
+import sk.fiit.jim.agent.moves.kinematics.ForwardKinematicResult;
+import sk.fiit.jim.agent.moves.kinematics.Kinematics;
+import sk.fiit.jim.agent.moves.kinematics.Orientation;
 import sk.fiit.robocup.library.geometry.Point3D;
 
 /**
