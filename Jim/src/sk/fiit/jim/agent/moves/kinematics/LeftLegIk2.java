@@ -86,7 +86,7 @@ class LeftLegIk2
         double T__03 = T__.getValueAt(0, 3);
         double T__13 = T__.getValueAt(1, 3);
         double nominator = T__13 * (l2 + l1 * cos(theta4)) + l1 * T__03 * sin(theta4);
-        double denominator = l1 * l1 * sin(theta4) * sin(theta4) + (l2 + l1 * cos(theta4));
+        double denominator = (l1 * l1 * sin(theta4) * sin(theta4)) + ((l2 + l1 * cos(theta4) * (l2 + l1 * cos(theta4))));
         double theta5 = asin(KinematicUtils.validateArcsinArccosRange(-nominator / denominator));
         if(KinematicUtils.validateJointRangeInRadians(Joint.LLE5, theta5))
         {
