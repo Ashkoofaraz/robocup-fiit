@@ -55,12 +55,12 @@ class CsvOutput
     
     public void addJointAngles(JointAngles original, Point3D origEndpoint, Orientation origOrientation, JointAngles ikAngles, Point3D ikEndpoint, Orientation ikOrientation)
     {
-        String originalTheta1 = String.format(Locale.ENGLISH, "%d", original.theta1);
-        String originalTheta2 = String.format(Locale.ENGLISH, "%d", original.theta2);
-        String originalTheta3 = String.format(Locale.ENGLISH, "%d", original.theta3);
-        String originalTheta4 = String.format(Locale.ENGLISH, "%d", original.theta4);
-        String originalTheta5 = String.format(Locale.ENGLISH, "%d", original.theta5);
-        String originalTheta6 = String.format(Locale.ENGLISH, "%d", original.theta6);
+        String originalTheta1 = String.format(Locale.ENGLISH, "%d", (int)original.theta1);
+        String originalTheta2 = String.format(Locale.ENGLISH, "%d", (int)original.theta2);
+        String originalTheta3 = String.format(Locale.ENGLISH, "%d", (int)original.theta3);
+        String originalTheta4 = String.format(Locale.ENGLISH, "%d", (int)original.theta4);
+        String originalTheta5 = String.format(Locale.ENGLISH, "%d", (int)original.theta5);
+        String originalTheta6 = String.format(Locale.ENGLISH, "%d", (int)original.theta6);
         String originalX = String.format(Locale.ENGLISH, "%.2f", origEndpoint.x);
         String originalY = String.format(Locale.ENGLISH, "%.2f", origEndpoint.y);
         String originalZ = String.format(Locale.ENGLISH, "%.2f", origEndpoint.z);
@@ -68,12 +68,12 @@ class CsvOutput
         String originalAy = String.format(Locale.ENGLISH, "%.2f", origOrientation.getAyRadians());
         String originalAz = String.format(Locale.ENGLISH, "%.2f", origOrientation.getAzRadians());
         
-        String ikTheta1 = String.format(Locale.ENGLISH, "%d", ikAngles.theta1);
-        String ikTheta2 = String.format(Locale.ENGLISH, "%d", ikAngles.theta2);
-        String ikTheta3 = String.format(Locale.ENGLISH, "%d", ikAngles.theta3);
-        String ikTheta4 = String.format(Locale.ENGLISH, "%d", ikAngles.theta4);
-        String ikTheta5 = String.format(Locale.ENGLISH, "%d", ikAngles.theta5);
-        String ikTheta6 = String.format(Locale.ENGLISH, "%d", ikAngles.theta6);
+        String ikTheta1 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta1);
+        String ikTheta2 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta2);
+        String ikTheta3 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta3);
+        String ikTheta4 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta4);
+        String ikTheta5 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta5);
+        String ikTheta6 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta6);
         String ikX = String.format(Locale.ENGLISH, "%.2f", ikEndpoint.x);
         String ikY = String.format(Locale.ENGLISH, "%.2f", ikEndpoint.y);
         String ikZ = String.format(Locale.ENGLISH, "%.2f", ikEndpoint.z);
