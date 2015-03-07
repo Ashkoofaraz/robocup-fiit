@@ -190,7 +190,7 @@ public class Kinematics
      */
     public Map<Joint, Double> getInverseLeftArm(Point3D endpoint, Orientation angle)
     {
-        return new LeftArmIk(endpoint, angle).getResult();
+        return new LeftArmIk2(endpoint, angle).getResult();
     }
 
     /**
