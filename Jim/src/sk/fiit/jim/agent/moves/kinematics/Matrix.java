@@ -709,7 +709,7 @@ public final class Matrix
         result.values[1][1] = cos(theta) * cos(alpha);
         result.values[1][2] = -sin(alpha);
         result.values[1][3] = -sin(alpha) * d;
-        result.values[2][0] = sin(theta) * cos(alpha);
+        result.values[2][0] = sin(theta) * sin(alpha);
         result.values[2][1] = cos(theta) * sin(alpha);
         result.values[2][2] = cos(alpha);
         result.values[2][3] = cos(alpha) * d;
