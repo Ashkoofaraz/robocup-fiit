@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import sk.fiit.jim.agent.moves.kinematics.Orientation;
@@ -55,31 +54,31 @@ class CsvOutput
     
     public void addJointAngles(JointAngles original, Point3D origEndpoint, Orientation origOrientation, JointAngles ikAngles, Point3D ikEndpoint, Orientation ikOrientation)
     {
-        String originalTheta1 = String.format(Locale.ENGLISH, "%d", (int)original.theta1);
-        String originalTheta2 = String.format(Locale.ENGLISH, "%d", (int)original.theta2);
-        String originalTheta3 = String.format(Locale.ENGLISH, "%d", (int)original.theta3);
-        String originalTheta4 = String.format(Locale.ENGLISH, "%d", (int)original.theta4);
-        String originalTheta5 = String.format(Locale.ENGLISH, "%d", (int)original.theta5);
-        String originalTheta6 = String.format(Locale.ENGLISH, "%d", (int)original.theta6);
-        String originalX = String.format(Locale.ENGLISH, "%.2f", origEndpoint.x);
-        String originalY = String.format(Locale.ENGLISH, "%.2f", origEndpoint.y);
-        String originalZ = String.format(Locale.ENGLISH, "%.2f", origEndpoint.z);
-        String originalAx = String.format(Locale.ENGLISH, "%.2f", origOrientation.getAxRadians());
-        String originalAy = String.format(Locale.ENGLISH, "%.2f", origOrientation.getAyRadians());
-        String originalAz = String.format(Locale.ENGLISH, "%.2f", origOrientation.getAzRadians());
+        String originalTheta1 = original != null ? String.format(Locale.ENGLISH, "%d", (int)original.theta1) : " ";
+        String originalTheta2 = original != null ? String.format(Locale.ENGLISH, "%d", (int)original.theta2) : " ";
+        String originalTheta3 = original != null ? String.format(Locale.ENGLISH, "%d", (int)original.theta3) : " ";
+        String originalTheta4 = original != null ? String.format(Locale.ENGLISH, "%d", (int)original.theta4) : " ";
+        String originalTheta5 = original != null ? String.format(Locale.ENGLISH, "%d", (int)original.theta5) : " ";
+        String originalTheta6 = original != null ? String.format(Locale.ENGLISH, "%d", (int)original.theta6) : " ";
+        String originalX = origEndpoint != null ? String.format(Locale.ENGLISH, "%.2f", origEndpoint.x) : " ";
+        String originalY = origEndpoint != null ? String.format(Locale.ENGLISH, "%.2f", origEndpoint.y) : " ";
+        String originalZ = origEndpoint != null ? String.format(Locale.ENGLISH, "%.2f", origEndpoint.z) : " ";
+        String originalAx = origOrientation != null ? String.format(Locale.ENGLISH, "%.2f", origOrientation.getAxRadians()) : " ";
+        String originalAy = origOrientation != null ? String.format(Locale.ENGLISH, "%.2f", origOrientation.getAyRadians()) : " ";
+        String originalAz = origOrientation != null ? String.format(Locale.ENGLISH, "%.2f", origOrientation.getAzRadians()) : " ";
         
-        String ikTheta1 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta1);
-        String ikTheta2 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta2);
-        String ikTheta3 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta3);
-        String ikTheta4 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta4);
-        String ikTheta5 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta5);
-        String ikTheta6 = String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta6);
-        String ikX = String.format(Locale.ENGLISH, "%.2f", ikEndpoint.x);
-        String ikY = String.format(Locale.ENGLISH, "%.2f", ikEndpoint.y);
-        String ikZ = String.format(Locale.ENGLISH, "%.2f", ikEndpoint.z);
-        String ikAx = String.format(Locale.ENGLISH, "%.2f", ikOrientation.getAxRadians());
-        String ikAy = String.format(Locale.ENGLISH, "%.2f", ikOrientation.getAyRadians());
-        String ikAz = String.format(Locale.ENGLISH, "%.2f", ikOrientation.getAzRadians());
+        String ikTheta1 = ikAngles != null ? String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta1) : " ";
+        String ikTheta2 = ikAngles != null ? String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta2) : " ";
+        String ikTheta3 = ikAngles != null ? String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta3) : " ";
+        String ikTheta4 = ikAngles != null ? String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta4) : " ";
+        String ikTheta5 = ikAngles != null ? String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta5) : " ";
+        String ikTheta6 = ikAngles != null ? String.format(Locale.ENGLISH, "%d", (int)ikAngles.theta6) : " ";
+        String ikX = ikEndpoint != null ? String.format(Locale.ENGLISH, "%.2f", ikEndpoint.x) : " ";
+        String ikY = ikEndpoint != null ? String.format(Locale.ENGLISH, "%.2f", ikEndpoint.y) : " ";
+        String ikZ = ikEndpoint != null ? String.format(Locale.ENGLISH, "%.2f", ikEndpoint.z) : " ";
+        String ikAx = ikOrientation != null ? String.format(Locale.ENGLISH, "%.2f", ikOrientation.getAxRadians()) : " ";
+        String ikAy = ikOrientation != null ? String.format(Locale.ENGLISH, "%.2f", ikOrientation.getAyRadians()) : " ";
+        String ikAz = ikOrientation != null ? String.format(Locale.ENGLISH, "%.2f", ikOrientation.getAzRadians()) : " ";
         
         StringBuilder outLine = new StringBuilder();
         outLine.append(originalTheta1);
