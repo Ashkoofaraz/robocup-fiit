@@ -31,8 +31,8 @@ public enum Joint implements Serializable {
             45.0, Vector3D.cartesian(0, -0.03, 0.035), Vector3D.Y_AXIS), RAE1(
             -120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.X_AXIS), RAE2(-95.0,
             1.0, Vector3D.cartesian(-0.01, -0.02, 0), Vector3D.Z_AXIS), RAE3(
-            -90.0, 90.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS), RAE4(-120.0,
-            120.0, Vector3D.cartesian(0, -0.05, 0), Vector3D.Z_AXIS),
+            -120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS), RAE4(-1.0,
+            90.0, Vector3D.cartesian(0, -0.05, 0), Vector3D.Z_AXIS),
 
     LLE1(-90.0, 1.0, Vector3D.ZERO_VECTOR, Vector3D.cartesian(-0.7071, 0,
             -0.7071)), LLE2(-25.0, 45.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS), LLE3(
@@ -42,8 +42,8 @@ public enum Joint implements Serializable {
             25.0, Vector3D.cartesian(0, -0.03, 0.035), Vector3D.Y_AXIS), LAE1(
             -120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.X_AXIS), LAE2(-1.0,
             95.0, Vector3D.cartesian(0.01, -0.02, 0), Vector3D.Z_AXIS), LAE3(
-            -90.0, 90.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS), LAE4(-120.0,
-            120.0, Vector3D.cartesian(0, -0.05, 0), Vector3D.Z_AXIS);
+            -120.0, 120.0, Vector3D.ZERO_VECTOR, Vector3D.Y_AXIS), LAE4(-90.0,
+            1.0, Vector3D.cartesian(0, -0.05, 0), Vector3D.Z_AXIS);
 
     private Vector3D anchor;
     private Vector3D axis;
