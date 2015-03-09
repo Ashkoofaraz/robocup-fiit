@@ -63,8 +63,8 @@ public enum BodyPart {
 			-0.055), 0.125, Joint.LLE5, Shape.SPHERE, 0.01),
 
 	RFOOT(RANKLE, Vector3D.cartesian(0, 0.03, -0.035), 0.2, Joint.RLE6,
-			Shape.BOX, 0.08, 0.16, 0.03), LFOOT(LANKLE, Vector3D.cartesian(0,
-			0.03, -0.035), 0.2, Joint.LLE6, Shape.BOX, 0.08, 0.16, 0.03);
+			Shape.BOX, 0.08, 0.16, 0.02), LFOOT(LANKLE, Vector3D.cartesian(0,
+			0.03, -0.035), 0.2, Joint.LLE6, Shape.BOX, 0.08, 0.16, 0.02);
 
 	private final BodyPart parent;
 	private final Vector3D translation;
