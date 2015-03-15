@@ -866,4 +866,7 @@ public class AgentModel implements ParsedDataObserver, Serializable{
         return bodyPartRelPositions;
     }
 
+    public Vector3D getCenterOfMass() {
+        return centerOfMass;
+    }
 }
