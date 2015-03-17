@@ -243,4 +243,9 @@ public class Kinematics
     {
         return new RightLegIk(endpoint, angle).getResult();
     }
+    
+    public Map<Joint, Double> getInverseLeftLegWithoutOrientation(Point3D endpoint)
+    {
+        return new LeftLegIk3(endpoint).getResult();
+    }
 }
