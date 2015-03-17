@@ -70,7 +70,7 @@ public abstract class DynamicMove extends DynamicSkill
                 throw new IllegalArgumentException("unknown limb: " + limb);
             }
             System.out.println("point: " + points.get(i) + ", orientation: " + orientations.get(i));
-            System.out.println(result);
+            System.out.println("Inverse Kinematics: " + result);
             Phase phase = createPhase(300, result);
             phases.add(phase);
         }
