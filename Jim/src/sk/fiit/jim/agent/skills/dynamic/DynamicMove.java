@@ -40,6 +40,20 @@ public abstract class DynamicMove extends DynamicSkill
      */
     public LowSkill createDynamicMove(String limb, List<Point3D> points, List<Orientation> orientations)
     {
+        List<Phase> phases = this.createPhasesDynamicMove(limb, points, orientations);
+        
+        UUID uuid = UUID.randomUUID();
+        String skillName = "dynamic_move" + uuid.toString(); 
+        
+        LowSkill ls = addSkill(skillName);
+        addPhases(phases, skillName);
+        System.out.println("addedPhases");
+        return ls;
+    }
+    
+    
+    public List<Phase> createPhasesDynamicMove(String limb, List<Point3D> points, List<Orientation> orientations)
+    {
         if(points.size() != orientations.size())
         {
             throw new IllegalArgumentException("points size must equal orientations size");
@@ -74,12 +88,8 @@ public abstract class DynamicMove extends DynamicSkill
             Phase phase = createPhase(300, result);
             phases.add(phase);
         }
-        UUID uuid = UUID.randomUUID();
-        String skillName = "dynamic_move" + uuid.toString(); 
-        
-        LowSkill ls = addSkill(skillName);
-        addPhases(phases, skillName);
-        System.out.println("addedPhases");
-        return ls;
+        System.out.println("phases created");
+        return phases;
     }
+    
 }

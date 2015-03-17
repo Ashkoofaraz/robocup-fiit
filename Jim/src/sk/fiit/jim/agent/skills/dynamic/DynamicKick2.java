@@ -63,10 +63,12 @@ public class DynamicKick2 extends DynamicMove{
 		if(side.equals("right"))
 		{
 			baseSkill = LowSkills.get("kick_right_normal_stand");
+//			baseSkill = LowSkills.get("kick_step_strong_right");
 		}
 		else
 		{
 			baseSkill = LowSkills.get("kick_left_normal_stand");
+//			baseSkill = LowSkills.get("kick_step_strong_left");
 		}
 		
 		return getPhasesForSkill(baseSkill);		
@@ -115,16 +117,22 @@ public class DynamicKick2 extends DynamicMove{
 //      Orientation orientation6 = Orientation.fromRadians(0.0, 0.0, 0.0);
 
    // prednozenie s pokrcenym kolenom
-      ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/2, 0, 0));
-      System.out.println(frk.getEndPoint() + " " + frk.getOrientation());
-      Point3D point6 = frk.getEndPoint();
-      Orientation orientation6 = frk.getOrientation();
-      
-      ForwardKinematicResult frk2 = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/4, 0, 0));
-      System.out.println(frk2.getEndPoint() + " " + frk.getOrientation());
-      Point3D point7 = frk2.getEndPoint();
-      Orientation orientation7 = frk2.getOrientation();
-      
+//      ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/2, 0, 0));
+//      System.out.println(frk.getEndPoint() + " " + frk.getOrientation());
+//      Point3D point6 = frk.getEndPoint();
+//      Orientation orientation6 = frk.getOrientation();
+//      
+//      ForwardKinematicResult frk2 = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0, Math.PI/4, Math.PI/2, -Math.PI/4, 0, 0));
+//      System.out.println(frk2.getEndPoint() + " " + frk.getOrientation());
+//      Point3D point7 = frk2.getEndPoint();
+//      Orientation orientation7 = frk2.getOrientation();
+	    
+	    Point3D point6 = new Point3D(-107, 145, -250);
+        Orientation orientation6 = Orientation.fromRadians(0, 0, 0);
+        
+//        Point3D point7 = new Point3D(-160, 98, -189);
+//        Orientation orientation7 = Orientation.fromRadians(-0.31, 0.29, 0.74);
+        
 		List<Point3D> points = new ArrayList<>();
 		List<Orientation> orientations = new ArrayList<>();
 //		points.add(point1);
@@ -133,7 +141,7 @@ public class DynamicKick2 extends DynamicMove{
 //		points.add(point4);
 //		points.add(point5);
 		points.add(point6);
-		points.add(point7);
+//		points.add(point7);
 
 //		orientations.add(orientation1);
 //		orientations.add(orientation2);
@@ -141,7 +149,7 @@ public class DynamicKick2 extends DynamicMove{
 //		orientations.add(orientation4);
 //		orientations.add(orientation5);
 		orientations.add(orientation6);
-		orientations.add(orientation7);
+//		orientations.add(orientation7);
 
 		Tuple retVal = new Tuple();
 		retVal.points = points;
@@ -194,7 +202,7 @@ public class DynamicKick2 extends DynamicMove{
 	private void alterKickPhases(List<Phase> phases, String side) 
     {
         Tuple t = createSequenceLeftLeg();
-      List<Phase> newPhases = getPhasesForSkill(createDynamicMove("leftLeg", t.points, t.orientations));
+      List<Phase> newPhases = createPhasesDynamicMove("leftLeg", t.points, t.orientations);
 
         List<Phase> alteredPhases = new ArrayList<>();
         Map<Joint, Double> result = new HashMap<>();
@@ -204,6 +212,7 @@ public class DynamicKick2 extends DynamicMove{
         alteredPhases.addAll(newPhases);
         
         phases.remove(4);
+//        phases.remove(5);
         phases.addAll(4, alteredPhases);            
     }
 }
