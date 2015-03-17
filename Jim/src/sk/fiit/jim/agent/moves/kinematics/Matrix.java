@@ -784,7 +784,7 @@ public final class Matrix
      * @see Matrix#createTransformation(double, double, double, double, double,
      *      double)
      */
-    static Matrix createTransformation(Point3D end, Orientation angle)
+    public static Matrix createTransformation(Point3D end, Orientation angle)
     {
         double rx = angle.getAxRadians();
         double ry = angle.getAyRadians();
@@ -957,6 +957,22 @@ public final class Matrix
             }
         }
         return result;
+    }
+
+    /**
+     * <p>
+     * Creates new translation matrix in 3D space with size {@code 4×4}.
+     * </p>
+     * 
+     * @param end Endpoint coordinates.
+     * 
+     * @return translation matrix.
+     * 
+     * @see #createTranslation(double, double, double)
+     */
+    public static Matrix createTranslation(Point3D end)
+    {
+        return createTranslation(end.x, end.y, end.y);
     }
 
 }
