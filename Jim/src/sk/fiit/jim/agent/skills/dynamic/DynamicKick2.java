@@ -49,7 +49,7 @@ public class DynamicKick2 extends DynamicMove{
 		ArrayList<String> types = new ArrayList<String>();
 		types.add("kick");	 
 		
-		LowSkill ls = addSkill("dynamic_kick" + ui);
+		LowSkill ls = addSkill("dynamic_kick_" + ui);
 
 	    alterKickPhases(phases, side);
 			
@@ -127,11 +127,11 @@ public class DynamicKick2 extends DynamicMove{
 //      Point3D point7 = frk2.getEndPoint();
 //      Orientation orientation7 = frk2.getOrientation();
 	    
-	    Point3D point6 = new Point3D(-107, 145, -250);
-        Orientation orientation6 = Orientation.fromRadians(0, 0, 0);
+//	    Point3D point6 = new Point3D(-107, 145, -250);
+//        Orientation orientation6 = Orientation.fromRadians(0, 0, 0);
         
-//        Point3D point7 = new Point3D(-160, 98, -189);
-//        Orientation orientation7 = Orientation.fromRadians(-0.31, 0.29, 0.74);
+        Point3D point7 = new Point3D(-130, 120, -220);
+        Orientation orientation7 = Orientation.fromRadians(0, 0, 0);
         
 		List<Point3D> points = new ArrayList<>();
 		List<Orientation> orientations = new ArrayList<>();
@@ -140,16 +140,16 @@ public class DynamicKick2 extends DynamicMove{
 //		points.add(point3);
 //		points.add(point4);
 //		points.add(point5);
-		points.add(point6);
-//		points.add(point7);
+//		points.add(point6);
+		points.add(point7);
 
 //		orientations.add(orientation1);
 //		orientations.add(orientation2);
 //		orientations.add(orientation3);
 //		orientations.add(orientation4);
 //		orientations.add(orientation5);
-		orientations.add(orientation6);
-//		orientations.add(orientation7);
+//		orientations.add(orientation6);
+		orientations.add(orientation7);
 
 		Tuple retVal = new Tuple();
 		retVal.points = points;
@@ -198,7 +198,6 @@ public class DynamicKick2 extends DynamicMove{
         return retVal;
     }
 	
-	// TODO tu mam upraveny Mestanikov pohyb tak, ze dvihne nohu.
 	private void alterKickPhases(List<Phase> phases, String side) 
     {
         Tuple t = createSequenceLeftLeg();
