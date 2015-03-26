@@ -88,7 +88,7 @@ public abstract class Tactic {
 	    if (EnvironmentModel.isKickOffPlayMode() == true) {
             if(HighSkillRunner.getPlanner().getNumberOfPlannedHighSkills() == 0
                     && HighSkillRunner.getPlanner().getcurrentHighSkill().isEnded()) {
-                starterTactic.runStart();
+                this.run();
             }
             ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "KICK OFF");
             return;
