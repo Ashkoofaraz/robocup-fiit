@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import sk.fiit.jim.agent.AgentInfo;
+import sk.fiit.jim.agent.highskill.Beam;
 import sk.fiit.jim.agent.models.AgentModel;
 import sk.fiit.jim.agent.models.BodyPart;
+import sk.fiit.jim.agent.models.EnvironmentModel;
+import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
@@ -17,13 +21,19 @@ import sk.fiit.jim.agent.moves.kinematics.Kinematics;
 import sk.fiit.jim.agent.moves.kinematics.Orientation;
 import sk.fiit.jim.agent.skills.dynamic.DynamicKick.Tuple;
 import sk.fiit.robocup.library.geometry.Point3D;
+import sk.fiit.robocup.library.geometry.Vector3D;
 
 public class DynamicKick2 extends DynamicMove{
 
+    private static boolean kicked = false;
+    
 	@Override
 	public LowSkill pickLowSkill() {
-		// TODO Auto-generated method stub
-		return createDynamicKick("left");
+        if(!kicked) {
+            kicked = true;
+            return createDynamicKick("left");
+        }
+        return null;
 	}
 
 	@Override
@@ -74,23 +84,6 @@ public class DynamicKick2 extends DynamicMove{
 		return getPhasesForSkill(baseSkill);		
 	}
 	
-	/*
-	 * Vytvara kop
-	 * Poradie faz je dolezite, budu na seba nadvazovat v poradi ako su pridane do zoznamu
-	 */
-//	private void alterKickPhases(List<Phase> phases, String side) 
-//	{
-//		Tuple t = createSequenceRightArm();
-////		List<Phase> alteredPhases = getPhasesForSkill(createDynamicMove("rightArm", t.points, t.orientations));
-//
-//		List<Phase> alteredPhases = new ArrayList<>();
-//		Map<Joint, Double> result = new HashMap<>();
-//		result.put(Joint.LLE1, -50.0);
-//        alteredPhases.add(createPhase(300, result ));
-//		phases.remove(3);
-//		phases.addAll(3, alteredPhases);			
-//	}
-	
 	private Tuple createSequenceLeftLeg() {
 //		Point3D point1 = new Point3D(0.0, 55.0, -385.0);
 //		Orientation orientation1 = Orientation.fromRadians(0.0, 0.0, 0.0);
@@ -130,8 +123,11 @@ public class DynamicKick2 extends DynamicMove{
 //	    Point3D point6 = new Point3D(-107, 145, -250);
 //        Orientation orientation6 = Orientation.fromRadians(0, 0, 0);
         
-        Point3D point7 = new Point3D(-130, 120, -220);
-        Orientation orientation7 = Orientation.fromRadians(0, 0, 0);
+	    Point3D point7 = new Point3D(-193.6619, 74.1639, -197.6524);
+        Orientation orientation7 = Orientation.fromRadians(0.1263, 0.7268, 0.3295);
+        
+//        Point3D point8 = new Point3D(-203.6619, 94.1639, -217.6524);
+//        Orientation orientation8 = Orientation.fromRadians(0.1263, 0.7268, 0.3295);
         
 		List<Point3D> points = new ArrayList<>();
 		List<Orientation> orientations = new ArrayList<>();
@@ -142,6 +138,7 @@ public class DynamicKick2 extends DynamicMove{
 //		points.add(point5);
 //		points.add(point6);
 		points.add(point7);
+//		points.add(point8);
 
 //		orientations.add(orientation1);
 //		orientations.add(orientation2);
@@ -150,6 +147,7 @@ public class DynamicKick2 extends DynamicMove{
 //		orientations.add(orientation5);
 //		orientations.add(orientation6);
 		orientations.add(orientation7);
+//		orientations.add(orientation8);
 
 		Tuple retVal = new Tuple();
 		retVal.points = points;
@@ -204,14 +202,17 @@ public class DynamicKick2 extends DynamicMove{
       List<Phase> newPhases = createPhasesDynamicMove("leftLeg", t.points, t.orientations);
 
         List<Phase> alteredPhases = new ArrayList<>();
-        Map<Joint, Double> result = new HashMap<>();
-//        result.put(Joint.LLE1, -50.0);
+//        Map<Joint, Double> result = new HashMap<>();
+//        result.put(Joint.LLE2, 45.0);
+//        result.put(Joint.LLE3, 80.0);
+//        result.put(Joint.LLE5, 40.0);
 //        alteredPhases.add(createPhase(300, result ));
         
         alteredPhases.addAll(newPhases);
         
         phases.remove(4);
-//        phases.remove(5);
+//        phases.remove(4);
+//        phases.remove(4);
         phases.addAll(4, alteredPhases);            
     }
 }

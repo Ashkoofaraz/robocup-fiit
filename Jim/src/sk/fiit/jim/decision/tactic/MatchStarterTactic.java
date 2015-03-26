@@ -31,8 +31,9 @@ public class MatchStarterTactic {
 
 		// BEAM PLAYERS WITH ID 1,2 IN LEFT
 		case 1:
-			this.beamExec.BeamAgent(Vector3D.cartesian(-4, 7, 0.1));
-			WorldModel.getInstance().getBall().setPosition(Vector3D.cartesian(0, 7, 0.1));
+		    // mestanikove
+			this.beamExec.BeamAgent(Vector3D.cartesian(-0.2, -0.05, 0.4));
+//			WorldModel.getInstance().getBall().setPosition(Vector3D.cartesian(0, 7, 0.1));
 			System.out.println("BEAM - LEFT 7");
 			break;
 		case 2:
