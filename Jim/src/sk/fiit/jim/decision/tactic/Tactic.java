@@ -6,6 +6,7 @@ import sk.fiit.jim.agent.highskill.BeamHighSkill;
 import sk.fiit.jim.agent.highskill.kick.KickHighSkill;
 import sk.fiit.jim.agent.highskill.move.MovementHighSkill;
 import sk.fiit.jim.agent.highskill.runner.HighSkillRunner;
+import sk.fiit.jim.agent.models.AgentModel;
 import sk.fiit.jim.agent.models.EnvironmentModel;
 import sk.fiit.jim.gui.ReplanWindow;
 import sk.fiit.robocup.library.geometry.Vector3D;
@@ -82,8 +83,20 @@ public abstract class Tactic {
 	 * Execute run if it is needed
 	 */
 	public void startTactic(List<String> currentSituations) {
-		if (EnvironmentModel.beamablePlayMode() == true) {
+	    
+	    // TODO temporary kickoff is first action
+	    if (EnvironmentModel.isKickOffPlayMode() == true) {
+            if(HighSkillRunner.getPlanner().getNumberOfPlannedHighSkills() == 0
+                    && HighSkillRunner.getPlanner().getcurrentHighSkill().isEnded()) {
+                starterTactic.runStart();
+            }
+            ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "KICK OFF");
+            return;
+        }
+	    
+	    if (EnvironmentModel.beamablePlayMode() == true) {
 			starterTactic.runBeam();
+			System.out.println("in Tactic");
 			ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "BEAM");
 			return;
 		}
