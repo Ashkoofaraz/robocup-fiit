@@ -1,6 +1,12 @@
 package sk.fiit.jim.agent.skills;
 
 import static sk.fiit.jim.log.LogType.HIGH_SKILL;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Locale;
+
 import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.communication.testframework.Message;
 import sk.fiit.jim.agent.communication.testframework.TestFrameworkCommunication;
@@ -14,6 +20,8 @@ import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phases;
 import sk.fiit.jim.log.Log;
+import sk.fiit.robocup.library.geometry.Point3D;
+import sk.fiit.robocup.library.geometry.Vector3D;
 //----------------------------------------------------------
 
 
@@ -39,6 +47,55 @@ import sk.fiit.jim.log.Log;
  */
 public abstract class HighSkill implements IHighSkill {
 	
+    private static class StateLogger
+    {
+        private static StateLogger INSTANCE = new StateLogger();
+        
+        private static BufferedWriter bw ;
+        static
+        {
+            try
+            {
+                bw = new BufferedWriter(new FileWriter("20140329_-040_9.csv"));
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        public void log(Vector3D point)
+        {
+            String line = String.format(Locale.GERMAN, "%.3f;%.3f\n", point.getX(), point.getY());
+            try
+            {
+                bw.write(line);
+                bw.flush();
+            }
+            catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        
+        private StateLogger()
+        {
+        }
+        
+        public static StateLogger getInstance()
+        {
+            return INSTANCE;
+        }
+
+        @Override
+        protected void finalize() throws Throwable
+        {
+            bw.close();
+            super.finalize();
+        }
+    }
+    
 	/**
 	 * The low skill that's currently being performed
 	 */
@@ -274,16 +331,30 @@ public abstract class HighSkill implements IHighSkill {
 	private static void logState(HighSkillState state) {
 	    System.out.println(state);
 	    AgentModel model = AgentModel.getInstance();
-	    System.out.println("Player position: " + model.getPosition());
-	    System.out.println("Player distance from ball: " + model.getDistanceFromBall());
-	    System.out.println("Center of Mass: " + model.getCenterOfMass());
+//	    System.out.println("Player position: " + model.getPosition());
+//	    System.out.println("Player distance from ball: " + model.getDistanceFromBall());
+//	    System.out.println("Center of Mass: " + model.getCenterOfMass());
+//	    AgentInfo.logState(WorldModel.getInstance().getBall().getPosition().toString());
 	    System.out.println("Ball pos: " + WorldModel.getInstance().getBall().getPosition());
-	    System.out.println("Ball relative: " + WorldModel.getInstance().getBall().getRelativePosition());
-        System.out.println("torso abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO));
-        System.out.println("torso rel pos: " +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
-        System.out.println("left foot abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LFOOT) );
-        System.out.println("left foot rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
-        System.out.println("left hand abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LLOWERARM) );
-        System.out.println("left hand rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
+	    StateLogger.getInstance().log(WorldModel.getInstance().getBall().getPosition());
+//	    FileWrite.createFile("36_1", WorldModel.getInstance().getBall().getPosition());
+//	    System.out.println("Ball relative: " + WorldModel.getInstance().getBall().getRelativePosition());
+//        System.out.println("torso abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO));
+//        System.out.println("torso rel pos: " +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
+//        System.out.println("left hip1 abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LHIP1) );
+//        System.out.println("left hip1 rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LHIP1));
+//        System.out.println("left hip2 abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LHIP2) );
+//        System.out.println("left hip2 rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LHIP2));
+//        System.out.println("left thigh abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LSHANK) );
+//        System.out.println("left thigh rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LSHANK));
+//        System.out.println("left shank abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LSHANK) );
+//        System.out.println("left shank rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LSHANK));
+//        System.out.println("left ankle abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LANKLE) );
+//        System.out.println("left ankle rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LANKLE));
+//        System.out.println("left foot abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LFOOT) );
+//        System.out.println("left foot rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
+//        
+//        System.out.println("left hand abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LLOWERARM) );
+//        System.out.println("left hand rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
 	}
 }
