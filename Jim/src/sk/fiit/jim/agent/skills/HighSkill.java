@@ -2,16 +2,12 @@ package sk.fiit.jim.agent.skills;
 
 import static sk.fiit.jim.log.LogType.HIGH_SKILL;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Locale;
 
 import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.communication.testframework.Message;
 import sk.fiit.jim.agent.communication.testframework.TestFrameworkCommunication;
 import sk.fiit.jim.agent.models.AgentModel;
-import sk.fiit.jim.agent.models.BodyPart;
 import sk.fiit.jim.agent.models.EnvironmentModel;
 import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.moves.LowSkill;
@@ -19,8 +15,8 @@ import sk.fiit.jim.agent.moves.LowSkill;
 // Nasledujuce importy tim 17 v tomto subore nema
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phases;
+import sk.fiit.jim.agent.moves.kinematics.test.StateLogger;
 import sk.fiit.jim.log.Log;
-import sk.fiit.robocup.library.geometry.Point3D;
 import sk.fiit.robocup.library.geometry.Vector3D;
 //----------------------------------------------------------
 
@@ -47,54 +43,8 @@ import sk.fiit.robocup.library.geometry.Vector3D;
  */
 public abstract class HighSkill implements IHighSkill {
 	
-    private static class StateLogger
-    {
-        private static StateLogger INSTANCE = new StateLogger();
-        
-        private static BufferedWriter bw ;
-        static
-        {
-            try
-            {
-                bw = new BufferedWriter(new FileWriter("20140329_-040_9.csv"));
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        public void log(Vector3D point)
-        {
-            String line = String.format(Locale.GERMAN, "%.3f;%.3f\n", point.getX(), point.getY());
-            try
-            {
-                bw.write(line);
-                bw.flush();
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        
-        private StateLogger()
-        {
-        }
-        
-        public static StateLogger getInstance()
-        {
-            return INSTANCE;
-        }
-
-        @Override
-        protected void finalize() throws Throwable
-        {
-            bw.close();
-            super.finalize();
-        }
-    }
+    private static final StateLogger LOG = StateLogger
+            .getInstance("20140421_-09_0.csv");
     
 	/**
 	 * The low skill that's currently being performed
@@ -336,7 +286,8 @@ public abstract class HighSkill implements IHighSkill {
 //	    System.out.println("Center of Mass: " + model.getCenterOfMass());
 //	    AgentInfo.logState(WorldModel.getInstance().getBall().getPosition().toString());
 	    System.out.println("Ball pos: " + WorldModel.getInstance().getBall().getPosition());
-	    StateLogger.getInstance().log(WorldModel.getInstance().getBall().getPosition());
+	    Vector3D ballPosition = WorldModel.getInstance().getBall().getPosition();
+	    LOG.log(Locale.GERMAN, "%.3f;%.3f\n", ballPosition.getX(), ballPosition.getY());
 //	    FileWrite.createFile("36_1", WorldModel.getInstance().getBall().getPosition());
 //	    System.out.println("Ball relative: " + WorldModel.getInstance().getBall().getRelativePosition());
 //        System.out.println("torso abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO));

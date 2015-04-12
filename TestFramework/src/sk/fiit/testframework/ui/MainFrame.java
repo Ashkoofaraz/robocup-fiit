@@ -8,10 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.logging.Handler;
@@ -44,10 +41,10 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
 
+import sk.fiit.jim.agent.moves.kinematics.test.StateLogger;
 import sk.fiit.robocup.library.geometry.Circle;
 import sk.fiit.robocup.library.geometry.Point3D;
 import sk.fiit.robocup.library.geometry.Vector2;
-import sk.fiit.robocup.library.geometry.Vector3;
 import sk.fiit.testframework.annotator.Annotator;
 import sk.fiit.testframework.communication.agent.AgentJim;
 import sk.fiit.testframework.communication.agent.AgentManager;
@@ -96,59 +93,8 @@ import sk.fiit.testframework.worldrepresentation.models.SimulationState;
 public class MainFrame extends JFrame implements ISimulationStateObserver,
         UserInterface, IAgentMonitorListener, IAgentManagerListener
 {
-
-    private static class StateLogger
-    {
-        private static StateLogger INSTANCE = new StateLogger();
-
-        private static BufferedWriter bw;
-        static
-        {
-            try
-            {
-                // do 15
-                bw = new BufferedWriter(
-                        new FileWriter("20150411_15_-040_9.csv"));
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        public void log(Vector3 point)
-        {
-            String line = String.format(Locale.GERMAN, "%.3f;%.3f\n",
-                    point.getX(), point.getY());
-            try
-            {
-                bw.write(line);
-                bw.flush();
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        private StateLogger()
-        {
-        }
-
-        public static StateLogger getInstance()
-        {
-            return INSTANCE;
-        }
-
-        @Override
-        protected void finalize() throws Throwable
-        {
-            bw.close();
-            super.finalize();
-        }
-    }
+    private static final StateLogger LOG = StateLogger
+            .getInstance("20150411_15_040_0.csv");
 
     private static final long serialVersionUID = -995645483680121615L;
 
@@ -1668,7 +1614,10 @@ public class MainFrame extends JFrame implements ISimulationStateObserver,
                 sbInfo.append("Ball\n======\n");
                 sbInfo.append("At start: ")
                         .append(atStart.ballPosition.toString()).append("\n");
-                StateLogger.getInstance().log(now.ballPosition);
+
+                LOG.log(Locale.GERMAN, "%.3f;%.3f\n", now.ballPosition.getX(),
+                        now.ballPosition.getY());
+
                 sbInfo.append("Now: ").append(now.ballPosition.toString())
                         .append("\n");
                 sbInfo.append("Dist: ").append(dist.ballPosition.toString())
