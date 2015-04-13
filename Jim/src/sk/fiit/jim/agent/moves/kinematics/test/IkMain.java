@@ -11,6 +11,7 @@ import sk.fiit.jim.agent.moves.kinematics.Orientation;
 import sk.fiit.robocup.library.geometry.Point3D;
 import sk.fiit.robocup.library.geometry.Vector3D;
 
+import static java.lang.Math.*;
 /**
  * Class for calculations testing
  * 
@@ -168,6 +169,13 @@ public class IkMain
         System.out.println(Kinematics.getInstance().getInverseLeftLeg(point6, orientation6));
 
         logRelativeFootPoitionsForLLE2();
+        
+        
+        double alpha = 0;
+        System.out.println(getLLE2fromAlpha(alpha));
+        System.out.println(getLLE2fromAlpha2(alpha));
+        System.out.println(getLLE2fromAlpha3(alpha));
+        
     }
 
     private static void logRelativeFootPoitionsForLLE2()
@@ -176,7 +184,7 @@ public class IkMain
         for (int lle2 = 15; lle2 <= 45; lle2++)
         {
             ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(0,
-                    Math.toRadians(lle2), Math.toRadians(40), Math.toRadians(-90), Math.toRadians(60),
+                    Math.toRadians(lle2), Math.toRadians(100), Math.toRadians(-75), Math.toRadians(20),
                     Math.toRadians(-20)));
             String format = "%.3f;%.3f;%.3f;%.3f;%.3f;%.3f\n";
             Point3D endpoint = frk.getEndPoint();
@@ -186,5 +194,26 @@ public class IkMain
             logger.log(Locale.GERMAN, format, params);
         }
 
+    }
+    
+    // kubicka
+    private static double getLLE2fromAlpha(double alpha)
+    {
+        double lle2 = 0.0051466062 * pow(alpha, 3) + 0.1822084261 * pow(alpha, 2) - 0.2905759535 * alpha + 13.3946227506;
+        return lle2;
+    }
+    
+    // kvadraticka
+    private static double getLLE2fromAlpha2(double alpha)
+    {
+        double lle2 =  0.0769165501 * pow(alpha, 2) - 0.5679788145 * alpha + 15.4529727642;
+        return lle2;
+    }
+    
+    // linearna
+    private static double getLLE2fromAlpha3(double alpha)
+    {
+        double lle2 = -1.605689631 * alpha + 14.8133378154;
+        return lle2;
     }
 }

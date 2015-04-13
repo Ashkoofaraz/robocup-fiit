@@ -1,30 +1,23 @@
 package sk.fiit.jim.agent.skills.dynamic;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
-import sk.fiit.jim.agent.AgentInfo;
-import sk.fiit.jim.agent.highskill.Beam;
 import sk.fiit.jim.agent.models.AgentModel;
-import sk.fiit.jim.agent.models.BodyPart;
-import sk.fiit.jim.agent.models.EnvironmentModel;
-import sk.fiit.jim.agent.models.WorldModel;
-import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phase;
-import sk.fiit.jim.agent.moves.kinematics.ForwardKinematicResult;
-import sk.fiit.jim.agent.moves.kinematics.Kinematics;
 import sk.fiit.jim.agent.moves.kinematics.Orientation;
-import sk.fiit.jim.agent.skills.dynamic.DynamicKick.Tuple;
 import sk.fiit.robocup.library.geometry.Point3D;
-import sk.fiit.robocup.library.geometry.Vector3D;
 
 public class DynamicKick2 extends DynamicMove{
 
+    static final class Tuple {
+        List<Point3D> points;
+        List<Orientation> orientations;
+    }
+    
     private static boolean kicked = false;
     
 	@Override
@@ -61,7 +54,7 @@ public class DynamicKick2 extends DynamicMove{
 		
 		LowSkill ls = addSkill("dynamic_kick_" + ui);
 
-	    alterKickPhases(phases, side);
+//	    alterKickPhases(phases, side);
 			
 		addPhases(phases, ls.name);
 		return ls;
@@ -77,7 +70,7 @@ public class DynamicKick2 extends DynamicMove{
 		}
 		else
 		{
-			baseSkill = LowSkills.get("kick_left_normal_stand");
+			baseSkill = LowSkills.get("kick_left_normal_stand2");
 //			baseSkill = LowSkills.get("kick_step_strong_left");
 		}
 		
