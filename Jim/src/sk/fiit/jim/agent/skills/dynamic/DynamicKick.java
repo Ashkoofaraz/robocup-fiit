@@ -84,6 +84,14 @@ public class DynamicKick extends DynamicMove{
     private static double getLLE2fromAlpha(double alpha)
     {
         double lle2 = 0.0051466062 * pow(alpha, 3) + 0.1822084261 * pow(alpha, 2) - 0.2905759535 * alpha + 13.3946227506;
+        if(lle2 > 45)
+        {
+            lle2 = 45;
+        }
+        if(lle2 < 13)
+        {
+            lle2 = 13;
+        }
         return lle2;
     }
     
@@ -137,7 +145,6 @@ public class DynamicKick extends DynamicMove{
         return getLLE2fromAlpha3(getAlpha(point));
     }
     
-    
     private static double getAlpha(Point3D point)
     {
         return Math.toDegrees(Math.atan2(point.y, point.x));
@@ -146,6 +153,33 @@ public class DynamicKick extends DynamicMove{
     private static double getAlpha(Vector3D vector)
     {
         return Math.toDegrees(Math.atan2(vector.getY(), vector.getX()));
+    }
+    
+    // kubicka
+    private static double getLLE2fromBall(Point3D start, Point3D end)
+    {
+        double diffX = end.x - start.x;
+        double diffY = end.y - start.y;
+        double alpha = Math.toDegrees(Math.atan(diffY/diffX));
+        return getLLE2fromAlpha(alpha);
+    }
+    
+    // kvadraticka
+    private static double getLLE2fromBall2(Point3D start, Point3D end)
+    {
+        double diffX = end.x - start.x;
+        double diffY = end.y - start.y;
+        double alpha = Math.toDegrees(Math.atan(diffY/diffX));
+        return getLLE2fromAlpha2(alpha);
+    }
+    
+    // linearna
+    private static double getLLE2fromBall3(Point3D start, Point3D end)
+    {
+        double diffX = end.x - start.x;
+        double diffY = end.y - start.y;
+        double alpha = Math.toDegrees(Math.atan(diffY/diffX));
+        return getLLE2fromAlpha3(alpha);
     }
     
 }
