@@ -85,6 +85,11 @@ public abstract class DynamicMove extends DynamicSkill
             }
             System.out.println("point: " + points.get(i) + ", orientation: " + orientations.get(i));
             System.out.println("Inverse Kinematics: " + result);
+//            result.put(Joint.LLE3, 100.0);
+//            result.put(Joint.LLE4, -75.0);
+//            result.put(Joint.LLE5, 20.0);
+//            result.put(Joint.LLE1, 0.0);
+//            result.put(Joint.LLE6, -20.0);
             Phase phase = createPhase(300, result);
             phases.add(phase);
         }
