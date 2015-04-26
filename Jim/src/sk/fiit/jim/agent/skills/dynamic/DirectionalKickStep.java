@@ -10,6 +10,8 @@ public class DirectionalKickStep extends DynamicMove {
 
     private static final double DIST_STEP_VERY_SMALL = 0.012;
     
+    private static final double DIST_STEP_SMALL = 0.0514;
+    
     private static boolean kicked = false;
     
     private static boolean stepped = false;
@@ -20,26 +22,33 @@ public class DirectionalKickStep extends DynamicMove {
     
     private static String step;
     
-    //private static String kick;
+    private static int maxSmallSteps = 0;
+    private static int maxVerySmallSteps = 0;
+    
+    private static int smallSteps = 0;
+    private static int verySmallSteps = 0;
+    
+    private static String smallStep;
+    private static String verySmallStep;
     
     public DirectionalKickStep(double angle)
     {
-        init(angle);
+        init2(angle);
     }
     
     public DirectionalKickStep(Point3D endpoint)
     {
-        init(getAlpha(endpoint));
+        init2(getAlpha(endpoint));
     }
     
     public DirectionalKickStep(Vector3D vector)
     {
-        init(getAlpha(vector));
+        init2(getAlpha(vector));
     }
     
     public DirectionalKickStep(Point3D ballStart, Point3D ballEnd)
     {
-        init(getAlpha(ballStart, ballEnd));
+        init2(getAlpha(ballStart, ballEnd));
     }
     
     private static void init(double alpha)
@@ -59,15 +68,56 @@ public class DirectionalKickStep extends DynamicMove {
         }
     }
     
+    private static void init2(double alpha)
+    {
+        steps = 0;
+        double shift = calculateFootShift(alpha) - 0.055;
+        System.out.println("shift: " + shift);
+        double diff = shift - AgentModel.getInstance().getPosition().getY();
+        maxSmallSteps = (int) (Math.abs(diff)/DIST_STEP_SMALL);
+        double smallStepsDistance = maxSmallSteps * DIST_STEP_SMALL;
+        
+        diff = diff- smallStepsDistance;
+        maxVerySmallSteps = (int) (Math.abs(diff)/DIST_STEP_VERY_SMALL);
+        if(shift > 0)
+        {
+            verySmallStep = "step_left_very_small";
+            smallStep = "step_left_small";
+        }
+        else
+        {
+            verySmallStep = "step_right_very_small";
+            smallStep = "step_right_small";
+        }
+    }
+    
 	@Override
 	public LowSkill pickLowSkill() {
-	    if(!stepped && steps < maxSteps) {
-	        steps++;
-	        return LowSkills.get(step);
-	    }
-	    stepped = true;
-	    if(!kicked) {
-	        kicked = true;
+//	    System.out.println("torso y: " + AgentModel.getInstance().getBodyPartAbsPositions().get(BodyPart.TORSO));
+//	    System.out.println("foot y: " + AgentModel.getInstance().getBodyPartAbsPositions().get(BodyPart.LFOOT));
+//	    if(!stepped && steps < maxSteps) {
+//	        steps++;
+//	        return LowSkills.get(step);
+//	    }
+//	    stepped = true;
+//	    if(!kicked) {
+//	        kicked = true;
+//            return LowSkills.get("kick_left_normal_stand");
+//        }
+//        return null;
+        
+        if(!stepped && smallSteps < maxSmallSteps) {
+            smallSteps++;
+            return LowSkills.get(smallStep);
+        }
+        if(!stepped && verySmallSteps < maxVerySmallSteps) {
+            verySmallSteps++;
+            return LowSkills.get(verySmallStep);
+        }
+        
+        stepped = true;
+        if(stepped && !kicked) {
+            kicked = true;
             return LowSkills.get("kick_left_normal_stand");
         }
         return null;
