@@ -45,7 +45,7 @@ public class DirectionalKickStepV2 extends DynamicMove {
 	    if(!stepped)
 	    {
 	        stepped = true;
-	        return createDynamicKick(side);
+	        return createDynamicStep(side);
 	    }
 	    stepped = true;
         if(stepped && !kicked) {
@@ -55,7 +55,7 @@ public class DirectionalKickStepV2 extends DynamicMove {
         return null;
 	}
 	
-	public LowSkill createDynamicKick(String side)
+	public LowSkill createDynamicStep(String side)
     {           
         List<Phase> phases = getBaseSkillPhases(side);
         
