@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 import sk.fiit.jim.agent.moves.EffectorData;
+import sk.fiit.jim.agent.moves.Joint;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phase;
@@ -98,8 +99,11 @@ public class DirectionalKick extends DynamicMove{
     private void alterKickPhases(List<Phase> phases, String side) 
     {
         Phase phase4 = phases.get(4);
-        EffectorData ed = phase4.getEfectorData("LLE2");
-        ed.endAngle = getLLE2fromAlpha(angleDeg);
+        
+        EffectorData ed = new EffectorData();
+        ed.endAngle = 45;
+        ed.effector = Joint.LLE2;
+        phase4.effectors.add(ed);
     }
     
     // kubicka
