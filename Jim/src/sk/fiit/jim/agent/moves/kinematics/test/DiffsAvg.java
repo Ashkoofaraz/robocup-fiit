@@ -10,32 +10,32 @@ public class DiffsAvg
 {
     public static void main(String[] args) throws IOException
     {
-        BufferedReader reader = new BufferedReader(new FileReader(new File("out_klby4_interval5_diffs.csv")));
+        BufferedReader reader = new BufferedReader(new FileReader(new File("left_leg_joint6_interval5_diffs.csv")));
         int lines = 0;
         String line = null;
-        int lle1Sum = 0;
-        int lle2Sum = 0;
-        int lle3Sum = 0;
-        int lle4Sum = 0;
-        int lle5Sum = 0;
-        int lle6Sum = 0;
+        double lle1Sum = 0;
+        double lle2Sum = 0;
+        double lle3Sum = 0;
+        double lle4Sum = 0;
+        double lle5Sum = 0;
+        double lle6Sum = 0;
         
-        int maxLle1diff = Integer.MIN_VALUE;
-        int maxLle2diff = Integer.MIN_VALUE;
-        int maxLle3diff = Integer.MIN_VALUE;
-        int maxLle4diff = Integer.MIN_VALUE;
-        int maxLle5diff = Integer.MIN_VALUE;
-        int maxLle6diff = Integer.MIN_VALUE;
+        double maxLle1diff = Double.MIN_VALUE;
+        double maxLle2diff = Double.MIN_VALUE;
+        double maxLle3diff = Double.MIN_VALUE;
+        double maxLle4diff = Double.MIN_VALUE;
+        double maxLle5diff = Double.MIN_VALUE;
+        double maxLle6diff = Double.MIN_VALUE;
         while((line = reader.readLine()) != null)
         {
-            System.out.println(line);
-            String[] data = line.split(";");
-            int lle1 = Integer.parseInt(data[0]);
-            int lle2 = Integer.parseInt(data[1]);
-            int lle3 = Integer.parseInt(data[2]);
-            int lle4 = Integer.parseInt(data[3]);
-            int lle5 = Integer.parseInt(data[4]);
-            int lle6 = Integer.parseInt(data[5]);
+//            System.out.println(line);
+            String[] data = line.replaceAll(",", ".").split(";");
+            double lle1 = Double.parseDouble(data[0]);
+            double lle2 = Double.parseDouble(data[1]);
+            double lle3 = Double.parseDouble(data[2]);
+            double lle4 = Double.parseDouble(data[3]);
+            double lle5 = Double.parseDouble(data[4]);
+            double lle6 = Double.parseDouble(data[5]);
             lines++;
             
             if(lle1 > maxLle1diff)
@@ -78,12 +78,12 @@ public class DiffsAvg
         System.out.println("avg lle5 diff: " + String.format(Locale.GERMAN, "%.3f", (double)lle5Sum / lines));
         System.out.println("avg lle6 diff: " + String.format(Locale.GERMAN, "%.3f", (double)lle6Sum / lines));
         
-        System.out.println("max lle1 diff: " + maxLle1diff);
-        System.out.println("max lle2 diff: " + maxLle2diff);
-        System.out.println("max lle3 diff: " + maxLle3diff);
-        System.out.println("max lle4 diff: " + maxLle4diff);
-        System.out.println("max lle5 diff: " + maxLle5diff);
-        System.out.println("max lle6 diff: " + maxLle6diff);
+        System.out.println("max lle1 diff: " + String.format(Locale.GERMAN, "%.3f", maxLle1diff));
+        System.out.println("max lle2 diff: " + String.format(Locale.GERMAN, "%.3f", maxLle2diff));
+        System.out.println("max lle3 diff: " + String.format(Locale.GERMAN, "%.3f", maxLle3diff));
+        System.out.println("max lle4 diff: " + String.format(Locale.GERMAN, "%.3f", maxLle4diff));
+        System.out.println("max lle5 diff: " + String.format(Locale.GERMAN, "%.3f", maxLle5diff));
+        System.out.println("max lle6 diff: " + String.format(Locale.GERMAN, "%.3f", maxLle6diff));
         
         reader.close();
     }
