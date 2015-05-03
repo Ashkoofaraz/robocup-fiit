@@ -89,7 +89,7 @@ public class DirectionalKickStep extends DynamicMove {
         maxSmallSteps = (int) (Math.abs(diff)/DIST_STEP_SMALL);
         double smallStepsDistance = maxSmallSteps * DIST_STEP_SMALL;
         
-        diff = diff- smallStepsDistance;
+        diff = Math.abs(diff) - smallStepsDistance;
         maxVerySmallSteps = (int) (Math.abs(diff)/DIST_STEP_VERY_SMALL);
         
     }
