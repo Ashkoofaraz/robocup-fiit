@@ -101,7 +101,7 @@ public class DirectionalKick extends DynamicMove{
         Phase phase4 = phases.get(4);
         
         EffectorData ed = new EffectorData();
-        ed.endAngle = getLLE2fromAlpha(angleDeg);
+        ed.endAngle = getLLE2fromAlpha2(angleDeg);
         ed.effector = Joint.LLE2;
         phase4.effectors.add(ed);
         
