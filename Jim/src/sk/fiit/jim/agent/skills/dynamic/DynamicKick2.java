@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.UUID;
 
 import sk.fiit.jim.agent.models.AgentModel;
+import sk.fiit.jim.agent.models.BodyPart;
+import sk.fiit.jim.agent.models.EnvironmentModel;
+import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phase;
@@ -18,8 +21,14 @@ public class DynamicKick2 extends DynamicMove{
         List<Orientation> orientations;
     }
     
+    private AgentModel agentModel = AgentModel.getInstance();
+    
+    
     private static boolean kicked = false;
     
+    private static int steps = 0;
+    
+    private static boolean stepped = false;
 	@Override
 	public LowSkill pickLowSkill() {
         if(!kicked) {
@@ -43,8 +52,6 @@ public class DynamicKick2 extends DynamicMove{
 	 */
 	public LowSkill createDynamicKick(String side)
 	{			
-	    AgentModel model = AgentModel.getInstance();
-	    
 		List<Phase> phases = getBaseSkillPhases(side);
 	    
 		String ui = UUID.randomUUID().toString();
@@ -70,7 +77,8 @@ public class DynamicKick2 extends DynamicMove{
 		}
 		else
 		{
-			baseSkill = LowSkills.get("kick_left_normal_stand2");
+			baseSkill = LowSkills.get("kick_left_normal_stand");
+//			baseSkill = LowSkills.get("step_left_very_small");
 //			baseSkill = LowSkills.get("kick_step_strong_left");
 		}
 		
