@@ -6,7 +6,6 @@ import sk.fiit.jim.agent.highskill.BeamHighSkill;
 import sk.fiit.jim.agent.highskill.kick.KickHighSkill;
 import sk.fiit.jim.agent.highskill.move.MovementHighSkill;
 import sk.fiit.jim.agent.highskill.runner.HighSkillRunner;
-import sk.fiit.jim.agent.models.AgentModel;
 import sk.fiit.jim.agent.models.EnvironmentModel;
 import sk.fiit.jim.gui.ReplanWindow;
 import sk.fiit.robocup.library.geometry.Vector3D;
@@ -14,31 +13,39 @@ import sk.fiit.robocup.library.geometry.Vector3D;
 /**
  * Interface for defining tactic instances
  *
- * @author Samuel Benkovic <sppred@gmail.com>, Vladimir Bosiak <vladimir.bosiak@gmail.com>
+ * @author Samuel Benkovic <sppred@gmail.com>, Vladimir Bosiak
+ *         <vladimir.bosiak@gmail.com>
  * @year 2013/2014
  * @team RFC Megatroll
  */
-public abstract class Tactic {
-
+public abstract class Tactic
+{
 
     public static final int UNDEFINED_STATE = -1;
-    public static final String UNDEFINED_STATE_NAME = "Undefined State";
-    public static final Vector3D TheyGoal = Vector3D.cartesian(15, 0, 0);
-    public static final Vector3D OurGoal = Vector3D.cartesian(-15, 0, 0);
-    
 
-    private MatchStarterTactic starterTactic	   = new MatchStarterTactic();
-    protected KickHighSkill        kickExec        = new KickHighSkill();
-    protected MovementHighSkill    moveExec        = new MovementHighSkill();
-    protected BeamHighSkill        beamExec        = new BeamHighSkill();
+    public static final String UNDEFINED_STATE_NAME = "Undefined State";
+
+    public static final Vector3D TheyGoal = Vector3D.cartesian(15, 0, 0);
+
+    public static final Vector3D OurGoal = Vector3D.cartesian(-15, 0, 0);
+
+    private MatchStarterTactic starterTactic = new MatchStarterTactic();
+
+    protected KickHighSkill kickExec = new KickHighSkill();
+
+    protected MovementHighSkill moveExec = new MovementHighSkill();
+
+    protected BeamHighSkill beamExec = new BeamHighSkill();
+
     protected UndefinedStateTactic undefinedTactic = new UndefinedStateTactic();
-    
+
     protected int currentState;
 
     /**
      * Getter for initialization condition
      *
-     * @param currentSituations List of current situations
+     * @param currentSituations
+     *            List of current situations
      * @return Status if tactic is usable
      */
     public abstract boolean getInitCondition(List<String> currentSituations);
@@ -46,7 +53,8 @@ public abstract class Tactic {
     /**
      * Getter for progress condition
      *
-     * @param currentSituations list of current situations
+     * @param currentSituations
+     *            list of current situations
      * @return Status if tactic ended
      */
     public abstract boolean getProgressCondition(List<String> currentSituations);
@@ -70,9 +78,11 @@ public abstract class Tactic {
      *
      * @return boolean
      */
-    private boolean isNewState(List<String> currentSituations) {
+    private boolean isNewState(List<String> currentSituations)
+    {
         int identifiedState = this.checkState(currentSituations);
-        if (this.currentState != 0 && this.currentState == identifiedState) {
+        if(this.currentState != 0 && this.currentState == identifiedState)
+        {
             return false;
         }
         this.currentState = identifiedState;
@@ -80,54 +90,66 @@ public abstract class Tactic {
     }
 
     /**
-	 * Execute run if it is needed
-	 */
-	public void startTactic(List<String> currentSituations) {
-	    
-	    // TODO temporary kickoff is first action
-	    if (EnvironmentModel.isKickOffPlayMode() == true) {
+     * Execute run if it is needed
+     */
+    public void startTactic(List<String> currentSituations)
+    {
+
+        // TODO temporary kickoff is first action
+        if(EnvironmentModel.isKickOffPlayMode() == true)
+        {
             if(HighSkillRunner.getPlanner().getNumberOfPlannedHighSkills() == 0
-                    && HighSkillRunner.getPlanner().getcurrentHighSkill().isEnded()) {
+                    && HighSkillRunner.getPlanner().getcurrentHighSkill().isEnded())
+            {
                 this.run();
             }
             ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "KICK OFF");
             return;
         }
-	    
-	    if (EnvironmentModel.beamablePlayMode() == true) {
-			starterTactic.runBeam();
-			System.out.println("in Tactic");
-			ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "BEAM");
-			return;
-		}
-		if (EnvironmentModel.isKickOffPlayMode() == true) {
-			if(HighSkillRunner.getPlanner().getNumberOfPlannedHighSkills() == 0
-					&& HighSkillRunner.getPlanner().getcurrentHighSkill().isEnded()) {
-				starterTactic.runStart();
-			}
-			ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "KICK OFF");
-			return;
-		}
-		if (this.isNewState(currentSituations)
-				|| (HighSkillRunner.getPlanner().getNumberOfPlannedHighSkills() == 0
-				&& HighSkillRunner.getPlanner().getcurrentHighSkill().isEnded())) {
-			this.stopTacticHighSkills();
-			if (this.currentState == UNDEFINED_STATE) {
-				runUndefinedState(currentSituations);
+
+        if(EnvironmentModel.beamablePlayMode() == true)
+        {
+            starterTactic.runBeam();
+            System.out.println("in Tactic");
+            ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "BEAM");
+            return;
+        }
+        if(EnvironmentModel.isKickOffPlayMode() == true)
+        {
+            if(HighSkillRunner.getPlanner().getNumberOfPlannedHighSkills() == 0
+                    && HighSkillRunner.getPlanner().getcurrentHighSkill().isEnded())
+            {
+                starterTactic.runStart();
+            }
+            ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, "KICK OFF");
+            return;
+        }
+        if(this.isNewState(currentSituations)
+                || (HighSkillRunner.getPlanner().getNumberOfPlannedHighSkills() == 0 && HighSkillRunner.getPlanner()
+                        .getcurrentHighSkill().isEnded()))
+        {
+            this.stopTacticHighSkills();
+            if(this.currentState == UNDEFINED_STATE)
+            {
+                runUndefinedState(currentSituations);
                 ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, Tactic.UNDEFINED_STATE_NAME);
-            } else {
+            }
+            else
+            {
                 this.run();
                 ReplanWindow.getInstance().updateText(ReplanWindow.VALUE_TACTICS, this.getClass().getSimpleName());
-			}
-		}
-	}
+            }
+        }
+    }
 
-	public void stopTacticHighSkills() {
+    public void stopTacticHighSkills()
+    {
         HighSkillRunner.getPlanner().abortPlannedHighSkills();
     }
 
-    protected void runUndefinedState(List<String> currentSituations) {
-    	undefinedTactic.run(currentSituations);
+    protected void runUndefinedState(List<String> currentSituations)
+    {
+        undefinedTactic.run(currentSituations);
     }
 
     /**
@@ -136,27 +158,31 @@ public abstract class Tactic {
      *
      * @return NumberOfMatch/currentSituations.size()
      */
-    public float getSuitability(List<String> currentSituations) {
+    public float getSuitability(List<String> currentSituations)
+    {
         int NumberOfMatch = 0;
         /*
          * TODO - better check two lists ? Maybe HASH ? NumberOfMatch - one
-		 * class for every strategy, not in all strategies
-		 */
+         * class for every strategy, not in all strategies
+         */
 
         List<String> prescribedSituations = this.getPrescribedSituations();
-        for (String a : currentSituations) {
-            for (String b : prescribedSituations) {
-                if (a.equals(b)) {
+        for (String a : currentSituations)
+        {
+            for (String b : prescribedSituations)
+            {
+                if(a.equals(b))
+                {
                     NumberOfMatch++;
                     break;
                 }
             }
         }
 
-		/*
-		 * ReturnFit returns number (NumberOfMatch) - 1,2,5 etc. NumberOfMatch
-		 * in currentsituations and prescribedsituations
-		 */
+        /*
+         * ReturnFit returns number (NumberOfMatch) - 1,2,5 etc. NumberOfMatch
+         * in currentsituations and prescribedsituations
+         */
         return ((float) NumberOfMatch / prescribedSituations.size());
     }
 

@@ -8,12 +8,6 @@ import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.agent.highskill.runner.HighSkillPlanner;
 import sk.fiit.jim.agent.highskill.runner.HighSkillRunner;
 import sk.fiit.jim.agent.skills.dynamic.DirectionalKick;
-import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStep;
-import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV2;
-import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV3;
-import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV4;
-import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV5;
-import sk.fiit.jim.agent.skills.dynamic.DynamicKick2;
 
 /**
  * 
@@ -26,41 +20,48 @@ import sk.fiit.jim.agent.skills.dynamic.DynamicKick2;
  * @author gitmen
  *
  */
-public class DefaultTactic extends Tactic {
-	
-	public static final int DEFAULT_STATE = 1;
-	
-	private ArrayList<String> prescribedSituations = new ArrayList<String>(Arrays.asList("i_am_default"));
+public class DefaultTactic extends Tactic
+{
 
-	@Override
-	public boolean getInitCondition(List<String> currentSituations) {
-		return true;
-	}
+    public static final int DEFAULT_STATE = 1;
 
-	@Override
-	public boolean getProgressCondition(List<String> currentSituations) {
-		return true;
-	}
+    private ArrayList<String> prescribedSituations = new ArrayList<String>(Arrays.asList("i_am_default"));
 
-	@Override
-	protected int checkState(List<String> currentSituations) {
-		return DefaultTactic.DEFAULT_STATE;
-	}
+    @Override
+    public boolean getInitCondition(List<String> currentSituations)
+    {
+        return true;
+    }
 
-	@Override
-	public void run() {
-		HighSkillPlanner planner = HighSkillRunner.getPlanner();
-		if (planner.getNumberOfPlannedHighSkills() == 0){
-			
-			// write here your highskill
-			planner.addHighskillToQueue(new DirectionalKickStepV4(-40));
-			AgentInfo.logState("DefaultTactic - DefaultHighSkill");
-		}
-	}
+    @Override
+    public boolean getProgressCondition(List<String> currentSituations)
+    {
+        return true;
+    }
 
-	@Override
-	public List<String> getPrescribedSituations() {
-		return this.prescribedSituations;
-	}
+    @Override
+    protected int checkState(List<String> currentSituations)
+    {
+        return DefaultTactic.DEFAULT_STATE;
+    }
+
+    @Override
+    public void run()
+    {
+        HighSkillPlanner planner = HighSkillRunner.getPlanner();
+        if(planner.getNumberOfPlannedHighSkills() == 0)
+        {
+
+            // write here your highskill
+            planner.addHighskillToQueue(new DirectionalKick(-20));
+            AgentInfo.logState("DefaultTactic - DefaultHighSkill");
+        }
+    }
+
+    @Override
+    public List<String> getPrescribedSituations()
+    {
+        return this.prescribedSituations;
+    }
 
 }

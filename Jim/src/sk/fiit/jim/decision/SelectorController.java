@@ -4,6 +4,7 @@ import java.util.List;
 
 import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.decision.tactic.Tactic;
+import sk.fiit.jim.tests.decision.SelectorControllerTest;
 
 /**
  * Class for plan and replan all the strategy and tactic according to detected situations

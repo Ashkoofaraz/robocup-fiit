@@ -2,11 +2,12 @@ package sk.fiit.jim.decision;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import sk.fiit.jim.Settings;
 import sk.fiit.jim.agent.AgentInfo;
 import sk.fiit.jim.decision.situation.SituationManager;
-import sk.fiit.jim.decision.strategy.Strategy;
 import sk.fiit.jim.decision.strategy.OffensiveStrategy;
+import sk.fiit.jim.decision.strategy.Strategy;
 import sk.fiit.jim.decision.strategy.StrategyList;
 import sk.fiit.jim.decision.tactic.Tactic;
 import sk.fiit.jim.decision.tactic.TacticList;

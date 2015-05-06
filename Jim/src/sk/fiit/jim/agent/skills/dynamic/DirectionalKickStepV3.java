@@ -12,6 +12,14 @@ import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phase;
 
+/**
+ * 
+ * Creates directional kick using small steps and fixing RLE2/LLE3 to 15 to be
+ * able to kick with desired angle.
+ * 
+ * @author Pidanic
+ *
+ */
 public class DirectionalKickStepV3 extends DynamicMove
 {
 
@@ -135,9 +143,19 @@ public class DirectionalKickStepV3 extends DynamicMove
         System.out.println(phases);
         Phase phase4 = phases.get(4);
 
-        EffectorData ed = new EffectorData();
-        ed.endAngle = 15;
-        ed.effector = Joint.LLE2;
+        EffectorData ed;
+        if("left".equals(side))
+        {
+            ed = new EffectorData();
+            ed.endAngle = 15;
+            ed.effector = Joint.LLE2;
+        }
+        else
+        {
+            ed = new EffectorData();
+            ed.endAngle = -15;
+            ed.effector = Joint.RLE2;
+        }
         phase4.effectors.add(ed);
     }
 
@@ -153,13 +171,6 @@ public class DirectionalKickStepV3 extends DynamicMove
                 - 0.0032616022 * alpha - 0.043525855;
         return shift;
     }
-
-    // private static double shiftLLE2_45(double alpha)
-    // {
-    // double shift = -2.84119818365287e-6 * Math.pow(alpha, 3) - 0.0003790696 *
-    // Math.pow(alpha, 2) - 0.0169741164 * alpha - 0.2438899745;
-    // return shift;
-    // }
 
     private int calculateLegAngle(double shift)
     {

@@ -12,6 +12,14 @@ import sk.fiit.jim.agent.moves.LowSkill;
 import sk.fiit.jim.agent.moves.LowSkills;
 import sk.fiit.jim.agent.moves.Phase;
 
+/**
+ * 
+ * Creates directional kick using small steps and fixing RLE2/LLE3 to 45 to be
+ * able to kick with desired angle.
+ * 
+ * @author Pidanic
+ *
+ */
 public class DirectionalKickStepV4 extends DynamicMove
 {
 
@@ -32,11 +40,11 @@ public class DirectionalKickStepV4 extends DynamicMove
         double ballPosY = WorldModel.getInstance().getBall().getPosition().getY();
         double agentPosY = AgentModel.getInstance().getPosition().getY();
         double requiredShiftFromBall = calculatePlayerShift(angle);
-        
+
         System.out.println("ball y: " + ballPosY);
         System.out.println("agent y: " + agentPosY);
-        System.out.println("requt shift: " +requiredShiftFromBall);
-        
+        System.out.println("requt shift: " + requiredShiftFromBall);
+
         double shiftDist = requiredShiftFromBall - agentPosY;
 
         System.out.println("step_shift: " + shiftDist);
@@ -139,10 +147,19 @@ public class DirectionalKickStepV4 extends DynamicMove
     {
         System.out.println(phases);
         Phase phase4 = phases.get(4);
-
-        EffectorData ed = new EffectorData();
-        ed.endAngle = 45;
-        ed.effector = Joint.LLE2;
+        EffectorData ed;
+        if("left".equals(side))
+        {
+            ed = new EffectorData();
+            ed.endAngle = 45;
+            ed.effector = Joint.LLE2;
+        }
+        else
+        {
+            ed = new EffectorData();
+            ed.endAngle = -45;
+            ed.effector = Joint.RLE2;
+        }
         phase4.effectors.add(ed);
     }
 
