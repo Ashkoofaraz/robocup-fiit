@@ -10,7 +10,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.Enumeration;
-import java.util.Locale;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -41,7 +40,6 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
 
-import sk.fiit.jim.agent.moves.kinematics.test.StateLogger;
 import sk.fiit.robocup.library.geometry.Circle;
 import sk.fiit.robocup.library.geometry.Point3D;
 import sk.fiit.robocup.library.geometry.Vector2;
@@ -93,9 +91,6 @@ import sk.fiit.testframework.worldrepresentation.models.SimulationState;
 public class MainFrame extends JFrame implements ISimulationStateObserver,
         UserInterface, IAgentMonitorListener, IAgentManagerListener
 {
-    private static final StateLogger LOG = StateLogger
-            .getInstance("20150411_15_040_0.csv");
-
     private static final long serialVersionUID = -995645483680121615L;
 
     {
@@ -1614,9 +1609,6 @@ public class MainFrame extends JFrame implements ISimulationStateObserver,
                 sbInfo.append("Ball\n======\n");
                 sbInfo.append("At start: ")
                         .append(atStart.ballPosition.toString()).append("\n");
-
-                LOG.log(Locale.GERMAN, "%.3f;%.3f\n", now.ballPosition.getX(),
-                        now.ballPosition.getY());
 
                 sbInfo.append("Now: ").append(now.ballPosition.toString())
                         .append("\n");

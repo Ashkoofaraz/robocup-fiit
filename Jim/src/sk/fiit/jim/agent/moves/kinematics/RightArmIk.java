@@ -8,7 +8,6 @@ import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.sqrt;
 import static java.lang.Math.toDegrees;
-import static java.lang.Math.toRadians;
 import static sk.fiit.jim.agent.moves.kinematics.SimsparkConstants.ELBOW_OFFSET_Y;
 import static sk.fiit.jim.agent.moves.kinematics.SimsparkConstants.HAND_OFFSET_X;
 import static sk.fiit.jim.agent.moves.kinematics.SimsparkConstants.LOWER_ARM_LENGTH;
@@ -16,7 +15,9 @@ import static sk.fiit.jim.agent.moves.kinematics.SimsparkConstants.SHOULDER_OFFS
 import static sk.fiit.jim.agent.moves.kinematics.SimsparkConstants.SHOULDER_OFFSET_Z;
 import static sk.fiit.jim.agent.moves.kinematics.SimsparkConstants.UPPER_ARM_LENGTH;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import sk.fiit.jim.agent.moves.Joint;
@@ -30,116 +31,143 @@ import sk.fiit.robocup.library.geometry.Point3D;
  * @author Pidanic
  *
  */
-// TODO v clanku pri thetha1 nie je abs.hodnota a v diplomovke ano
 class RightArmIk
 {
-    private double theta1;
+    private double l1 = SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y;
 
-    private double theta2;
+    private double l2 = SHOULDER_OFFSET_Z;
 
-    private double theta3;
+    private double l3 = UPPER_ARM_LENGTH;
 
-    private double theta4;
+    private double l4 = HAND_OFFSET_X + LOWER_ARM_LENGTH;
 
-    private Matrix T;
-
-    private Matrix T_;
-
-    // mal by som si dat pozor na osi a stranu?
-    private double l1 = SHOULDER_OFFSET_Y + ELBOW_OFFSET_Y; // ShoulderOffsetY +
-                                                            // ElbowOffsetY
-
-    private double l2 = SHOULDER_OFFSET_Z; // ShoulderOffsetZ
-
-    private double l3 = UPPER_ARM_LENGTH; // UpperArmLength
-
-    private double l4 = HAND_OFFSET_X + LOWER_ARM_LENGTH; // HandOffsetX +
-                                                          // LowerArmLength.
-
-    // leftShoulderPitch (sx, sy, sz) = (0, l1, l2)
-
-    // treba si dat pozor, ktora os, prava alebo lava?
     private double sx = 0;
 
-    private double sy = -l1;
+    private double sy = l1;
 
     private double sz = l2;
 
+    private Matrix T;
+
     public RightArmIk(Point3D endpoint, Orientation angle)
     {
-        T = Matrix.createTransformation(endpoint, angle);
-        T_ = T.mult(Matrix.R_Z_RIGHT_ARM.inverse());
+        this(Matrix.createTransformation(endpoint, angle));
+    }
+
+    public RightArmIk(Matrix target)
+    {
+        T = target;
+        T = T.mult(Matrix.R_Z_RIGHT_ARM.inverse());
     }
 
     // radians
-    double getTheta4()
+    private List<Double> getTheta4()
     {
-        double T_03 = T_.getValueAt(0, 3);
-        double T_13 = T_.getValueAt(1, 3);
-        double T_23 = T_.getValueAt(2, 3);
-        // TODO optimalizuj odstran mocninu a odmocninu
-        double d = sqrt((sx - T_03) * (sx - T_03) + (sy - T_13) * (sy - T_23) + (sz - T_23) * (sz - T_23));
+        List<Double> result = new ArrayList<>();
+        double T03 = T.getValueAt(0, 3);
+        double T13 = T.getValueAt(1, 3);
+        double T23 = T.getValueAt(2, 3);
+        double d = sqrt((sx - T03) * (sx - T03) + (sy - T13) * (sy - T13) + (sz - T23) * (sz - T23));
         double nominator = l3 * l3 + l4 * l4 - d * d;
         double denominator = 2 * l3 * l4;
-        theta4 = PI - acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
-        return theta4;
-    }
-
-    double getTheta2()
-    {
-        double T_13 = T_.getValueAt(1, 3);
-        double T_11 = T_.getValueAt(1, 1);
-        double nominator = -T_13 - l1 - ((l4 * sin(theta4) * T_11) / (cos(theta4)));
-        double denominator = l3 + l4 * cos(theta4) + l4 * (sin(theta4) * sin(theta4)) / cos(theta4);
-        theta2 = acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
-        // - PI / 2 in result // TODO
-        return theta2;
-    }
-
-    double getTheta2_b()
-    {
-        theta2 = -1 * theta2;
-        return theta2;
-    }
-
-    double getTheta3_1()
-    {
-        double T_12 = T_.getValueAt(1, 2);
-        theta3 = asin(KinematicUtils.validateArcsinArccosRange(T_12 / (sin(theta2 + PI / 2))));
-        return theta3;
-    }
-
-    double getTheta3_2()
-    {
-        theta3 = PI - 1 * theta3;
-        return theta3;
-    }
-
-    double getTheta1()
-    {
-        double T_22 = T_.getValueAt(2, 2);
-        double T_02 = T_.getValueAt(0, 2);
-        double T_03 = T_.getValueAt(0, 3);
-        if(theta3 != PI / 2)
+        double theta4 = PI - acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
+        if(KinematicUtils.validateJointRangeInRadians(Joint.RAE4, theta4))
         {
-            double nominator = T_22 + ((T_02 * sin(theta3) * cos(theta3 + PI / 2)) / (cos(theta3)));
+            result.add(theta4);
+        }
+        return result;
+
+    }
+
+    private List<Double> getTheta2(final double theta4)
+    {
+        List<Double> result = new ArrayList<>();
+
+        double T13 = T.getValueAt(1, 3);
+        double T11 = T.getValueAt(1, 1);
+        double nominator = -T13 - l1 - ((l4 * sin(theta4) * T11) / (cos(theta4)));
+        double denominator = l3 + l4 * cos(theta4) + l4 * (sin(theta4) * sin(theta4)) / cos(theta4);
+        double theta2 = acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
+        if(KinematicUtils.validateJointRangeInRadians(Joint.RAE2, theta2 - PI / 2))
+        {
+            result.add(theta2 - PI / 2);
+        }
+        if(KinematicUtils.validateJointRangeInRadians(Joint.RAE2, -theta2 - PI / 2))
+        {
+            result.add(-theta2 - PI / 2);
+        }
+
+        return result;
+    }
+
+    private List<Double> getTheta3(final double theta2)
+    {
+        List<Double> result = new ArrayList<>();
+        double theta3 = asin(KinematicUtils.validateArcsinArccosRange(T.getValueAt(1, 2) / (sin(theta2 + PI / 2))));
+        if(KinematicUtils.validateJointRangeInRadians(Joint.RAE3, theta3))
+        {
+            result.add(theta3);
+        }
+        if(KinematicUtils.validateJointRangeInRadians(Joint.RAE3, PI - theta3))
+        {
+            result.add(PI - theta3);
+        }
+        return result;
+    }
+
+    private List<Double> getTheta1(final double theta2, final double theta3)
+    {
+        List<Double> result = new ArrayList<>();
+        if(!KinematicUtils.almostEquals(abs(theta3), PI / 2))
+        {
+            double T22 = T.getValueAt(2, 2);
+            double T02 = T.getValueAt(0, 2);
+
+            double nominator = T22 + ((T02 * sin(theta3) * cos(theta3 + PI / 2)) / (cos(theta3)));
             double denominator = cos(theta3)
                     + (cos(theta2 + PI / 2) * cos(theta2 + PI / 2) * sin(theta3) * sin(theta3)) / (cos(theta3));
-            // TODO +- theta1
-            theta1 = acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
+            // +- theta1
+            double theta1 = acos(KinematicUtils.validateArcsinArccosRange(nominator / denominator));
+            if(KinematicUtils.validateJointRangeInRadians(Joint.RAE1, theta1))
+            {
+                result.add(theta1);
+            }
+            if(KinematicUtils.validateJointRangeInRadians(Joint.RAE1, -theta1))
+            {
+                result.add(-theta1);
+            }
         }
-        else if((abs(theta3) == PI / 2) && theta2 != 0.0)
+        else if(KinematicUtils.almostEquals(abs(theta3), PI / 2) && !KinematicUtils.almostEquals(theta2, 0.0))
         {
-            // TODO +- theta1
-            theta1 = acos(KinematicUtils.validateArcsinArccosRange((T_03) / (cos(theta2 + PI / 2) * sin(theta3))));
+            // +- theta1
+            double theta1 = acos(KinematicUtils.validateArcsinArccosRange((T.getValueAt(0, 3))
+                    / (cos(theta2 + PI / 2) * sin(theta3))));
+            if(KinematicUtils.validateJointRangeInRadians(Joint.RAE1, theta1))
+            {
+                result.add(theta1);
+            }
+            if(KinematicUtils.validateJointRangeInRadians(Joint.RAE1, -theta1))
+            {
+                result.add(-theta1);
+            }
         }
-        else if((abs(theta3) == PI / 2) && theta2 == 0.0)
+        else if(KinematicUtils.almostEquals(abs(theta3), PI / 2) && KinematicUtils.almostEquals(theta2, 0.0))
         {
-            Matrix T__ = T.mult(Matrix.INV_A_END_RIGHT_ARM);
-            // TODO +- theta1
-            theta1 = acos(KinematicUtils.validateArcsinArccosRange(T__.getValueAt(1, 3) / l3));
+            // T*(A4end^-1)
+            Matrix T_ = T.mult(Matrix.A_END_RIGHT_ARM.inverse());
+            double T_13 = T_.getValueAt(1, 3);
+            // +- theta1
+            double theta1 = acos(KinematicUtils.validateArcsinArccosRange(T_13 / l3));
+            if(KinematicUtils.validateJointRangeInRadians(Joint.RAE1, theta1))
+            {
+                result.add(theta1);
+            }
+            if(KinematicUtils.validateJointRangeInRadians(Joint.RAE1, -theta1))
+            {
+                result.add(-theta1);
+            }
         }
-        return theta1;
+        return result;
     }
 
     /**
@@ -150,54 +178,27 @@ class RightArmIk
     public Map<Joint, Double> getResult()
     {
         Map<Joint, Double> result = new HashMap<Joint, Double>();
-        theta4 = toDegrees(getTheta4());
-        if(KinematicUtils.validateJointRangeInDegrees(Joint.RAE4, theta4))
+        List<Double> theta4 = getTheta4();
+        for (double t4 : theta4)
         {
-            result.put(Joint.RAE4, theta4);
-            theta2 = toDegrees(getTheta2() - PI / 2);
-            if(KinematicUtils.validateJointRangeInDegrees(Joint.RAE2, theta2))
+            List<Double> theta2 = getTheta2(t4);
+            for (double t2 : theta2)
             {
-                result.put(Joint.RAE2, theta2);
-            }
-            else
-            {
-                theta2 = toRadians(theta2 + 90);
-                theta2 = toDegrees(getTheta2_b() - PI / 2);
-                if(KinematicUtils.validateJointRangeInDegrees(Joint.RAE2, theta2))
-                    ;
+                List<Double> theta3 = getTheta3(t2);
+                for (double t3 : theta3)
                 {
-                    result.put(Joint.RAE2, theta2);
-                }
-            }
-
-            theta3 = toDegrees(getTheta3_1());
-            if(KinematicUtils.validateJointRangeInDegrees(Joint.RAE3, theta3))
-            {
-                result.put(Joint.RAE3, theta3);
-            }
-            else
-            {
-                theta3 = toDegrees(getTheta3_2());
-                if(KinematicUtils.validateJointRangeInDegrees(Joint.RAE3, theta3))
-                    ;
-                {
-                    result.put(Joint.RAE3, theta3);
-                }
-            }
-            theta1 = toDegrees(getTheta1());
-            if(KinematicUtils.validateJointRangeInDegrees(Joint.RAE1, theta1))
-            {
-                result.put(Joint.RAE1, theta1);
-            }
-            else
-            {
-                theta1 = -theta1;
-                if(KinematicUtils.validateJointRangeInDegrees(Joint.RAE1, theta1))
-                {
-                    result.put(Joint.RAE1, theta1);
+                    List<Double> theta1 = getTheta1(t2, t3);
+                    for (double t1 : theta1)
+                    {
+                        result.put(Joint.RAE1, toDegrees(t1));
+                        result.put(Joint.RAE2, toDegrees(t2));
+                        result.put(Joint.RAE3, toDegrees(t3));
+                        result.put(Joint.RAE4, toDegrees(t4));
+                    }
                 }
             }
         }
+
         return result;
     }
 }

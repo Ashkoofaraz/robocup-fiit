@@ -1,7 +1,7 @@
 package sk.fiit.jim.agent.moves.kinematics.test;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import static java.lang.Math.pow;
+
 import java.io.IOException;
 import java.util.Locale;
 
@@ -9,80 +9,15 @@ import sk.fiit.jim.agent.moves.kinematics.ForwardKinematicResult;
 import sk.fiit.jim.agent.moves.kinematics.Kinematics;
 import sk.fiit.jim.agent.moves.kinematics.Orientation;
 import sk.fiit.robocup.library.geometry.Point3D;
-import sk.fiit.robocup.library.geometry.Vector3D;
 
-import static java.lang.Math.*;
 /**
  * Class for calculations testing
  * 
  * @author Pidanic
  *
  */
-public class IkMain
+public class IkTests
 {
-    private static class StateLogger
-    {
-        private static StateLogger INSTANCE;
-
-        private static BufferedWriter bw;
-
-        private StateLogger(String name)
-        {
-            try
-            {
-                // do 15
-                bw = new BufferedWriter(new FileWriter(name));
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        /**
-         * @see String#format(Locale, String, Object...)
-         */
-        public void log(Locale locale, String format, Object... params)
-        {
-            String line = String.format(locale, format, params);
-            try
-            {
-                bw.write(line);
-                bw.flush();
-            }
-            catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        /**
-         * @see String#format(Locale, String, Object...)
-         */
-        public void log(String format, Object... params)
-        {
-            log(Locale.getDefault(), format, params);
-        }
-
-        public static StateLogger getInstance(String name)
-        {
-            if(INSTANCE == null)
-            {
-                INSTANCE = new StateLogger(name);
-            }
-            return INSTANCE;
-        }
-
-        @Override
-        protected void finalize() throws Throwable
-        {
-            bw.close();
-            super.finalize();
-        }
-    }
-
     private static final Point3D TORSO_DEFAULT_ABS_POSITION = new Point3D(0, 0, 385);
 
     private static final Point3D DEF_LEFT_ARM = new Point3D(195, 98, 75); // predpazena
@@ -161,21 +96,23 @@ public class IkMain
         // br.close();
 
         ForwardKinematicResult frk = new ForwardKinematicResult(Kinematics.getInstance().getForwardLeftLeg(
-                Math.toRadians(-90), Math.toRadians(-25), Math.toRadians(-25), Math.toRadians(-130),
-                Math.toRadians(-45), Math.toRadians(-45)));
+                Math.toRadians(0), Math.toRadians(20), Math.toRadians(100), Math.toRadians(-75), Math.toRadians(20),
+                Math.toRadians(-20)));
         System.out.println(frk.getEndPoint() + " " + frk.getOrientation());
         Point3D point6 = frk.getEndPoint();
         Orientation orientation6 = frk.getOrientation();
         System.out.println(Kinematics.getInstance().getInverseLeftLeg(point6, orientation6));
 
-        logRelativeFootPoitionsForLLE2();
-        
-        
-        double alpha = 0;
-        System.out.println(getLLE2fromAlpha(alpha));
-        System.out.println(getLLE2fromAlpha2(alpha));
-        System.out.println(getLLE2fromAlpha3(alpha));
-        
+        System.out.println();
+        // logRelativeFootPoitionsForLLE2();
+
+        for (int y = -10; y <= 41; y++)
+        {
+            Point3D point7 = new Point3D(-193.6619, 74.1639 + y, -197.6524);
+            Orientation orientation7 = Orientation.fromRadians(0.1263, 0.7268, 0.3295);
+            Kinematics kin = Kinematics.getInstance();
+            System.out.println(kin.getInverseLeftLeg(point7, orientation7));
+        }
     }
 
     private static void logRelativeFootPoitionsForLLE2()
@@ -195,21 +132,22 @@ public class IkMain
         }
 
     }
-    
+
     // kubicka
     private static double getLLE2fromAlpha(double alpha)
     {
-        double lle2 = 0.0051466062 * pow(alpha, 3) + 0.1822084261 * pow(alpha, 2) - 0.2905759535 * alpha + 13.3946227506;
+        double lle2 = 0.0051466062 * pow(alpha, 3) + 0.1822084261 * pow(alpha, 2) - 0.2905759535 * alpha
+                + 13.3946227506;
         return lle2;
     }
-    
+
     // kvadraticka
     private static double getLLE2fromAlpha2(double alpha)
     {
-        double lle2 =  0.0769165501 * pow(alpha, 2) - 0.5679788145 * alpha + 15.4529727642;
+        double lle2 = 0.0769165501 * pow(alpha, 2) - 0.5679788145 * alpha + 15.4529727642;
         return lle2;
     }
-    
+
     // linearna
     private static double getLLE2fromAlpha3(double alpha)
     {

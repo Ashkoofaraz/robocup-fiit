@@ -5,12 +5,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import sk.fiit.jim.agent.AgentInfo;
-import sk.fiit.jim.agent.highskill.Kick;
 import sk.fiit.jim.agent.highskill.runner.HighSkillPlanner;
 import sk.fiit.jim.agent.highskill.runner.HighSkillRunner;
-import sk.fiit.jim.agent.skills.dynamic.DynamicKick;
+import sk.fiit.jim.agent.skills.dynamic.DirectionalKick;
+import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStep;
+import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV2;
+import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV3;
+import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV4;
+import sk.fiit.jim.agent.skills.dynamic.DirectionalKickStepV5;
 import sk.fiit.jim.agent.skills.dynamic.DynamicKick2;
-import sk.fiit.robocup.library.geometry.Vector3D;
 
 /**
  * 
@@ -50,7 +53,7 @@ public class DefaultTactic extends Tactic {
 		if (planner.getNumberOfPlannedHighSkills() == 0){
 			
 			// write here your highskill
-			planner.addHighskillToQueue(new DynamicKick2());
+			planner.addHighskillToQueue(new DirectionalKickStepV4(-40));
 			AgentInfo.logState("DefaultTactic - DefaultHighSkill");
 		}
 	}

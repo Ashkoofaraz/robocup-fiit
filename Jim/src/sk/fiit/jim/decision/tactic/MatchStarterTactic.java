@@ -5,7 +5,6 @@ import sk.fiit.jim.agent.highskill.BeamHighSkill;
 import sk.fiit.jim.agent.highskill.move.MovementHighSkill;
 import sk.fiit.jim.agent.highskill.move.MovementHighSkill.MovementSpeedEnum;
 import sk.fiit.jim.agent.models.AgentModel;
-import sk.fiit.jim.agent.models.WorldModel;
 import sk.fiit.robocup.library.geometry.Vector3D;
 
 public class MatchStarterTactic {
@@ -31,9 +30,7 @@ public class MatchStarterTactic {
 
 		// BEAM PLAYERS WITH ID 1,2 IN LEFT
 		case 1:
-		    // mestanikove
-			this.beamExec.BeamAgent(Vector3D.cartesian(-0.2, -0.05, 0.4));
-//			WorldModel.getInstance().getBall().setPosition(Vector3D.cartesian(0, 7, 0.1));
+			this.beamExec.BeamAgent(Vector3D.cartesian(-0.2, -0.00, 0.4));
 			System.out.println("BEAM - LEFT 7");
 			break;
 		case 2:

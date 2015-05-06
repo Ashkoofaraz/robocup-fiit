@@ -24,7 +24,8 @@ public class LeftArmIkTest
         long all = 0;
         long wrong = 0;
         Kinematics kinematics = Kinematics.getInstance();
-//        BufferedWriter bw = new BufferedWriter(new FileWriter(new File("left_arm_joint4_interval5.csv")));
+        // BufferedWriter bw = new BufferedWriter(new FileWriter(new
+        // File("left_arm_joint4_interval5.csv")));
         for (double t1 = Joint.LAE1.getLow(); t1 <= Joint.LAE1.getUp(); t1 += 5)
         {
             for (double t2 = Joint.LAE2.getLow(); t2 <= Joint.LAE2.getUp(); t2 += 5)
@@ -102,8 +103,8 @@ public class LeftArmIkTest
                                     .format(Locale.GERMAN, "%.2f", validation.getOrientation().getAzRadians()));
                             line.append("\n");
 
-//                            bw.write(line.toString());
-                            
+                            // bw.write(line.toString());
+
                             // System.out.println(inverseKinResult);
                             // System.out.println("theta1: " + t1 + ", theta2: "
                             // + t2 + ", theta3: " + t3 + ", theta4: " + t4 +
@@ -116,12 +117,12 @@ public class LeftArmIkTest
                             // validation.getOrientation());
                             // System.out.println("----------------------------------------");
                         }
-//                        bw.flush();
+                        // bw.flush();
                     }
                 }
             }
         }
-//        bw.close();
+        // bw.close();
         System.out.println("all: " + all);
         System.out.println("wrong: " + wrong);
     }

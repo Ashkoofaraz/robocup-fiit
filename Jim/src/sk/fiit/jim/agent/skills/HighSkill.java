@@ -43,9 +43,6 @@ import sk.fiit.robocup.library.geometry.Vector3D;
  */
 public abstract class HighSkill implements IHighSkill {
 	
-    private static final StateLogger LOG = StateLogger
-            .getInstance("20140421_-09_0.csv");
-    
 	/**
 	 * The low skill that's currently being performed
 	 */
@@ -105,8 +102,6 @@ public abstract class HighSkill implements IHighSkill {
 		
 		switch (state) {
 		case INITIAL_STATE:
-		    logState(state);
-	        
 			//get a low skill from the specific high skill (usually a ruby script)
 			currentSkill = pickLowSkill();
 			//if none is returned, we're done
@@ -122,7 +117,6 @@ public abstract class HighSkill implements IHighSkill {
 			break;
 			
 		case EXECUTING_STATE:
-		    logState(state);
 			if (currentSkill.canFinalize() && !isStoppedHighSkill()) {
 				// this happens when a phase with isFinal==true has ended
 				// (so that the current low skill can now be finalized if we
@@ -171,7 +165,6 @@ public abstract class HighSkill implements IHighSkill {
 			break;
 			
 		case FINALIZING_STATE:
-		    logState(state);
 			//if the finalization phase has come to an end
 			if (currentSkill.canFinalize()) {
 				//if there's a next skill, start executing it
@@ -278,34 +271,4 @@ public abstract class HighSkill implements IHighSkill {
 		stopHighSkill = true;
 	}
 	
-	private static void logState(HighSkillState state) {
-	    System.out.println(state);
-	    AgentModel model = AgentModel.getInstance();
-//	    System.out.println("Player position: " + model.getPosition());
-//	    System.out.println("Player distance from ball: " + model.getDistanceFromBall());
-//	    System.out.println("Center of Mass: " + model.getCenterOfMass());
-//	    AgentInfo.logState(WorldModel.getInstance().getBall().getPosition().toString());
-	    System.out.println("Ball pos: " + WorldModel.getInstance().getBall().getPosition());
-	    Vector3D ballPosition = WorldModel.getInstance().getBall().getPosition();
-	    LOG.log(Locale.GERMAN, "%.3f;%.3f\n", ballPosition.getX(), ballPosition.getY());
-//	    FileWrite.createFile("36_1", WorldModel.getInstance().getBall().getPosition());
-//	    System.out.println("Ball relative: " + WorldModel.getInstance().getBall().getRelativePosition());
-//        System.out.println("torso abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.TORSO));
-//        System.out.println("torso rel pos: " +  model.getBodyPartRelPositions().get(BodyPart.TORSO));
-//        System.out.println("left hip1 abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LHIP1) );
-//        System.out.println("left hip1 rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LHIP1));
-//        System.out.println("left hip2 abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LHIP2) );
-//        System.out.println("left hip2 rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LHIP2));
-//        System.out.println("left thigh abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LSHANK) );
-//        System.out.println("left thigh rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LSHANK));
-//        System.out.println("left shank abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LSHANK) );
-//        System.out.println("left shank rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LSHANK));
-//        System.out.println("left ankle abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LANKLE) );
-//        System.out.println("left ankle rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LANKLE));
-//        System.out.println("left foot abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LFOOT) );
-//        System.out.println("left foot rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LFOOT));
-//        
-//        System.out.println("left hand abs pos: " + model.getBodyPartAbsPositions().get(BodyPart.LLOWERARM) );
-//        System.out.println("left hand rel pos: " + model.getBodyPartRelPositions().get(BodyPart.LLOWERARM));
-	}
 }

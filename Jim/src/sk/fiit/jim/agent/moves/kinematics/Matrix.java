@@ -964,7 +964,8 @@ public final class Matrix
      * Creates new translation matrix in 3D space with size {@code 4×4}.
      * </p>
      * 
-     * @param end Endpoint coordinates.
+     * @param end
+     *            Endpoint coordinates.
      * 
      * @return translation matrix.
      * 

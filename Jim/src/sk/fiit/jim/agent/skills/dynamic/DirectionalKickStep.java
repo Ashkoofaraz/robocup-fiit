@@ -96,19 +96,6 @@ public class DirectionalKickStep extends DynamicMove {
     
 	@Override
 	public LowSkill pickLowSkill() {
-//	    System.out.println("torso y: " + AgentModel.getInstance().getBodyPartAbsPositions().get(BodyPart.TORSO));
-//	    System.out.println("foot y: " + AgentModel.getInstance().getBodyPartAbsPositions().get(BodyPart.LFOOT));
-//	    if(!stepped && steps < maxSteps) {
-//	        steps++;
-//	        return LowSkills.get(step);
-//	    }
-//	    stepped = true;
-//	    if(!kicked) {
-//	        kicked = true;
-//            return LowSkills.get("kick_left_normal_stand");
-//        }
-//        return null;
-        
         if(!stepped && smallSteps < maxSmallSteps) {
             smallSteps++;
             return LowSkills.get(smallStep);

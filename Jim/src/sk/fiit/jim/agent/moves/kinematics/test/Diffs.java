@@ -17,7 +17,7 @@ public class Diffs
         String line = null;
         while ((line = reader.readLine()) != null)
         {
-//            System.out.println(line);
+            // System.out.println(line);
             // String[] data = line.replaceAll(",", ".").split(";");
             String[] data = line.split(",");
             double lle1 = Double.parseDouble(data[0]);

@@ -19,7 +19,7 @@ final class KinematicUtils
      * @see Java Language Specification
      */
     static final double EPSILON = 0.1;
-    
+
     static final double EPSILON2 = 0.01;
 
     private KinematicUtils()
@@ -55,7 +55,7 @@ final class KinematicUtils
     static boolean validateJointRangeInRadians(Joint joint, double angle)
     {
         return !Double.isNaN(angle) && angle + EPSILON >= Math.toRadians(joint.getLow())
-                && angle -EPSILON <= Math.toRadians(joint.getUp());
+                && angle - EPSILON <= Math.toRadians(joint.getUp());
     }
 
     /**
@@ -97,7 +97,7 @@ final class KinematicUtils
         }
         return angle;
     }
-    
+
     static boolean almostEquals(double d1, double d2)
     {
         return Math.abs(d1 - d2) < EPSILON2;
