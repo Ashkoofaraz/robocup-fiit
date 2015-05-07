@@ -1,0 +1,25 @@
+\section{Používateľská príručka}
+
+\subsection{Predpoklady pre spustenie hráča}
+Pre spustenie hráča je potrebné mať správne nainštalovanú jednu z verzií hráča
+podľa postupu z inštalačnej príručky. Pred spustením hráča je potrebné aby bol spustený simulačný server na ktorý sa má hráč pripojiť.
+
+\subsection{Nastavenia hráča}
+
+Pre pripojenia hráča na server je potrebné nastaviť adresu a port servera. Tieto je
+možné zmeniť v konfiguračnom súbore \texttt{Settings.java}. Je potrebné nastaviť tieto hodnoty:
+\begin{itemize}
+	\item \texttt{Communication.getInstance().setServerIp()} na 127.0.0.1 - localhost
+	\item \texttt{Communication.getInstance().setPort()} na 3100
+\end{itemize}
+
+V priložených zdrojových súboroch a tiež vo verzii na GitHub sú tieto hodnoty prednastavené.
+
+\subsection{Spustenie hráča} \label{sec_ap_run}
+Spustenie hráča zo zdrojových kódov sa vykoná spustením (najlepšie Eclipse) triedy \texttt{sk.fiit.jim.init.Main}.
+
+\subsection{Zmeny vykonávaných kopov hráča}
+
+Na jednoduchú zmenu vykonávaného pohybu bola už v rámci Tímového projektu vytvorená trieda \texttt{DefaultTactic}. Nami vytvorené pohyby sú prispôsobené nato, aby spolupracovali s aktuálnou implementáciou hráča. Do metódy \texttt{run()} vložíme jeden z kopov, ktorému nastavíme ako vstupný parameter uhol do strany.
+
+Pozíciu hráča je možné zmeniť v triede \texttt{MatchStarterTactic} v metóde \texttt{runBeam()}. Pri výmene pohybov je potrebné hráča opätovne spustiť.

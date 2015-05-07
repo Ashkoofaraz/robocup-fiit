@@ -1,7 +1,181 @@
-\section{Overenie riešenia} \label{sec_verification}
+\section{Testovanie} \label{sec_testing}
 
-Implementáciu sme sa pokúsili vyskúšať na jednoduchej situácii. Do plánovača sme doplnili novú triedu a súčasne vytvorili nový pohyb, ktorý je vložený do plánovača. Trieda pre pohyb vytvorí sekvenciu koncových bodov a natočení v priestore pre koncový efektor. Tieto sekvencie necháme vykonať na simulačnom prostredí.
+V tejto kapitole popíšeme niekoľko experimentov, ktoré sme vykonali počas vytváranaia nových kopov pre fakultného hráča.
 
-Vytvorili sme 2 pohyby - jeden pre ľavú ruku a jeden pre ľavú nohu. Pokus s ľavou nohou sa vykonáva po páde robota. Aktuálna implementácia neberie do úvahy stabilitu robota. Pri pohybe nohou by spadol, aj keby začal vo vzpriamenej polohe. Pokusné body je možné meniť v Ruby triede \texttt{RubyDynamicMove}. Avšak musia byť dosiahnuteľné natočením kĺbov. 
+\subsection{Experimentovanie s doprednou a inverznou kinematikou} \label{sec_ik_experiments}
 
-Videá sú dostupné na priloženom médiu (viď príloha \ref{appendix_medium}).
+Modul pre doprednú a inverznú kinematiku opísaný v kapitole \ref{sec_implementation} bol implementovaný do aktuálnych zdrojových súborov hráča. 
+
+Najprv sme sa experimentálne pokúsili vypočítať relatívne pozície hráča pri fáze 5 kopu z kapitoly \ref{sec_kick}. Do doprednej kinematiky sme vložili nastavenia kĺbov vo fáze 5 z pohybu:
+\begin{itemize}
+	\item \texttt{LLE1}$=0^{\circ}$
+	\item \texttt{LLE2}$=20^{\circ}$
+	\item \texttt{LLE3}$=100^{\circ}$
+	\item \texttt{LLE4}$=-75^{\circ}$
+	\item \texttt{LLE5}$=20^{\circ}$
+	\item \texttt{LLE6}$=-20^{\circ}$
+\end{itemize}  
+Chodilo sa nachádza na pozícii v trojrozmernom priestore $[-193,6619; 74,1639; -217,6524]$ $(mm)$ a je natočené $[0,1263; 0,7268; 0,3295]~(rad)$ relatívne k ťažisku hráča.
+
+Pri testovaní inverznej kinematiky sme narazili na problém pri výpočtoch. Ak vložíme do výpočtu výsledok doprednej kinematiky (bod a natočenie v priestore), nastáva mierna odchýlka v natočeniach kĺbov. Pre bod a natočenie chodila vo fáze 5 skúmaného kopu dostaneme takéto natočenia kĺbov. Uhly sme zaokrúhlili na 2 desatinné miesta:
+\begin{itemize}
+	\item \texttt{LLE1}$=0^{\circ}$
+	\item \texttt{LLE2}$=20^{\circ}$
+	\item \texttt{LLE3}$=96,49^{\circ}$
+	\item \texttt{LLE4}$=-75^{\circ}$
+	\item \texttt{LLE5}$=36,49^{\circ}$
+	\item \texttt{LLE6}$=-20^{\circ}$
+\end{itemize}  
+
+Ako je možné vidieť, rozdiel medzi počiatočným definovaným stavom a výsledku inverznej kinematiky je pre \texttt{LLE3} približne $3,51^{\circ}$ a pre \texttt{LLE5} približne $16,49^{\circ}$. 
+
+Preto sme sa rozhodli vykonať nasledujúci experiment. Každému zo 6 kĺbov dolnej končatiny sme postupne zvyšovali hodnotu natočenia o $5^{\circ}$ od jeho minimálne možnej hodnoty až po maximálnu. Pre každú takú kombináciu sme vypočítali bod a natočenie v priestore vzhľadom na ťažisko robota pomocou doprednej kinematiky. Vypočítaný bod a natočenie sme vložili ako vstup do inverznej kinematiky a vypočítali, aké by bolo natočenie kĺbov. Časť výsledkov zobrazuje tabuľka \ref{tab_test_ik_6joint_5deg}.
+
+\begin{table}[H]
+	\centering
+	\tiny
+	\begin{tabular}{||r|r|r|r|r|r||r|r|r|r|r|r||}
+		\hline
+		\hline
+		$LLE1$ & $LLE2$ & $LLE3$ & $LLE4$ & $LLE5$ & $LLE6$ & $LLE1_{ik}$ & $LLE2_{ik}$ & $LLE3_{ik}$ & $LLE4_{ik}$ & $LLE5_{ik}$ & $LLE6_{ik}$ \\
+		\hline
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-45$ & $-90$ & $-25$ & $0$ & $-130$ & $-69$ & $-45$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-40$ & $-90$ & $-25$ & $0$ & $-130$ & $-69$ & $-40$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-35$ & $-90$ & $-25$ & $0$ & $-130$ & $-69$ & $-35$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-30$ & $-90$ & $-24$ & $0$ & $-130$ & $-69$ & $-29$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-25$ & $-89$ & $-24$ & $0$ & $-130$ & $-69$ & $-25$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-20$ & $-90$ & $-25$ & $0$ & $-130$ & $-69$ & $-20$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-15$ & $-89$ & $-24$ & $0$ & $-130$ & $-69$ & $-15$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-10$ & $-90$ & $-25$ & $0$ & $-129$ & $-69$ & $-10$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $-5$ & $-90$ & $-24$ & $0$ & $-129$ & $-69$ & $-4$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $0$ & $-89$ & $-24$ & $0$ & $-130$ & $-69$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $5$ & $-89$ & $-24$ & $0$ & $-129$ & $-69$ & $4$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $-45$ & $10$ & $-90$ & $-25$ & $0$ & $-130$ & $-69$ & $9$ \\
+		\hline
+		\hline
+	\end{tabular}
+	\caption{{Hodnoty kĺbov pred a po vypočítaní inverznej kinematiky pre 6 kĺbov}}
+	\label{tab_test_ik_6joint_5deg}
+\end{table}
+
+Aby sme obmedzili počet kobinácií výpočtov, vykonali sme rovnaký experiment so zmenou, že zafixovali hodnoty kĺbov \texttt{LLE5} a \texttt{LLE6} na hodnotu $0$. Časť výsledkov zobrazuje tabuľka \ref{tab_test_ik_4joint_5deg}.
+
+\begin{table}[H]
+	\centering
+	\tiny
+	\begin{tabular}{||r|r|r|r|r|r||r|r|r|r|r|r||}
+		\hline
+		\hline
+		$LLE1$ & $LLE2$ & $LLE3$ & $LLE4$ & $LLE5$ & $LLE6$ & $LLE1_{ik}$ & $LLE2_{ik}$ & $LLE3_{ik}$ & $LLE4_{ik}$ & $LLE5_{ik}$ & $LLE6_{ik}$ \\
+		\hline
+		\hline
+		$-90$ & $-25$ & $-25$ & $-130$ & $0$ & $0$ & $-89$ & $-24$ & $-24$ & $-130$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-125$ & $0$ & $0$ & $-90$ & $-25$ & $-24$ & $-124$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $-25$ & $-120$ & $0$ & $0$ & $-90$ & $-25$ & $-25$ & $-119$ & $0$ & $0$ \\
+		\hline
+		 & & & & & & & & & & & \\
+		 \hline
+		 & & & & & & & & & & & \\
+		 \hline
+		 $-90$ & $-25$ & $75$ & $-20$ & $0$ & $0$ & $-90$ & $-25$ & $105$ & $-19$ & $0$ & $0$ \\
+		 \hline
+		$-90$ & $-25$ & $75$ & $-15$ & $0$ & $0$ & $-89$ & $-24$ & $105$ & $-14$ & $0$ & $0$ \\
+		\hline
+		$90$ & $-25$ & $75$ & $-10$ & $0$ & $0$ & $-90$ & $-25$ & $105$ & $-9$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $75$ & $-5$ & $0$ & $0$ & $-89$ & $-24$ & $105$ & $-4$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $75$ & $0$ & $0$ & $0$ & $-90$ & $-25$ & $104$ & $0$ & $0$ & $0$ \\
+		\hline
+		 & & & & & & & & & & & \\
+		\hline
+		$-90$ & $-25$ & $80$ & $-80$ & $0$ & $0$ & $-89$ & $-24$ & $100$ & $-80$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $80$ & $-75$ & $0$ & $0$ & $-89$ & $-24$ & $100$ & $-75$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $80$ & $-70$ & $0$ & $0$ & $-89$ & $-24$ & $100$ & $-70$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $85$ & $-5$ & $0$ & $0$ & $-90$ & $-25$ & $94$ & $-5$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $85$ & $0$ & $0$ & $0$ & $-89$ & $-24$ & $95$ & $0$ & $0$ & $0$ \\
+		\hline
+		$-90$ & $-25$ & $90$ & $-130$ & $0$ & $0$ & $-90$ & $-25$ & $90$ & $-130$ & $0$ & $0$ \\
+		\hline
+		\hline
+	\end{tabular}
+	\caption{Hodnoty kĺbov pred a po vypočítaní inverznej kinematiky pre 4 kĺby}
+	\label{tab_test_ik_4joint_5deg}
+\end{table}
+
+Rovnaký problém sme objavili aj pri testovaní inverznej kinematiky pre ľavú ruku najmä pre uhol $\theta_1$. Jeho výpočet je závislý od uhlov $\theta_2$ a $\theta_3$. Celé tabuľky s dátami je možné nájsť na priloženom médiu v súboroch \texttt{test\_ik\_left\_leg}, \texttt{test\_ik\_left\_leg\_fixed\_joints} a \texttt{test\_ik\_left\_arm};
+
+Ak si označíme $LLEi$ ako pôvodné nastavenie kĺbu a $LLEi_{ik}$ ako vypočítané nastavenie kĺbu pomocou inverznej kinematiky , kde $i$ predstavuje číselné označenie kĺbu dolnej končatiny a vykonáme $n$ výpočtov. 
+
+%Vypočítali sme ich priemerný rozdiel $\bar{diff_i}$ vyjadrený rovnicou \ref{eq_avg_diff_joints} a maximálny rozdiel $max\_diff_i$ vyjadrený rovnicou \ref{eq_max_diff_joints}:
+%\begin{equation} \label{eq_avg_diff_joints}
+% \bar{diff_i} = \frac{1}{n} \sum_{j=1}^{n} (|LLEi_{ik} - LLEi|)
+%\end{equation}
+
+%\begin{equation} \label{eq_max_diff_joints}
+% max\_diff_i = max \{diff_{i_{j}}\} 
+%\end{equation}
+%, kde $j$ predstavuje výpočet.
+
+Pre tieto hodnoty uhlov sme vypočítali priemerný rozdiel medzi nastaveným natočením a natočením vypočítaným pomocou inverznej kinematiky $\bar{d_i}$ a $d_{i_{max}}$ ako maximálny vypočítaný rozdie. Hodnoty zobrazuje tabuľka \ref{tab_ik_diffs}, kde prvé dva riadky znamenajú natočenia kĺbov pri pokuse so zafixovanými hodnotami.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{||r||r|r|r|r|r|r||}
+		\hline
+		\hline
+		 & $LLE1$ & $LLE2$ & $LLE3$ & $LLE4$ & $LLE5$ & $LLE6$ \\
+		 \hline
+		 \hline
+		 $\bar{d_i}$ & $0,460$ & $0,371$ & $2,645$ & $0,472$ & $0$ & $0$ \\
+		 \hline
+		 $d_{i_{max}}$ & $1$ & $1$ & $30$ & $1$ & $0$ & $0$ \\
+		 \hline
+		 \hline
+		 $\bar{d_i}$ & $0,411$ & $0,377$ & $27,439$ & $1,253$ & $20,716$ & $0,413$ \\
+		 \hline
+		 $d_{i_{max}}$ & $1$ & $1$ & $113$ & $50$ & $50$ & $1$ \\
+		 \hline
+		 \hline
+	\end{tabular}
+	\caption{Namerané priemerné a maximálne rozdiely vo výpočte natočení pomocou overenia výpočtu inverznej kinematiky}
+	\label{tab_ik_diffs}
+\end{table}
+
+Pre niektoré natočenia kĺbov dochádza pre niektoré konfigurácie k nepresnostiam. Z výpočtov vyplýva, že najväčšie odchýlky sú v hodnotách natočení kĺbov \texttt{LLE3} a \texttt{LLE5}. Podľa rovníc kapitoly \ref{sec_inverse_kinematics_equations} sú uhly $\theta_3$ a $\theta_5$, predstavujúce natočenia kĺbov \texttt{LLE3} a \texttt{LLE5}, závislé na hodnotách uhlov $\theta_2$ (pre $\theta_3$) a $\theta_5$ (pre $\theta_6$).
+
+Nepodarilo sa nám identifikovať presnú príčinu chyby. Pravdepodobne je spôsobená nepresnosťami dvojitej presnosti desatinných čísel pohyblivej rádovej čiarky jazyka Java. Druhou možnosťou je nesprávne prepísaná implementácia (preklep) rovníc. Ďalšou možnosťou je chybné vyjadrenie rovníc z použitého zdroja.
+
+\subsection{Testovacie podmienky}
+Všetky testy boli vykonané na počítači tejto konfigurácie:
+\begin{itemize}
+	\item operačný systém Windows 7 Professional SP1 32 bit
+	\item procesor Intel Core 2 DUO 2 Ghz
+	\item 3GB RAM
+	\item RcssServer verzia 0.6.7
+	\item SimSpark verzia 0.2.4
+	\item JDK 1.8\_20 
+\end{itemize}
+
+\subsection{Videá}
+Vytvorené kopy demonštrujú aj vytvorené videá, ktoré sa nachádzajú na priloženom médiu. Zobrazujú kopy pri rôznych smerových uhlov pohľadom spredu a zhora na hráča.
+
+

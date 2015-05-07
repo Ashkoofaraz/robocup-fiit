@@ -15,7 +15,10 @@
 \usepackage{pdflscape}			% lanscape mod
 \usepackage{amsmath}
 \usepackage{amsfonts}
-\usepackage{geometry}			% pre rozmery stran a pod.
+\usepackage[left=3.5cm]{geometry}			% pre rozmery stran a pod.
+\usepackage{array}
+%\usepackage{csvsimple}
+\usepackage{tabu}
 
 %\usepackage{url}
 \usepackage{hyperref}			% klikatelne krizove odkazy na kapitoly, obrazky, referencie
@@ -27,12 +30,15 @@
     	}    	
 
 \counterwithin{equation}{section} % Cislovanie rovnic bude obsahovat c. kapitoly a poriadie rovnice v danej kapitole, pre tento prikaz musi byt package "chngcntr"
- 	
+\counterwithin{table}{section} 
+\counterwithin{figure}{section} 
+
 \linespread{1.3}					% riadkovanie 1,5
 %\linespread{1.4}
 
 \floatname{algorithm}{Algoritmus} 	% zmeni prostredie \algorithm na slov. Algoritmus
-%\newtheorem{Algoritmus}{Algoritmus}[section]
+
+\newtheorem{Definicia}{Definícia}[section]
 
 \begin{document}
 
@@ -84,13 +90,14 @@
 
 \newpage
 \input{forward_kinematics.tex}
-
 \input{inverse_kinematics.tex}
 \newpage
-\input{implementation.tex}
+
+\input{experiments.tex}
+\newpage
+\input{kick_implementation.tex}
 \newpage
 \input{testing.tex}
-
 \newpage
 \input{conclusion.tex}
 
@@ -109,5 +116,7 @@
 \input{appendix_medium.tex}
 \newpage
 \input{appendix_install_guide.tex}
+\newpage
+\input{appendix_user_guide.tex}
 
 \end{document}
