@@ -198,12 +198,12 @@ public class RightLegIk
                             List<Double> thetas1 = this.getTheta1(t2);
                             for (double t1 : thetas1)
                             {
-                                result.put(Joint.LLE1, toDegrees(t1));
-                                result.put(Joint.LLE2, toDegrees(t2));
-                                result.put(Joint.LLE3, toDegrees(t3));
-                                result.put(Joint.LLE4, toDegrees(t4));
-                                result.put(Joint.LLE5, toDegrees(t5));
-                                result.put(Joint.LLE6, toDegrees(t6));
+                                result.put(Joint.RLE1, toDegrees(t1));
+                                result.put(Joint.RLE2, toDegrees(t2));
+                                result.put(Joint.RLE3, toDegrees(t3));
+                                result.put(Joint.RLE4, toDegrees(t4));
+                                result.put(Joint.RLE5, toDegrees(t5));
+                                result.put(Joint.RLE6, toDegrees(t6));
                             }
                         }
 
